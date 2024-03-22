@@ -2,7 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
-import { createUser } from '@/actions'
+import * as actions from '@/actions'
  
 export async function POST(req: Request) {
  
@@ -70,7 +70,7 @@ if(eventType === 'user.created'){
 	}
 
 	// crate user in database
-    await createUser(user)
+    await actions.createUser(user)
     return NextResponse.json({message: 'OK', user: user})
 }
 
@@ -81,16 +81,18 @@ if(eventType === 'user.updated'){
 		username: username!,
 		firstName: first_name,
 		lastName: last_name,
-		image: image_url
+		image: image_url,
+    clerkId: id
 	}
 	
-	// await actions.updateUser(id, user)
+	await actions.updateUser(user)
 }
 
 if(eventType === 'user.deleted'){
 	const {id} = evt.data
+  if(!id) return
 
-	// await actions.deleteUser(id)
+	await actions.deleteUser(id)
   return NextResponse.json({message: 'OK'})
 }
  
