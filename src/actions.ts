@@ -58,3 +58,17 @@ export async function createMesocycle(mesocycle: MesocycleType, clerkId: string)
         }
     }
 }
+
+export async function getMesocyclesByUserId(clerkId: string){
+    try{
+        await connectToDatabase()
+        const user = await User.findOne({clerkId})
+        const mesocycles = await Mesocycle.find({user: user._id})
+        return JSON.parse(JSON.stringify(mesocycles))
+        
+    }catch(err: unknown){
+        if(err instanceof Error){
+            console.log(err.message)
+        }
+    }
+}

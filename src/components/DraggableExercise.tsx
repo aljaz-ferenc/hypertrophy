@@ -16,11 +16,13 @@ import { exercises } from "@/data";
 type DraggableExerciseProps = {
   exercise: Exercise;
   workoutId: string;
+  editable?: boolean
 };
 
 export default function DraggableExercise({
   exercise,
   workoutId,
+  editable=false
 }: DraggableExerciseProps) {
   const [exercisesOpen, setExercisesOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false)
@@ -36,14 +38,14 @@ export default function DraggableExercise({
           <Badge className="block w-max capitalize">
             {exercise.muscleGroup}
           </Badge>
-          <button
+          {editable && <button
             className={`text-destructive hover:text-red-600 transition ${isHovering ? 'opacity-100' : 'opacity-0'}`}
             onClick={() => {
               deleteExercise(exercise.id, workoutId);
             }}
           >
             <FiTrash/>
-          </button>
+          </button>}
         </div>
         {exercise.exercise ? (
           <p>{exercise.exercise}</p>

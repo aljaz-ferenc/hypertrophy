@@ -31,17 +31,18 @@ import DraggableExercise from "./DraggableExercise";
 type WorkoutDayFormProps = {
   workout: Workout;
   workouts: Workout[]
+  editable: boolean
 };
 
-export default function WorkoutDayForm({ workout, workouts }: WorkoutDayFormProps) {
+export default function WorkoutDayForm({ workout, workouts, editable }: WorkoutDayFormProps) {
   const context = useMesocycleContext();
   if (!context) return;
   const { setWeekDay, deleteWorkout, addExercise, reorderExercises } = context;
   
 
   return (
-    <div key={workout.id} className="border-2 border-border p-3"> 
-      <div className="flex justify-between bg-muted p-3 w-[20rem]">
+    <div key={workout.id} className="border-2 border-border p-3 min-w-[15rem]"> 
+      {editable ? <div className="flex justify-between bg-muted p-3 w-[20rem]">
         <Select
           onValueChange={(value: Weekday) => {
             setWeekDay(value, workout.id);
@@ -74,16 +75,18 @@ export default function WorkoutDayForm({ workout, workouts }: WorkoutDayFormProp
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>}
-      </div>
+      </div> : (
+        <p className="capitalize">{workout.weekDay}</p>
+      )}
       <div>
-        <Reorder.Group values={workout.exercises} onReorder={(reorderedExercises: Exercise[]) => reorderExercises(workout.id, reorderedExercises)}>
+        <Reorder.Group values={workout.exercises} onReorder={(reorderedExercises: Exercise[]) => editable && reorderExercises(workout.id, reorderedExercises)}>
         {workout.exercises &&
           workout.exercises.map((exercise) => (
-            <DraggableExercise key={exercise.id} exercise={exercise} workoutId={workout.id}/>
+            <DraggableExercise editable={editable} key={exercise.id} exercise={exercise} workoutId={workout.id}/>
           ))}
           </Reorder.Group>
       </div>
-      <div>
+      {editable && <div>
         <Dialog>
           <DialogTrigger className="w-full mt-2" asChild>
             <Button
@@ -119,7 +122,7 @@ export default function WorkoutDayForm({ workout, workouts }: WorkoutDayFormProp
             </div>
           </DialogContent>
         </Dialog>
-      </div>
+      </div>}
     </div>
   );
 }
