@@ -2,6 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
+import { createUser } from '@/actions'
  
 export async function POST(req: Request) {
  
@@ -69,7 +70,7 @@ if(eventType === 'user.created'){
 	}
 
 	// crate user in database
-    console.log(user)
+    await createUser(user)
     return NextResponse.json({message: 'OK', user: user})
 }
 
