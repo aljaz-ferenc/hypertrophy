@@ -7,9 +7,11 @@ export default function AppLayout({
     children: React.ReactNode;
   }>) {
     return (
-            <div className='flex h-full w-full'> 
+            // <div className='flex h-full w-full border-2 border-red-500'> 
+          <>
             <Sidebar/>
             {children}
-             </div>
+          </>
+            //  </div>
     );
   }

@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
     },
     image: {
         type: String,
+    },
+    activeMesocycle: {
+        type: Boolean
     }
 })
 

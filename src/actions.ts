@@ -3,6 +3,9 @@
 import { Document } from "mongoose"
 import User from "./database/models/User"
 import { connectToDatabase } from "./database/mongoose"
+import { Mesocycle as MesocycleType } from "./types"
+import Mesocycle from "./database/models/Mesocycle"
+import { ObjectId } from "mongodb"
 
 export async function createUser(user: any){
     try{
@@ -35,6 +38,20 @@ export async function updateUser(user: any){
         await connectToDatabase()
         const updatedUser = await User.findOneAndUpdate({clerkId: user.clerkId}, user)
         console.log('updatedUser: ', updatedUser)
+    }catch(err: unknown){
+        if(err instanceof Error){
+            console.log(err.message)
+        }
+    }
+}
+
+export async function createMesocycle(mesocycle: MesocycleType, clerkId: string){
+    try{
+        await connectToDatabase()
+        const user = await User.findOne({clerkId})
+        const newMesocycle = {...mesocycle, user: user._id}
+        console.log(newMesocycle)
+        await Mesocycle.create(newMesocycle)
     }catch(err: unknown){
         if(err instanceof Error){
             console.log(err.message)

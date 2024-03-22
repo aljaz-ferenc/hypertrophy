@@ -21,6 +21,7 @@ export type MuscleGroup =
   | "forearms"
   | "calves";
 
+  export type Units = 'kg' | 'lb'
 
 export type Exercise = {
   muscleGroup: MuscleGroup;
@@ -34,11 +35,10 @@ export type Workout = {
   id: string;
 };
 
-
 export type Mesocycle = {
-  name: string,
-  id: string,
+  _id?: string
+  title: string,
   duration: number,
-  units: 'kg' | 'lb',
+  units: Units,
   workouts: Workout[]
 }
