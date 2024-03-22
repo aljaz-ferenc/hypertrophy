@@ -12,12 +12,12 @@ import { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 
 export default function CreateMesocyclePage() {
-  const context = useMesocycleContext();
-  if (!context) return;
-  const { workouts, addWorkout, setWeekDay, deleteWorkout } = context;
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("4");
   const [units, setUnits] = useState<"kg" | "lb">("kg");
+  const context = useMesocycleContext();
+  if (!context) return;
+  const { workouts, addWorkout, setWeekDay, deleteWorkout } = context;
 
   return (
     <div className="p-3 overflow-hidden w-full">
