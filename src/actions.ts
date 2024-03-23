@@ -6,6 +6,7 @@ import { connectToDatabase } from "./database/mongoose"
 import { Mesocycle as MesocycleType } from "./types"
 import Mesocycle from "./database/models/Mesocycle"
 import { ObjectId } from "mongodb"
+import { redirect } from "next/navigation"
 
 export async function createUser(user: any){
     try{
@@ -57,6 +58,7 @@ export async function createMesocycle(mesocycle: MesocycleType, clerkId: string)
             console.log(err.message)
         }
     }
+    // redirect('/app/my-mesocycles')
 }
 
 export async function getMesocyclesByUserId(clerkId: string){
@@ -66,6 +68,30 @@ export async function getMesocyclesByUserId(clerkId: string){
         const mesocycles = await Mesocycle.find({user: user._id})
         return JSON.parse(JSON.stringify(mesocycles))
         
+    }catch(err: unknown){
+        if(err instanceof Error){
+            console.log(err.message)
+        }
+    }
+}
+
+export async function activateMesocycle(mesoId: string){
+   
+    try{
+        await connectToDatabase()
+        await Mesocycle.updateMany({isActive: true}, { isActive: false });
+        await Mesocycle.findByIdAndUpdate(mesoId, { isActive: true });
+    }catch(err: unknown){
+        if(err instanceof Error){
+            console.log(err.message)
+        }
+    }
+}
+
+export async function deleteMesocycle(mesoId: string){
+    try{
+        await connectToDatabase()
+        await Mesocycle.findByIdAndDelete(mesoId)
     }catch(err: unknown){
         if(err instanceof Error){
             console.log(err.message)

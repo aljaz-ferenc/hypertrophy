@@ -37,6 +37,7 @@ export type Workout = {
 
 export type Mesocycle = {
   _id?: string
+  isActive?: boolean
   title: string,
   duration: number,
   units: Units,

@@ -163,7 +163,11 @@ export const exercises = [
   },
   {
     muscleGroup: "shoulders",
-    exercise: "Overhead Press (Barbell or Dumbbell)"
+    exercise: "Overhead Press (Barbell)"
+  },
+  {
+    muscleGroup: "shoulders",
+    exercise: "Overhead Press (Dumbbell)"
   },
   {
     muscleGroup: "shoulders",

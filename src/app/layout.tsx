@@ -4,6 +4,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import WorkoutContextProvider from "@/context/MesocycleContext";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           {/* <Sidebar/> */}
           {children}
           {/* </div> */}
+          <Toaster/>
         </body>
       </WorkoutContextProvider>
     </html>

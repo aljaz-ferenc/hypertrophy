@@ -20,6 +20,11 @@ const mesocycleSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'User',
         required: [true, 'Mesocycle user required']
+    },
+    isActive: {
+        type: Boolean,
+        default: false,
+        required: [true, 'Mesocycle isActive required']
     }
 })
 

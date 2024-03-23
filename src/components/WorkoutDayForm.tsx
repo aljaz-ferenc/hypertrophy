@@ -41,8 +41,8 @@ export default function WorkoutDayForm({ workout, workouts, editable }: WorkoutD
   
 
   return (
-    <div key={workout.id} className="border-2 border-border p-3 min-w-[15rem]"> 
-      {editable ? <div className="flex justify-between bg-muted p-3 w-[20rem]">
+    <div key={workout.id} className="rounded border border-border p-3 min-w-[15rem]"> 
+      {editable ? <div className="flex justify-between bg-muted p-3 w-[20rem] rounded">
         <Select
           onValueChange={(value: Weekday) => {
             setWeekDay(value, workout.id);

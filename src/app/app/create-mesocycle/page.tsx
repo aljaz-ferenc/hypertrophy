@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import * as actions from '@/actions'
 import { useAuth } from "@clerk/nextjs";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function CreateMesocyclePage() {
   const [title, setTitle] = useState("");
@@ -22,11 +24,12 @@ export default function CreateMesocyclePage() {
   const [error, setError] = useState('')
   const [disabled, setDisabled] = useState(true)
   const {userId} = useAuth()
+  const {toast} = useToast()
+  const router = useRouter()
   
   const context = useMesocycleContext();
   if (!context) return;
   const { workouts, addWorkout, setWeekDay, deleteWorkout } = context;
-
 
   async function createMesocycle(){
     if(!title) return setError('Please choose a name')
@@ -37,7 +40,16 @@ export default function CreateMesocyclePage() {
       workouts,
     }
     if(!userId) return
-    await actions.createMesocycle(newMesocycle, userId)
+    try{
+      await actions.createMesocycle(newMesocycle, userId)
+      toast({
+        title: 'Mesocycle created',
+        description: `${title}`
+      })
+      router.push('my-mesocycles')
+    }catch(err: unknown){
+      return console.log(err)
+    }
   }
 
   useEffect(() => {

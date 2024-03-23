@@ -16,36 +16,47 @@ import { exercises } from "@/data";
 type DraggableExerciseProps = {
   exercise: Exercise;
   workoutId: string;
-  editable?: boolean
+  editable?: boolean;
 };
 
 export default function DraggableExercise({
   exercise,
   workoutId,
-  editable=false
+  editable = false,
 }: DraggableExerciseProps) {
   const [exercisesOpen, setExercisesOpen] = useState(false);
-  const [isHovering, setIsHovering] = useState(false)
+  const [isHovering, setIsHovering] = useState(false);
 
   const context = useMesocycleContext();
   if (!context) return;
   const { deleteExercise, updateExercise } = context;
 
   return (
-    <Reorder.Item value={exercise} key={exercise.id}>
-      <div className="p-2 bg-secondary mt-2 cursor-grab" key={exercise.id} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+    <Reorder.Item dragListener={editable} value={exercise} key={exercise.id}>
+      <div
+        className={`p-2 rounded bg-secondary mt-2 ${
+          editable ? "cursor-grab" : ""
+        }`}
+        key={exercise.id}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         <div className="flex justify-between mb-2 items-center">
           <Badge className="block w-max capitalize">
             {exercise.muscleGroup}
           </Badge>
-          {editable && <button
-            className={`text-destructive hover:text-red-600 transition ${isHovering ? 'opacity-100' : 'opacity-0'}`}
-            onClick={() => {
-              deleteExercise(exercise.id, workoutId);
-            }}
-          >
-            <FiTrash/>
-          </button>}
+          {editable && (
+            <button
+              className={`text-destructive hover:text-red-600 transition ${
+                isHovering ? "opacity-100" : "opacity-0"
+              }`}
+              onClick={() => {
+                deleteExercise(exercise.id, workoutId);
+              }}
+            >
+              <FiTrash />
+            </button>
+          )}
         </div>
         {exercise.exercise ? (
           <p>{exercise.exercise}</p>
