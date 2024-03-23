@@ -30,7 +30,7 @@ export type Exercise = {
 };
 
 export type Workout = {
-  weekDay: Weekday
+  weekDay: number
   exercises: Exercise[];
   id: string;
 };
@@ -38,8 +38,19 @@ export type Workout = {
 export type Mesocycle = {
   _id?: string
   isActive?: boolean
+  startDate?: Date
   title: string,
   duration: number,
   units: Units,
   workouts: Workout[]
+}
+
+export enum Days {
+  Monday = 1,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday
 }

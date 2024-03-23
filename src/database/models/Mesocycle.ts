@@ -25,6 +25,9 @@ const mesocycleSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
         required: [true, 'Mesocycle isActive required']
+    },
+    startDate: {
+        type: Date
     }
 })
 

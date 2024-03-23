@@ -6,7 +6,7 @@ import { createContext, useContext, useReducer } from "react";
 type MesocycleContextType = {
   workouts: Workout[];
   addWorkout: () => void;
-  setWeekDay: (weekDay: Weekday, workoutId: string) => void;
+  setWeekDay: (weekDay: number, workoutId: string) => void;
   deleteWorkout: (workoutId: string) => void;
   addExercise: (muscleGroup: MuscleGroup, workoutId: string) => void;
   deleteExercise: (exerciseId: string, workoutId: string) => void;
@@ -34,7 +34,7 @@ export const  MesocycleContext = createContext<MesocycleContextType | null>(null
 const initialState: Workout[] = [
   {
     id: crypto.randomUUID(),
-    weekDay: '' as Weekday,
+    weekDay: 0,
     exercises:[]
   }
 ];
@@ -152,7 +152,7 @@ export default function  MesocycleContextProvider({
     dispatch({ type: "workout/add" });
   }
 
-  function setWeekDay(day: Weekday, workoutId: string) {
+  function setWeekDay(day: number, workoutId: string) {
     dispatch({ type: "day/add", payload: { day, workoutId } });
   }
 
