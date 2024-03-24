@@ -79,12 +79,6 @@
 }
 
 @layer components{
-  .sidebar{
-    @apply bg-muted flex flex-col min-h-full
-  }
-  .sidebar-link{
-    @apply px-3 py-1 hover:bg-slate-500 transition w-max
-  }
   .custom-scrollbar{
     @apply scrollbar scrollbar-thumb-primary scrollbar-track-muted
   }

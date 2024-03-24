@@ -23,11 +23,7 @@ export default function MesocycleTips() {
           </DrawerHeader>
 
           <p className="mb-3">
-            Mesocycles are an essential component of any well-rounded workout
-            plan, providing structure and progression to help you achieve your
-            fitness goals. A mesocycle typically spans several weeks, during
-            which you focus on specific training objectives before transitioning
-            to a new phase.
+          A mesocycle is a structured period of several weeks within a training program, typically lasting 4-8 weeks, where workouts are organized to achieve specific fitness goals. Each week of a mesocycle consists of planned exercises targeting different muscle groups or fitness components, helping individuals progress towards their desired outcomes.
           </p>
           <p>
             Creating a weekly workout plan involves strategically scheduling

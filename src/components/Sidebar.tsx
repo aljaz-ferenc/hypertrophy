@@ -2,37 +2,42 @@
 
 import Link from "next/link";
 import React from "react";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "./ui/navigation-menu";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { Dumbbell, FilePlus, Folder } from "lucide-react";
+import { usePathname } from 'next/navigation'
 
 type SidebarLink = {
   title: string;
   href: string;
+  icon: React.ReactNode
 };
 
 const sidebarLinks: SidebarLink[] = [
-  { title: "Today's Workout", href: "/app/todays-workout" },
-  { title: "Create Mesocycle", href: "/app/create-mesocycle" },
-  { title: "My Mesocycles", href: "/app/my-mesocycles" },
+  { title: "Today's Workout", href: "/app/todays-workout", icon: <Dumbbell size={20}/> },
+  { title: "Create Mesocycle", href: "/app/create-mesocycle", icon: <FilePlus size={20}/> },
+  { title: "My Mesocycles", href: "/app/my-mesocycles", icon: <Folder size={20}/> },
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname()
+  const {user} = useUser()
+
   return (
-    <div className="sidebar">
+    <nav className="bg-muted flex flex-col min-h-full">
+      <ul className='flex flex-col'>
       {sidebarLinks.map((link, i) => (
-        <Link className="sidebar-link" href={link.href} key={i}>
+        <li className={`${pathname.startsWith(link.href) && 'bg-background'} `}>
+        <Link className="px-3 min-w-full hover:bg-slate-500 transition w-max flex gap-3 py-3" href={link.href} key={i}>
+          {link.icon}
           {link.title}
         </Link>
+        </li>
       ))}
-      <div className="mt-auto">
+      </ul>
+      <div className="mt-auto flex gap-3 items-center p-3">
         <UserButton afterSignOutUrl="/sign-in" />
+        <p>{user?.username || user?.firstName}</p>
       </div>
-    </div>
+    </nav>
   );
 }
