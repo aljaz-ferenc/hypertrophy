@@ -59,3 +59,8 @@ export type Set = {
   weight: number,
   reps: number
 }
+
+export type RestTip = {
+  title: string,
+  description: string
+}

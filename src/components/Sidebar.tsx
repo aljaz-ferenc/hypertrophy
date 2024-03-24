@@ -23,10 +23,10 @@ export default function Sidebar() {
   const {user} = useUser()
 
   return (
-    <nav className="bg-muted flex flex-col min-h-full">
+    <nav className="bg-muted md:flex flex-col min-h-full hidden">
       <ul className='flex flex-col'>
       {sidebarLinks.map((link, i) => (
-        <li className={`${pathname.startsWith(link.href) && 'bg-background'} `}>
+        <li key={link.href} className={`${pathname.startsWith(link.href) && 'bg-background'} `}>
         <Link className="px-3 min-w-full hover:bg-slate-500 transition w-max flex gap-3 py-3" href={link.href} key={i}>
           {link.icon}
           {link.title}

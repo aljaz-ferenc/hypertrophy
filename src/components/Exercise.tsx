@@ -15,9 +15,10 @@ import { useToast } from "./ui/use-toast";
 
 type ExerciseProps = {
   exercise: Exercise;
+  setLogs: React.Dispatch<React.SetStateAction<Set[]>>
 };
 
-export default function Exercise({ exercise }: ExerciseProps) {
+export default function Exercise({ exercise, setLogs }: ExerciseProps) {
   const [sets, setSets] = useState<Set[]>([{ weight: 0, reps: 0 }]);
   const {toast} = useToast()
 
@@ -35,7 +36,6 @@ export default function Exercise({ exercise }: ExerciseProps) {
 
   function handleRemoveSet(index: number){
     if(sets.length < 2) {
-        console.log('haha')
         toast({title: 'Cannot remove all sets', description: 'Complete at least one set for each exercise.'})
         return
     }
@@ -43,21 +43,21 @@ export default function Exercise({ exercise }: ExerciseProps) {
   }
 
   return (
-    <div className="p-3 bg-muted p-3">
-      <h3>{exercise.exercise}</h3>
+    <div className="p-3 bg-muted">
+      <h3 className="uppercase font-semibold">{exercise.exercise}</h3>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>SET</TableHead>
-            <TableHead>WEIGHT</TableHead>
-            <TableHead>REPS</TableHead>
+            <TableHead className='p-1 md:p-2 lg:p-4'>SET</TableHead>
+            <TableHead  className='p-1 md:p-2 lg:p-4'>WEIGHT</TableHead>
+            <TableHead  className='p-1 md:p-2 lg:p-4'>REPS</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {sets.map((set, index) => (
               <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>
+                <TableCell  className='p-1 md:p-2 lg:p-4'>{index + 1}</TableCell>
+                <TableCell  className='p-1 md:p-2 lg:p-4'>
                   <Input
                     type="number"
                     value={set.weight}
@@ -67,8 +67,9 @@ export default function Exercise({ exercise }: ExerciseProps) {
                     }
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell  className='p-1 md:p-2 lg:p-4'>
                   <Input
+                  disabled
                     min={1}
                     type="number"
                     value={set.reps}
@@ -77,11 +78,13 @@ export default function Exercise({ exercise }: ExerciseProps) {
                     }
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell  className='p-1 md:p-2 lg:p-4'>
+                  <Button className='bg-green-600 hover:bg-green-500 transition font-bold'>LOG</Button>
+                </TableCell>
+                <TableCell  className='p-1 md:p-2 lg:p-4'>
                   <Trash2 className='text-destructive cursor-pointer hover:text-red-600 transition' onClick={() => handleRemoveSet(index)}/>
                 </TableCell>
               </TableRow>
-
           ))}
         </TableBody>
       </Table>
