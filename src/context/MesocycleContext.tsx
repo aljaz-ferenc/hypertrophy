@@ -16,6 +16,7 @@ type MesocycleContextType = {
     exercise: string
   ) => void;
   reorderExercises: (workoutId: string, exercises: Exercise[]) => void
+  resetWorkouts: () => void
 };
 
 type  MesocycleContextProviderProps = {
@@ -138,6 +139,9 @@ function workoutsReducer(
         return workout
       })
     }
+    case 'workouts/reset': {
+      state = initialState
+    }
     default:
       return state;
   }
@@ -183,6 +187,10 @@ export default function  MesocycleContextProvider({
     dispatch({type: 'exercises/reorder', payload: {exercises, workoutId}})
   }
 
+  function resetWorkouts(){
+    dispatch({type: 'workouts/reset'})
+  }
+
   return (
     <MesocycleContext.Provider
       value={{
@@ -193,7 +201,8 @@ export default function  MesocycleContextProvider({
         addExercise,
         deleteExercise,
         updateExercise,
-        reorderExercises
+        reorderExercises,
+        resetWorkouts
       }}
     >
       {children}

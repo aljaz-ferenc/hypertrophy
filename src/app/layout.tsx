@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html className="light custom-scrollbar overflow-x-hidden max-w-screen" lang="en">
+    <html className="dark custom-scrollbar overflow-x-hidden max-w-screen" lang="en">
       <WorkoutContextProvider>
         <body className={`${inter.className} bg-background w-full min-h-screen flex custom-scrollbar`}>
           {/* <div className='flex h-full w-full'> */}

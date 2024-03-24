@@ -1,6 +1,6 @@
 "use server";
 
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 import User from "./database/models/User";
 import { connectToDatabase } from "./database/mongoose";
 import { Days, Mesocycle as MesocycleType } from "./types";
@@ -77,10 +77,11 @@ export async function getMesocyclesByUserId(clerkId: string) {
   }
 }
 
-export async function activateMesocycle(mesoId: string) {
+export async function activateMesocycle(mesoId: string, clerkId: string) {
   try {
     await connectToDatabase();
-    await Mesocycle.updateMany({ isActive: true }, { isActive: false, $unset: { startDate: 1 } });
+    const user = await User.findOne({clerkId})
+    await Mesocycle.updateMany({ isActive: true, user:user._id}, { isActive: false, $unset: { startDate: 1 } });
     await Mesocycle.findByIdAndUpdate(mesoId, { isActive: true, startDate: startOfDay(previousMonday(new Date()))});
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -98,4 +99,18 @@ export async function deleteMesocycle(mesoId: string) {
       console.log(err.message);
     }
   }
+}
+
+export async function getActiveMesocycle(clerkId: string){
+    try{
+        await connectToDatabase()
+        const user = await User.findOne({clerkId})
+        const activeMeso: MesocycleType | null = await Mesocycle.findOne({user: user._id, isActive: true})
+        return JSON.parse(JSON.stringify(activeMeso))
+    }catch(err: unknown){
+        if(err instanceof Error){
+            console.log(err.message)
+        }
+        throw err
+    }
 }

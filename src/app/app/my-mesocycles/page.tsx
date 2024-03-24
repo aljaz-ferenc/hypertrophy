@@ -61,7 +61,7 @@ export default function MyMesocyclesPage() {
     if(!meso) return
     setIsActivating(true)
     try{
-      await actions.activateMesocycle(mesoId)
+      await actions.activateMesocycle(mesoId, userId!)
       toast({
         title: `Mesocycle activated!`,
         description: `${meso.title}`
@@ -94,10 +94,10 @@ export default function MyMesocyclesPage() {
   }
 
   return (
-    <div className='w-full p-3'>
-      { mesocycles.length > 0 ? <Accordion type="single" collapsible className="w-full max-w-[1440px] mx-auto">
+    <div className='w-full max-w-[1440px] mx-auto p-3'>
+      { mesocycles.length > 0 ? <Accordion type="single" collapsible className="w-full mx-auto">
         {mesocycles.map((meso) => (
-          <AccordionItem key={meso._id} value={meso._id!}>
+          <AccordionItem key={meso._id} value={meso._id!} >
             <AccordionTrigger className='w-full text-left rounded' asChild>
                 <div className='bg-muted h-[3.5rem] gap-2 p-3 mb-3 flex items-center cursor-pointer'>
                     <p className='mr-auto'>

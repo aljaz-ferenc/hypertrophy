@@ -3,7 +3,7 @@ import { Exercise } from "@/types";
 import { Reorder } from "framer-motion";
 import { useMesocycleContext } from "@/context/MesocycleContext";
 import { Badge } from "./ui/badge";
-import { FiTrash } from "react-icons/fi";
+import { Trash2 } from "lucide-react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -54,7 +54,7 @@ export default function DraggableExercise({
                 deleteExercise(exercise.id, workoutId);
               }}
             >
-              <FiTrash />
+              <Trash2 size={20}/>
             </button>
           )}
         </div>

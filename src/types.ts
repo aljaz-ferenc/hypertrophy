@@ -54,3 +54,8 @@ export enum Days {
   Saturday,
   Sunday
 }
+
+export type Set = {
+  weight: number,
+  reps: number
+}
