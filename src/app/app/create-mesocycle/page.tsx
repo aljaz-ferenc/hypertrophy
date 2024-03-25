@@ -29,10 +29,11 @@ export default function CreateMesocyclePage() {
   const router = useRouter();
 
   const context = useMesocycleContext();
-  if (!context) return;
-  const { workouts, addWorkout, resetWorkouts } = context;
+  // if (!context) return;
+  const { workouts, addWorkout, resetWorkouts } = context || {};
 
   async function createMesocycle() {
+    if(!workouts) return
     if (!title) return setError("Please choose a name");
     const newMesocycle: MesocycleType = {
       title,
@@ -54,7 +55,7 @@ export default function CreateMesocyclePage() {
   }
 
   useEffect(() => {
-    console.log(workouts);
+    if(!workouts) return
     workouts.forEach((workout) => {
       if (
         workout.exercises.length === 0 ||
@@ -69,8 +70,9 @@ export default function CreateMesocyclePage() {
   }, [workouts]);
 
   useEffect(() => {
+    if(!resetWorkouts) return
     return () => resetWorkouts();
-  }, []);
+  }, [resetWorkouts]);
 
   return (
     <div className="p-3 overflow-hidden w-full max-w-[1440px] mx-auto">
@@ -131,7 +133,7 @@ export default function CreateMesocyclePage() {
         </div>
       </div>
       <Separator className="my-10" />
-      <div className="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
+      {addWorkout && workouts && <div className="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
         <Mesocycle editable={true} workouts={workouts} />
         {workouts.length < weekdays.length && (
           <Button
@@ -144,7 +146,7 @@ export default function CreateMesocyclePage() {
             <p className="w-max">Add Day</p>
           </Button>
         )}
-      </div>
+      </div>}
 
       <Button
         className="mt-10"

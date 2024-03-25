@@ -1,4 +1,4 @@
-import { Exercise, Set } from "@/types";
+import { Exercise as ExerciseType, Set } from "@/types";
 import { useState } from "react";
 import {
   Table,
@@ -14,11 +14,11 @@ import { Trash2 } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 
 type ExerciseProps = {
-  exercise: Exercise;
-  setLogs: React.Dispatch<React.SetStateAction<Set[]>>
+  exercise: ExerciseType;
+  updateLogs: React.Dispatch<React.SetStateAction<Set[]>>
 };
 
-export default function Exercise({ exercise, setLogs }: ExerciseProps) {
+export default function Exercise({ exercise, updateLogs }: ExerciseProps) {
   const [sets, setSets] = useState<Set[]>([{ weight: 0, reps: 0 }]);
   const {toast} = useToast()
 
