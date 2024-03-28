@@ -29,8 +29,8 @@ import React, { useState } from "react";
 type MesocycleAccordionProps = {
   mesocycles: MesocycleType[];
   handleDeleteMesocycle: (mesoId: string) => void;
-  handleTryActivate: (mesoId: string) => void;
-  activateMesocycle: (mesoId: string) => void;
+  handleTryActivate: (meso: MesocycleType) => void;
+  activateMesocycle: (meso: MesocycleType) => void;
   dialogIsOpen: boolean;
   setDialogIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isActivating: boolean;
@@ -45,7 +45,7 @@ export default function MesocycleAccordion({
   setDialogIsOpen,
   isActivating,
 }: MesocycleAccordionProps) {
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedMeso, setSelectedMeso] = useState<MesocycleType>();
   return (
     <>
       <Accordion type="single" collapsible className="w-full mx-auto">
@@ -54,7 +54,7 @@ export default function MesocycleAccordion({
             className="w-full max-w-full"
             key={meso._id}
             value={meso._id!}
-            onClick={() => setSelectedId(meso._id!)}
+            onClick={() => setSelectedMeso(meso)}
           >
             <AccordionTrigger>
               <div className="flex w-full gap-2">
@@ -71,7 +71,7 @@ export default function MesocycleAccordion({
                       <Button
                         className="w-full"
                         disabled={isActivating}
-                        onClick={() => handleTryActivate(meso._id!)}
+                        onClick={() => handleTryActivate(meso)}
                       >
                         Activate
                       </Button>
@@ -109,7 +109,7 @@ export default function MesocycleAccordion({
             <DialogDescription>Do you wish to continue?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={() => activateMesocycle(selectedId)}>
+            <Button onClick={() => activateMesocycle(selectedMeso!)}>
               Activate
             </Button>
             <Button variant={'destructive'} onClick={() => setDialogIsOpen(false)}>Cancel</Button>

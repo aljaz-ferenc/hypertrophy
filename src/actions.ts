@@ -3,9 +3,11 @@
 import { Document, ObjectId } from "mongoose";
 import User from "./database/models/User";
 import { connectToDatabase } from "./database/mongoose";
-import { Days, Mesocycle as MesocycleType } from "./types";
+import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
 import {differenceInWeeks, previousMonday, startOfDay} from 'date-fns'
+import Log from "./database/models/Log";
+import { redirect } from "next/navigation";
 
 export async function createUser(user: any) {
   try {
@@ -54,7 +56,6 @@ export async function createMesocycle(
     await connectToDatabase();
     const user = await User.findOne({ clerkId });
     const newMesocycle = { ...mesocycle, user: user._id };
-    console.log(newMesocycle);
     await Mesocycle.create(newMesocycle);
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -77,12 +78,21 @@ export async function getMesocyclesByUserId(clerkId: string) {
   }
 }
 
-export async function activateMesocycle(mesoId: string, clerkId: string) {
+export async function activateMesocycle(meso: MesocycleType, clerkId: string) {
+
+  const newLog = {
+    mesoTitle: meso.title,
+    duration: meso.duration,
+    mesoId: meso._id,
+    weeks: Array.from({ length: meso.duration }, () => ({ workouts: [] }))
+  }
+
   try {
     await connectToDatabase();
     const user = await User.findOne({clerkId})
     await Mesocycle.updateMany({ isActive: true, user:user._id}, { isActive: false, $unset: { startDate: 1 } });
-    await Mesocycle.findByIdAndUpdate(mesoId, { isActive: true, startDate: startOfDay(previousMonday(new Date()))});
+    await Mesocycle.findByIdAndUpdate(meso._id, { isActive: true, startDate: startOfDay(previousMonday(new Date()))});
+    await Log.create(newLog)
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log(err.message);
@@ -104,13 +114,55 @@ export async function deleteMesocycle(mesoId: string) {
 export async function getActiveMesocycle(clerkId: string){
     try{
         await connectToDatabase()
-        const user = await User.findOne({clerkId})
+        const user: UserType | null = await User.findOne({clerkId})
+        if(!user) throw new Error('User not found')
         const activeMeso: MesocycleType | null = await Mesocycle.findOne({user: user._id, isActive: true})
-        return JSON.parse(JSON.stringify(activeMeso))
+        const activeLog: LogType | null = await Log.findOne({mesoId: activeMeso?._id})
+        return JSON.parse(JSON.stringify({meso: activeMeso, log: activeLog, lastWorkout: user.lastWorkout}))
     }catch(err: unknown){
         if(err instanceof Error){
             console.log(err.message)
         }
         throw err
     }
+}
+
+export async function createLog(log: LogType){
+  try{
+    await connectToDatabase()
+    await Log.create(log)
+    redirect('completed-mesocycles')
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }
+    throw err
+  }
+}
+
+export async function getLogs(){
+  try{
+    await connectToDatabase()
+    const logs = await Log.find()
+    return JSON.parse(JSON.stringify(logs))
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }
+  }
+}
+
+export async function addWorkoutToLog(logId: string, workout: WorkoutLog, weekIndex: number, workoutIndex: number, userId: string){
+  
+  try{
+    await connectToDatabase();
+    const updateQuery: any = {};
+    updateQuery[`weeks.${weekIndex}.workouts`] = { $each: [workout], $position: workoutIndex };
+    await Log.findByIdAndUpdate(logId, { $push: updateQuery });
+    await User.findByIdAndUpdate(userId, {lastWorkout: new Date()})
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }
+  }
 }

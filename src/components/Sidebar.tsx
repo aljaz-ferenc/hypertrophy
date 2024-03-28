@@ -16,6 +16,7 @@ const sidebarLinks: SidebarLink[] = [
   { title: "Today's Workout", href: "/app/todays-workout", icon: <Dumbbell size={20}/> },
   { title: "Create Mesocycle", href: "/app/create-mesocycle", icon: <FilePlus size={20}/> },
   { title: "My Mesocycles", href: "/app/my-mesocycles", icon: <Folder size={20}/> },
+  { title: "Completed Mesocycles", href: "/app/completed-mesocycles", icon: <Folder size={20}/> },
 ];
 
 export default function Sidebar() {

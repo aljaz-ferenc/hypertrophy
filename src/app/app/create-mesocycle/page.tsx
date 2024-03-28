@@ -29,11 +29,10 @@ export default function CreateMesocyclePage() {
   const router = useRouter();
 
   const context = useMesocycleContext();
-  // if (!context) return;
   const { workouts, addWorkout, resetWorkouts } = context || {};
-
+  
   async function createMesocycle() {
-    if(!workouts) return
+    if(!workouts || !userId || !resetWorkouts) return
     if (!title) return setError("Please choose a name");
     const newMesocycle: MesocycleType = {
       title,
@@ -41,7 +40,7 @@ export default function CreateMesocyclePage() {
       units,
       workouts,
     };
-    if (!userId) return;
+    // if (!userId) return;
     try {
       await actions.createMesocycle(newMesocycle, userId);
       toast({
@@ -49,7 +48,12 @@ export default function CreateMesocyclePage() {
         description: `${title}`,
       });
       router.push("my-mesocycles");
+      resetWorkouts()
     } catch (err: unknown) {
+      toast({
+        title: "Error",
+        description: 'Something went wrong creating a mesocycle...',
+      });
       return console.log(err);
     }
   }
@@ -69,10 +73,10 @@ export default function CreateMesocyclePage() {
     });
   }, [workouts]);
 
-  useEffect(() => {
-    if(!resetWorkouts) return
-    return () => resetWorkouts();
-  }, [resetWorkouts]);
+  // useEffect(() => {
+  //   if(!resetWorkouts) return
+  //   return () => resetWorkouts();
+  // }, []);
 
   return (
     <div className="p-3 overflow-hidden w-full max-w-[1440px] mx-auto">
@@ -147,7 +151,6 @@ export default function CreateMesocyclePage() {
           </Button>
         )}
       </div>}
-
       <Button
         className="mt-10"
         disabled={disabled}

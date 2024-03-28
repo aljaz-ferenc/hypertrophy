@@ -27,6 +27,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { Reorder } from "framer-motion";
 import DraggableExercise from "./DraggableExercise";
+import {useEffect} from 'react'
 
 type WorkoutDayFormProps = {
   workout: Workout;
@@ -42,8 +43,10 @@ export default function WorkoutDayForm({
   editable,
 }: WorkoutDayFormProps) {
   const context = useMesocycleContext();
+
   if (!context) return;
   const { setWeekDay, deleteWorkout, addExercise, reorderExercises } = context;
+
 
   return (
     <div
@@ -135,10 +138,7 @@ export default function WorkoutDayForm({
                   <DialogClose key={muscleGroup} asChild>
                     <Button
                       variant="outline"
-                      onClick={() => {
-                        console.log("click");
-                        addExercise(muscleGroup, workout.id);
-                      }}
+                      onClick={() => addExercise(muscleGroup, workout.id)}
                       className="w-full"
                       type="button"
                     >

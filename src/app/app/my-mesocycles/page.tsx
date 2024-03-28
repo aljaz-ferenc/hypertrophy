@@ -7,6 +7,7 @@ import { Mesocycle as MesocycleType } from "@/types";
 
 import { useToast } from "@/components/ui/use-toast";
 import MesocycleAccordion from "@/components/MesocycleAccordion";
+import { useRouter } from "next/navigation";
 
 export default function MyMesocyclesPage() {
   const { userId } = useAuth();
@@ -15,6 +16,7 @@ export default function MyMesocyclesPage() {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const [isActivating, setIsActivating] = useState(false);
   const { toast } = useToast();
+  const router = useRouter()
 
   useEffect(() => {
     if (!userId) return;
@@ -35,26 +37,26 @@ export default function MyMesocyclesPage() {
     return <p>Loading...</p>;
   }
 
-  function handleTryActivate(mesoId: string) {
-
+  function handleTryActivate(meso: MesocycleType) {
     if (mesocycles.some((meso) => meso.isActive === true)) {
-      console.log('already active')
       setDialogIsOpen(true);
     } else {
-      activateMesocycle(mesoId);
+      activateMesocycle(meso);
     }
   }
 
-  async function activateMesocycle(mesoId: string) {
-    const meso = mesocycles.find((m) => m._id === mesoId);
+  async function activateMesocycle(mesocycle: MesocycleType) {
+
+    const meso = mesocycles.find((m) => m._id === mesocycle._id);
     if (!meso) return;
     setIsActivating(true);
     try {
-      await actions.activateMesocycle(mesoId, userId!);
+      await actions.activateMesocycle(meso!, userId!);
       toast({
         title: `Mesocycle activated!`,
         description: `${meso.title}`,
       });
+      router.push('/app/todays-workout')
     } catch (err: unknown) {
       console.log(err);
     }
@@ -95,7 +97,6 @@ export default function MyMesocyclesPage() {
             dialogIsOpen={dialogIsOpen}
             mesocycles={mesocycles}
           />
-
     </main>
   );
 }

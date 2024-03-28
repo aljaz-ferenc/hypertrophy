@@ -5,6 +5,7 @@ import Sidebar from "@/components/Sidebar";
 import WorkoutContextProvider from "@/context/MesocycleContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
+import LogContextProvider from "@/context/LogContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,13 +23,12 @@ export default function RootLayout({
     <ClerkProvider>
     <html className="dark custom-scrollbar overflow-x-hidden max-w-screen" lang="en">
       <WorkoutContextProvider>
+        <LogContextProvider>
         <body className={`${inter.className} bg-background w-full min-h-screen flex custom-scrollbar`}>
-          {/* <div className='flex h-full w-full'> */}
-          {/* <Sidebar/> */}
           {children}
-          {/* </div> */}
           <Toaster/>
         </body>
+        </LogContextProvider>
       </WorkoutContextProvider>
     </html>
     </ClerkProvider>

@@ -7,8 +7,7 @@ type MesocyclesPreviewProps = {
 
 export default async function MesocyclesPreview({clerkId}: MesocyclesPreviewProps) {
 
-    const mesocycles = await  actions.getMesocyclesByUserId(clerkId)
-    console.log(mesocycles)
+  const mesocycles = await  actions.getMesocyclesByUserId(clerkId)
 
   return (
     <div>

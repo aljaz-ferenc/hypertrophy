@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
     },
     activeMesocycle: {
         type: Boolean
+    },
+    lastWorkout: {
+        type: Date
     }
 })
 

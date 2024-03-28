@@ -52,7 +52,6 @@ function workoutsReducer(
 
     case "day/add": {
       const { workoutId, day } = action.payload;
-
       return state.map(workout => {
         if(workout.id === workoutId){
           return {...workout, weekDay: day}

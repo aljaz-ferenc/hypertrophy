@@ -1,12 +1,13 @@
 "use client";
 
-import { Days, Mesocycle, Workout, RestTip, Set } from "@/types";
+import { Days, Mesocycle, Workout, RestTip, Set, WorkoutLog, Log, LogExercise } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import React, { useState, useEffect } from "react";
 import * as actions from "@/actions";
 import Link from "next/link";
-import { differenceInCalendarISOWeeks } from "date-fns";
+import { differenceInCalendarISOWeeks, isToday } from "date-fns";
 import Exercise from "@/components/Exercise";
+import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -20,6 +21,8 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
+import { useLogContext } from "@/context/LogContext";
+import { useRouter } from "next/navigation";
 
 function getTodaysDay() {
   //get days (monday = 1 ... sunday = 7)
@@ -44,16 +47,32 @@ export default function TodaysWorkoutPage() {
     );
   const [workout, setWorkout] = useState<Workout | undefined>();
   const [isFetching, setIsFetching] = useState(true);
-  const [logs, setLogs] = useState<Set[]>([])
+  const [workoutLog, setWorkoutLog] = useState<WorkoutLog>({day: getTodaysDay(), exercises: []})
+  const {setupLogState, exercises, setupExerciseState, log} = useLogContext()
+  const [logDB, setLogDB] = useState<Log | null>(null) 
+  const [workoutCompleteToday, setWorkoutCompleteToday] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     //set active mesocycle and today's workout
     if (!userId) return;
     actions
     .getActiveMesocycle(userId)
-      .then((meso) => {
+      .then(({meso, log, lastWorkout}: {meso: Mesocycle, log: Log, lastWorkout: Date}) => {
+        if(isToday(lastWorkout)) setWorkoutCompleteToday(true)
+        if(!meso) return setMesocycle(null)
+        const workout: Workout | undefined = todaysWorkout(meso)
         setMesocycle(meso);
-        setWorkout(todaysWorkout(meso));
+        setWorkout(workout);
+        const exercises = workout?.exercises.map(exercise => {
+          return {exercise: exercise.exercise, id: exercise.id, data: [{reps: 0, weight: 0}]}
+        }) || []
+        if(exercises.length > 0){
+          setupExerciseState(exercises)
+        }
+        if(!workout) return
+        setupLogState(log)
+        setLogDB(log)
       })
       .finally(() => setIsFetching(false));
   }, [userId]);
@@ -68,7 +87,7 @@ export default function TodaysWorkoutPage() {
       <p>
         Currently you have no active mesocycles.{" "}
         <Link href="/app/my-mesocycles" className="text-blue-600 underline">
-          Activate and existing one
+          Activate an existing one
         </Link>{" "}
         or{" "}
         <Link href="/app/create-mesocycle" className="text-blue-600 underline">
@@ -80,38 +99,58 @@ export default function TodaysWorkoutPage() {
 
   if (!mesocycle) return;
 
-    function updateLogs(){
-      console.log(logs)
-    }
-
+  if(workoutCompleteToday){
+    return (
+      <p>You have already completed today's workout.</p>
+    )
+  }
+  
   const week = differenceInCalendarISOWeeks(
     new Date(),
     new Date(mesocycle.startDate!)
-  );
+    );
+    
+   async function handleCompleteWorkout(logId: string){
+      if (!mesocycle) return;
 
-
+      const workout: WorkoutLog = {
+          day: getTodaysDay(),
+          exercises
+      }
+      try{
+        await actions.addWorkoutToLog(logId, workout, week, workout.day, mesocycle.user!)
+        router.push('/app/completed-mesocycles')
+      }catch(err: unknown){
+        if(err instanceof Error){
+          console.log(err.message)
+        }
+      }
+    }
 
   return (
-    <>
+    <div className="max-w-[800px] w-full mx-auto p-3 ">
+    <h1>Today's Workout</h1>
       {workout ? (
-        <div className="max-w-[800px] w-full mx-auto p-3 flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <div className="bg-muted p-3">
             <p className="text-md text-gray-400 font-semibold uppercase">
               {mesocycle.title}
             </p>
             <h2 className="text-2xl font-bold uppercase">
-              Week <span className="text-3xl">{week + 1}</span> -{" "}
+              Week <span className="text-3xl">{week + 1} </span>/ {mesocycle.duration} -{" "}
               {Days[workout.weekDay]}
             </h2>
+            {week + 1 === mesocycle.duration && <p>Last week</p>}
           </div>
-          {workout?.exercises.map((exercise) => (
-            <Exercise updateLogs={updateLogs} exercise={exercise} key={exercise.id} />
-          ))}
+          {exercises?.map((exercise, i) => (
+            <Exercise setWorkoutLog={setWorkoutLog} exerciseIndex={i} workoutId={workout.id} exercise={exercise} key={exercise.id} />
+            ))}
+          <Button onClick={ () => handleCompleteWorkout(logDB!._id!)}>Complete Workout</Button>
         </div>
       ) : (
         <RestDay />
       )}
-    </>
+    </div>
   );
 }
 
