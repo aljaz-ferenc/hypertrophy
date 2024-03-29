@@ -1,3 +1,5 @@
+'use client'
+
 import * as actions from "@/actions";
 import {
   Accordion,
@@ -14,21 +16,58 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Days, Log } from "@/types";
-import {Fragment} from 'react'
+import { useAuth } from "@clerk/nextjs";
+import { Ellipsis } from "lucide-react";
+import {Fragment, useEffect, useState} from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import CenteredText from "@/components/CenteredText";
+import Loading from "@/components/Loading";
 
-export default async function CompletedMesocyclesPage() {
-  {
-    const logs: Log[] = await actions.getLogs();
+
+export default function CompletedMesocyclesPage() {
+  const {userId} = useAuth()
+  const [logs, setLogs] = useState<Log[]>([])
+  const [isFetching, setIsFetching] = useState(true)
+  
+    useEffect(() => {
+      if(!userId) return
+      setIsFetching(true)
+      actions.getLogs(userId)
+        .then(data => setLogs(data))
+        .catch(err => console.log(err.message))
+        .finally(() => setIsFetching(false))
+    }, [userId])
+
+    if(isFetching){
+      return (
+        <Loading/>
+      )
+    }
+
+    if(logs.length === 0){
+      return (
+        <main className='w-full h-screen'>
+        <CenteredText>You have not yet completed any workouts.</CenteredText>
+        </main>
+      )
+    }
 
     return (
       <main className="w-full max-w-[1440px] mx-auto p-3 overflow-auto">
         <h1>Completed Mesocycles</h1>
-        <Accordion className='max-w-full overflow-auto' type="single" collapsible>
+        {logs.length > 0 && <Accordion className='max-w-full overflow-auto' type="single" collapsible>
           {logs.length > 0 ? logs.map((log) => (
             <div key={log._id}>
               {log.weeks.length > 0 && (
-                <AccordionItem key={log._id} value={log._id!}>
-                  <AccordionTrigger>{log.mesoTitle}</AccordionTrigger>
+                <AccordionItem key={log._id} value={log._id!} >
+                  <AccordionTrigger >
+                    {log.mesoTitle}
+                    </AccordionTrigger>
                   <AccordionContent>
                     <Table>
                       <TableBody>
@@ -58,10 +97,10 @@ export default async function CompletedMesocyclesPage() {
               )}
             </div> 
           )): <p>You have not completed any mesocycles yet.</p>}
-        </Accordion>
+        </Accordion>}
       </main>
     );
-  }
+  
 }
 
 function WorkoutTable({ workout }: any) {

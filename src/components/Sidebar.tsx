@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, {useEffect} from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Dumbbell, FilePlus, Folder } from "lucide-react";
 import { usePathname } from 'next/navigation'
@@ -37,7 +37,7 @@ export default function Sidebar() {
       </ul>
       <div className="mt-auto flex gap-3 items-center p-3">
         <UserButton afterSignOutUrl="/sign-in" />
-        <p>{user?.username || user?.firstName}</p>
+        <p>{user?.username}</p>
       </div>
     </nav>
   );

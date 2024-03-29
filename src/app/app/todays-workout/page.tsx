@@ -5,7 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import React, { useState, useEffect } from "react";
 import * as actions from "@/actions";
 import Link from "next/link";
-import { differenceInCalendarISOWeeks, isToday } from "date-fns";
+import { addDays, differenceInCalendarISOWeeks, isToday } from "date-fns";
 import Exercise from "@/components/Exercise";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/card";
 import { useLogContext } from "@/context/LogContext";
 import { useRouter } from "next/navigation";
+import CenteredText from "@/components/CenteredText";
+import Loading from "@/components/Loading";
 
 function getTodaysDay() {
   //get days (monday = 1 ... sunday = 7)
@@ -37,6 +39,16 @@ function todaysWorkout(mesocycle: Mesocycle) {
   );
 
   return todaysWorkout;
+}
+
+function isMesocycleCompleted(activeMeso: Mesocycle){
+  // check if today's date is past the duration of mesocycle
+  const startDate = new Date(activeMeso.startDate!)
+  const lastDay = activeMeso.workouts.at(-1)!.weekDay-1
+  const durationInDays = (activeMeso.duration - 1) * 7 + lastDay
+  const endDate = addDays(startDate, durationInDays)
+  const today = new Date()
+  return today > endDate
 }
 
 
@@ -60,6 +72,7 @@ export default function TodaysWorkoutPage() {
       .then(({meso, log, lastWorkout}: {meso: Mesocycle, log: Log, lastWorkout: Date}) => {
         if(isToday(lastWorkout)) setWorkoutCompleteToday(true)
         if(!meso) return setMesocycle(null)
+        
         const workout: Workout | undefined = todaysWorkout(meso)
         setMesocycle(meso);
         setWorkout(workout);
@@ -77,33 +90,47 @@ export default function TodaysWorkoutPage() {
   }, [userId]);
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <Loading/>;
   }
 
   if (!isFetching && mesocycle === null) {
     //if no mesocycles are active
     return (
+      <div className="w-full h-screen flex justify-center items-center">
       <p>
         Currently you have no active mesocycles.{" "}
-        <Link href="/app/my-mesocycles" className="text-blue-600 underline">
+        <Link href="/app/my-mesocycles" className="link">
           Activate an existing one
         </Link>{" "}
         or{" "}
-        <Link href="/app/create-mesocycle" className="text-blue-600 underline">
+        <Link href="/app/create-mesocycle" className="link">
           create a new one.
         </Link>
       </p>
+      </div>
     );
   }
 
   if (!mesocycle) return;
 
+  if(isMesocycleCompleted(mesocycle)){
+    return (
+        <CenteredText>
+      <p>You have completed the current mesocycle. <Link className='link' href={'/app/completed-mesocycles'}>Check the logs</Link> or <Link className='link' href={'/app/create-mesocycle'}>create a new mesocycle.</Link></p>
+        </CenteredText>
+    )
+  }
+
   if(workoutCompleteToday){
     //if today's workout has been completed
     return (
+      <CenteredText>
       <p>You have already completed today's workout.</p>
+      </CenteredText>
     )
   }
+
+  
   
   const week = differenceInCalendarISOWeeks(
     new Date(),
@@ -157,18 +184,18 @@ export default function TodaysWorkoutPage() {
 function RestDay() {
   return (
     <div className="p-3 max-w-[1440px] mx-auto">
-      <h1 className="mb-5">Rest Day!</h1>
+      <h2 className="mb-5 text-2xl font-semibold">Rest Day!</h2>
       <p className="mb-3">
         Today, there are no scheduled workouts, inviting a well-deserved rest.
         Take this opportunity to rejuvenate and recharge, ensuring you're ready
         to tackle tomorrow's challenges with renewed energy and vitality.
       </p>
-      <p className="mb-10">
+      <p>
         Rest and recovery play a crucial role in achieving optimal performance
         and overall well-being within any fitness regimen. Here are some
         comprehensive tips to help you make the most of your rest days:
       </p>
-      <Carousel className="max-w-[30rem] mx-auto">
+      <Carousel className="max-w-[30rem] mx-auto my-10">
         <CarouselContent>
           {restTips.map((tip: RestTip, i) => (
             <CarouselItem key={i} className="h-full">

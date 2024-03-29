@@ -62,7 +62,6 @@ export async function createMesocycle(
       console.log(err.message);
     }
   }
-  // redirect('/app/my-mesocycles')
 }
 
 export async function getMesocyclesByUserId(clerkId: string) {
@@ -79,19 +78,18 @@ export async function getMesocyclesByUserId(clerkId: string) {
 }
 
 export async function activateMesocycle(meso: MesocycleType, clerkId: string) {
-
-  const newLog = {
-    mesoTitle: meso.title,
-    duration: meso.duration,
-    mesoId: meso._id,
-    weeks: Array.from({ length: meso.duration }, () => ({ workouts: [] }))
-  }
-
   try {
     await connectToDatabase();
-    const user = await User.findOne({clerkId})
+    const user = await User.findOneAndUpdate({clerkId}, {$unset: {lastWorkout: 1}})
     await Mesocycle.updateMany({ isActive: true, user:user._id}, { isActive: false, $unset: { startDate: 1 } });
     await Mesocycle.findByIdAndUpdate(meso._id, { isActive: true, startDate: startOfDay(previousMonday(new Date()))});
+    const newLog = {
+      mesoTitle: meso.title,
+      duration: meso.duration,
+      mesoId: meso._id,
+      user: user._id,
+      weeks: Array.from({ length: meso.duration }, () => ({ workouts: [] }))
+    }
     await Log.create(newLog)
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -140,10 +138,11 @@ export async function createLog(log: LogType){
   }
 }
 
-export async function getLogs(){
+export async function getLogs(clerkId: string){
   try{
     await connectToDatabase()
-    const logs = await Log.find()
+    const user = await User.findOne({clerkId})
+    const logs = await Log.find({user: user._id})
     return JSON.parse(JSON.stringify(logs))
   }catch(err: unknown){
     if(err instanceof Error){

@@ -73,6 +73,7 @@ export type Log = {
   mesoTitle: string;
   mesoId: string;
   duration: number;
+  user?: string
   weeks: {
     workouts: {
       exercises: {

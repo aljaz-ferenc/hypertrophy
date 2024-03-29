@@ -114,10 +114,10 @@ export default function MesocycleAccordion({
             <DialogDescription>Do you wish to continue?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            {/* <Button onClick={() => activateMesocycle(selectedMeso!)}>
+            <Button onClick={() => activateMesocycle(selectedMeso!)}>
               Activate
             </Button>
-            <Button variant={'destructive'} onClick={() => setDialogIsOpen(false)}>Cancel</Button> */}
+            <Button variant={'destructive'} onClick={() => setDialogIsOpen(false)}>Cancel</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

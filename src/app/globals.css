@@ -85,4 +85,7 @@
   .main-title{
     @apply border-b pb-2 text-3xl font-semibold tracking-tight mb-8
   }
+  .link{
+    @apply underline text-blue-500
+  }
 }

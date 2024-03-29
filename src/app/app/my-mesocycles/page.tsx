@@ -8,6 +8,10 @@ import { Mesocycle as MesocycleType } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import MesocycleAccordion from "@/components/MesocycleAccordion";
 import { useRouter } from "next/navigation";
+import CenteredText from "@/components/CenteredText";
+import Loading from "@/components/Loading";
+import Link from "next/link";
+
 
 export default function MyMesocyclesPage() {
   const { userId } = useAuth();
@@ -34,7 +38,7 @@ export default function MyMesocyclesPage() {
   if (!userId) return;
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    <Loading/>
   }
 
   function handleTryActivate(meso: MesocycleType) {
@@ -87,16 +91,22 @@ export default function MyMesocyclesPage() {
 
   return (
     <main className="p-3 w-full mx-auto max-w-[1440px] overflow-auto">
+      {mesocycles.length > 0 ? 
+      <>
       <h1>My Mesocycles</h1>
-          <MesocycleAccordion
-            isActivating={isActivating}
-            handleDeleteMesocycle={handleDeleteMesocycle}
-            handleTryActivate={handleTryActivate}
-            activateMesocycle={activateMesocycle}
-            setDialogIsOpen={setDialogIsOpen}
-            dialogIsOpen={dialogIsOpen}
-            mesocycles={mesocycles}
-          />
+        <MesocycleAccordion
+          isActivating={isActivating}
+          handleDeleteMesocycle={handleDeleteMesocycle}
+          handleTryActivate={handleTryActivate}
+          activateMesocycle={activateMesocycle}
+          setDialogIsOpen={setDialogIsOpen}
+          dialogIsOpen={dialogIsOpen}
+          mesocycles={mesocycles}
+          /> 
+          </>
+        : <CenteredText>
+            <p>You have not created any mesocycles yet. <Link href={'/app/create-mesocycle'} className='link'>Create one here.</Link></p>
+          </CenteredText>}
     </main>
   );
 }

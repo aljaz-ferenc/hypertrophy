@@ -13,6 +13,10 @@ const logSchema = new mongoose.Schema({
     },
     weeks: {
         type: Array
+    },
+    user: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'User'
     }
 })
 
