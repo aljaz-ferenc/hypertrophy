@@ -63,9 +63,9 @@ if(eventType === 'user.created'){
 	const user = {
 		clerkId: id, 
 		email: email_addresses[0].email_address,
-		username: username || first_name,
-		firstName: first_name,
-		lastName: last_name,
+		username: username || first_name || email_addresses[0].email_address,
+		firstName: first_name || email_addresses[0].email_address,
+		lastName: last_name || '',
 		image: image_url
 	}
 
@@ -78,7 +78,7 @@ if(eventType === 'user.updated'){
 	const {id, image_url, first_name, last_name, username} = evt.data
 
 	const user = {
-		username: username!,
+		username: username || first_name,
 		firstName: first_name,
 		lastName: last_name,
 		image: image_url,
