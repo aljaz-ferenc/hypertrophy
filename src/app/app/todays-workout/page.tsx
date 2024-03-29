@@ -47,7 +47,6 @@ export default function TodaysWorkoutPage() {
     );
   const [workout, setWorkout] = useState<Workout | undefined>();
   const [isFetching, setIsFetching] = useState(true);
-  const [workoutLog, setWorkoutLog] = useState<WorkoutLog>({day: getTodaysDay(), exercises: []})
   const {setupLogState, exercises, setupExerciseState, log} = useLogContext()
   const [logDB, setLogDB] = useState<Log | null>(null) 
   const [workoutCompleteToday, setWorkoutCompleteToday] = useState(false)
@@ -100,6 +99,7 @@ export default function TodaysWorkoutPage() {
   if (!mesocycle) return;
 
   if(workoutCompleteToday){
+    //if today's workout has been completed
     return (
       <p>You have already completed today's workout.</p>
     )
@@ -143,7 +143,7 @@ export default function TodaysWorkoutPage() {
             {week + 1 === mesocycle.duration && <p>Last week</p>}
           </div>
           {exercises?.map((exercise, i) => (
-            <Exercise setWorkoutLog={setWorkoutLog} exerciseIndex={i} workoutId={workout.id} exercise={exercise} key={exercise.id} />
+            <Exercise exerciseIndex={i} workoutId={workout.id} exercise={exercise} key={exercise.id} />
             ))}
           <Button onClick={ () => handleCompleteWorkout(logDB!._id!)}>Complete Workout</Button>
         </div>

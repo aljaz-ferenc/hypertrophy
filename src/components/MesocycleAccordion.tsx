@@ -25,6 +25,7 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { Button } from "./ui/button";
 import Mesocycle from "./Mesocycle";
 import React, { useState } from "react";
+import { Ellipsis } from "lucide-react";
 
 type MesocycleAccordionProps = {
   mesocycles: MesocycleType[];
@@ -63,31 +64,35 @@ export default function MesocycleAccordion({
                   <p className="italic text-green-600">(Active)</p>
                 ) : null}
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="ml-auto mr-3">
-                    <BiDotsHorizontalRounded size={20} />
+                  <DropdownMenuTrigger asChild className="ml-auto mr-3">
+                    <Ellipsis />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Button
+                    <DropdownMenuItem onClick={() => handleTryActivate(meso)}>
+                     {/* <Button
                         className="w-full"
                         disabled={isActivating}
                         onClick={() => handleTryActivate(meso)}
                       >
                         Activate
-                      </Button>
+                      </Button>  */}
+                      Activate
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Button
+                    <DropdownMenuItem onClick={() => handleDeleteMesocycle(meso._id!)}>
+                      {/* <Button
                         className="w-full"
                         onClick={() => handleDeleteMesocycle(meso._id!)}
                         variant={"destructive"}
                       >
                         Delete
-                      </Button>
+                      </Button>  */}
+                      <span className='text-destructive'>
+                      Delete
+                      </span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
+              </div> 
             </AccordionTrigger>
             <AccordionContent>
               <Mesocycle workouts={meso.workouts} />
@@ -109,10 +114,10 @@ export default function MesocycleAccordion({
             <DialogDescription>Do you wish to continue?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={() => activateMesocycle(selectedMeso!)}>
+            {/* <Button onClick={() => activateMesocycle(selectedMeso!)}>
               Activate
             </Button>
-            <Button variant={'destructive'} onClick={() => setDialogIsOpen(false)}>Cancel</Button>
+            <Button variant={'destructive'} onClick={() => setDialogIsOpen(false)}>Cancel</Button> */}
           </DialogFooter>
         </DialogContent>
       </Dialog>

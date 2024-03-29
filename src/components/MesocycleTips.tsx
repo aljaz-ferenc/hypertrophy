@@ -17,8 +17,8 @@ export default function MesocycleTips() {
       <DrawerContent className="h-[50%]">
         <div className="pt-3 px-10 max-w-[1440px] mx-auto">
           <DrawerHeader>
-            <DrawerTitle>
-              <h1>Creating a Mesocycle</h1>
+            <DrawerTitle className='main-title text-3xl'>
+              Creating a Mesocycle
             </DrawerTitle>
           </DrawerHeader>
 

@@ -14,15 +14,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Days, Log } from "@/types";
+import {Fragment} from 'react'
 
 export default async function CompletedMesocyclesPage() {
   {
     const logs: Log[] = await actions.getLogs();
 
     return (
-      <main className="w-full max-w-[1440px] mx-auto p-3">
+      <main className="w-full max-w-[1440px] mx-auto p-3 overflow-auto">
         <h1>Completed Mesocycles</h1>
-        <Accordion type="single" collapsible>
+        <Accordion className='max-w-full overflow-auto' type="single" collapsible>
           {logs.length > 0 ? logs.map((log) => (
             <div key={log._id}>
               {log.weeks.length > 0 && (
@@ -32,23 +33,23 @@ export default async function CompletedMesocyclesPage() {
                     <Table>
                       <TableBody>
                         {log.weeks.map((week, index) => (
-                          <div key={index}>
-                          {week.workouts.length > 0 && <TableRow >
-                            <TableCell className="text-2xl font-bold">
+                          <Fragment key={index}>
+                          {week.workouts.length > 0 && 
+                          <TableRow key={index}>
+                            <TableCell   className="text-2xl font-bold">
                               Week {index + 1}
                             </TableCell>
-                            <div className='flex'>
-
+                            
                             {week.workouts.map((workout, i) => (
-                              <div key={i} >
-                              {workout && <TableCell className="align-top">
+                              <Fragment key={i}>
+                              {workout && <TableCell key={i} className="align-top">
                                 <WorkoutTable workout={workout} />
                               </TableCell>}
-                              </div>
+                              </Fragment>
                             ))}
-                            </div>
+                            
                           </TableRow>}
-                            </div>
+                            </Fragment>
                         ))}
                       </TableBody>
                     </Table>

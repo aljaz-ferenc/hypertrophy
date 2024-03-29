@@ -24,7 +24,7 @@ import { useMesocycleContext } from "@/context/MesocycleContext";
 import { Exercise, MuscleGroup, Weekday, Workout, Days } from "@/types";
 import { weekdays, muscleGroups, exercises } from "@/data";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { Ellipsis } from "lucide-react";
 import { Reorder } from "framer-motion";
 import DraggableExercise from "./DraggableExercise";
 import {useEffect} from 'react'
@@ -77,18 +77,12 @@ export default function WorkoutDayForm({
           </Select>
           {workouts.length > 1 && (
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <BiDotsHorizontalRounded size={20} className="ml-2" />
+              <DropdownMenuTrigger className='ml-2'>
+               <Ellipsis/>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Button
-                    variant="destructive"
-                    className="w-full"
-                    onClick={() => deleteWorkout(workout.id)}
-                  >
-                    Delete Day
-                  </Button>
+                <DropdownMenuItem onClick={() => deleteWorkout(workout.id)}>
+                  <span className='text-destructive'>Delete Day</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

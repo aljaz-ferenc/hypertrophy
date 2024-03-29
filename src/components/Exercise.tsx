@@ -1,4 +1,4 @@
-import { Exercise, Exercise as ExerciseType, LogExercise, Set, WorkoutLog } from "@/types";
+import { LogExercise, Set, WorkoutLog } from "@/types";
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -18,11 +18,10 @@ import { useLogContext } from "@/context/LogContext";
 type ExerciseProps = {
   exercise: LogExercise;
   workoutId: string
-  setWorkoutLog: React.Dispatch<React.SetStateAction<WorkoutLog>>
   exerciseIndex: number
 };
 
-export default function Exercise({ exercise, workoutId, setWorkoutLog, exerciseIndex }: ExerciseProps) {
+export default function Exercise({ exercise, workoutId, exerciseIndex }: ExerciseProps) {
   const [sets, setSets] = useState<
     Set[]
   >([{ weight: 0, reps: 0}]);
@@ -48,7 +47,6 @@ export default function Exercise({ exercise, workoutId, setWorkoutLog, exerciseI
           {exercise.data.map((set, index) => (
             <SetComponent
             exercise={exercise}
-            setWorkoutLog={setWorkoutLog}
             workoutId={workoutId}
             exerciseIndex={exerciseIndex}
             key={index}
@@ -77,12 +75,11 @@ type SetComponentProps = {
   >;
   sets: Set[];
   workoutId: string
-  setWorkoutLog: React.Dispatch<React.SetStateAction<WorkoutLog>>
   exerciseIndex: number
   exercise: LogExercise
 };
 
-function SetComponent({ index, set, setSets, exercise, sets, workoutId, setWorkoutLog, exerciseIndex }: SetComponentProps) {
+function SetComponent({ index, set, setSets, exercise, sets, workoutId, exerciseIndex }: SetComponentProps) {
   const { toast } = useToast();
   const [logged, setLogged] = useState(false);
   const {userId} = useAuth()
@@ -151,7 +148,7 @@ function SetComponent({ index, set, setSets, exercise, sets, workoutId, setWorko
           onChange={(e) => handleInputChange({reps: +e.target.value, weight: set.weight})}
         />
       </TableCell>
-      <TableCell className="p-1 md:p-2 lg:p-4">
+      {/* <TableCell className="p-1 md:p-2 lg:p-4">
         {logged ? (
           <Check />
         ) : (
@@ -162,7 +159,7 @@ function SetComponent({ index, set, setSets, exercise, sets, workoutId, setWorko
             LOG
           </Button>
         )}
-      </TableCell>
+      </TableCell> */}
       <TableCell className="p-1 md:p-2 lg:p-4">
         {!logged && <Trash2
           className="text-destructive cursor-pointer hover:text-red-600 transition"

@@ -63,7 +63,7 @@ if(eventType === 'user.created'){
 	const user = {
 		clerkId: id, 
 		email: email_addresses[0].email_address,
-		username: username!,
+		username: username || first_name,
 		firstName: first_name,
 		lastName: last_name,
 		image: image_url
