@@ -59,7 +59,7 @@ export default function CompletedMesocyclesPage() {
 
     return (
       <main className="w-full max-w-[1440px] mx-auto p-3 overflow-auto">
-        <h1>Completed Mesocycles</h1>
+        <h1>Completed Workouts</h1>
         {logs.length > 0 && <Accordion className='max-w-full overflow-auto' type="single" collapsible>
           {logs.length > 0 ? logs.map((log) => (
             <div key={log._id}>
@@ -75,10 +75,9 @@ export default function CompletedMesocyclesPage() {
                           <Fragment key={index}>
                           {week.workouts.length > 0 && 
                           <TableRow key={index}>
-                            <TableCell   className="text-2xl font-bold">
+                            <TableCell   className="text-2xl font-bold text-center">
                               Week {index + 1}
                             </TableCell>
-                            
                             {week.workouts.map((workout, i) => (
                               <Fragment key={i}>
                               {workout && <TableCell key={i} className="align-top">
@@ -86,7 +85,6 @@ export default function CompletedMesocyclesPage() {
                               </TableCell>}
                               </Fragment>
                             ))}
-                            
                           </TableRow>}
                             </Fragment>
                         ))}
@@ -111,20 +109,20 @@ function WorkoutTable({ workout }: any) {
         <Table key={i}>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-full">{ex.exercise}</TableHead>
+              <TableHead className="w-max inline-block h-fit pt-2 pl-0 m-0">{ex.exercise}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className="border-none">
-              <TableCell>Reps</TableCell>
+              <TableCell className=''>Reps</TableCell>
               {ex.data.map((d, i) => (
-                <TableCell key={i}>{d.reps}</TableCell>
+                <TableCell className='' key={i}>{d.reps}</TableCell>
               ))}
             </TableRow>
             <TableRow>
-              <TableCell>Weight</TableCell>
+              <TableCell className=''>Weight</TableCell>
               {ex.data.map((d, i) => (
-                <TableCell key={i}>{d.weight}</TableCell>
+                <TableCell className='' key={i}>{d.weight}</TableCell>
               ))}
             </TableRow>
           </TableBody>

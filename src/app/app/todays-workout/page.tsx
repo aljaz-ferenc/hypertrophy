@@ -62,11 +62,13 @@ export default function TodaysWorkoutPage() {
   const {setupLogState, exercises, setupExerciseState, log} = useLogContext()
   const [logDB, setLogDB] = useState<Log | null>(null) 
   const [workoutCompleteToday, setWorkoutCompleteToday] = useState(false)
+  const [isCompleting, setIsCompleting] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     //set active mesocycle and today's workout
     if (!userId) return;
+    setIsFetching(true)
     actions
     .getActiveMesocycle(userId)
       .then(({meso, log, lastWorkout}: {meso: Mesocycle, log: Log, lastWorkout: Date}) => {
@@ -139,7 +141,7 @@ export default function TodaysWorkoutPage() {
     
    async function handleCompleteWorkout(logId: string){
       if (!mesocycle) return;
-
+      setIsCompleting(true)
       const workout: WorkoutLog = {
           day: getTodaysDay(),
           exercises
@@ -151,6 +153,8 @@ export default function TodaysWorkoutPage() {
         if(err instanceof Error){
           console.log(err.message)
         }
+      }finally{
+        setIsCompleting(false)
       }
     }
 
@@ -172,7 +176,7 @@ export default function TodaysWorkoutPage() {
           {exercises?.map((exercise, i) => (
             <Exercise exerciseIndex={i} workoutId={workout.id} exercise={exercise} key={exercise.id} />
             ))}
-          <Button onClick={ () => handleCompleteWorkout(logDB!._id!)}>Complete Workout</Button>
+          <Button disabled={isCompleting} onClick={ () => handleCompleteWorkout(logDB!._id!)}>Complete Workout</Button>
         </div>
       ) : (
         <RestDay />

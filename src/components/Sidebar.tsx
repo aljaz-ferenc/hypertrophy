@@ -3,8 +3,9 @@
 import Link from "next/link";
 import React, {useEffect} from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Dumbbell, FilePlus, Folder } from "lucide-react";
+import { Dumbbell, FilePlus, Folder, ClipboardCheck } from "lucide-react";
 import { usePathname } from 'next/navigation'
+import Image from "next/image";
 
 type SidebarLink = {
   title: string;
@@ -16,7 +17,7 @@ const sidebarLinks: SidebarLink[] = [
   { title: "Today's Workout", href: "/app/todays-workout", icon: <Dumbbell size={20}/> },
   { title: "Create Mesocycle", href: "/app/create-mesocycle", icon: <FilePlus size={20}/> },
   { title: "My Mesocycles", href: "/app/my-mesocycles", icon: <Folder size={20}/> },
-  { title: "Completed Mesocycles", href: "/app/completed-mesocycles", icon: <Folder size={20}/> },
+  { title: "Completed Workouts", href: "/app/completed-mesocycles", icon: <ClipboardCheck size={20} /> },
 ];
 
 export default function Sidebar() {
@@ -24,7 +25,10 @@ export default function Sidebar() {
   const {user} = useUser()
 
   return (
-    <nav className="bg-muted md:flex flex-col min-h-full hidden">
+    <nav className="bg-muted md:flex flex-col min-h-full hidden max-w-[18rem] p-3">
+      <div className='w-full overflow-hidden mb-3'>
+      <img src={'/logo.svg'} alt='hypertrophy logo' className='w-full scale-150'/>
+      </div>
       <ul className='flex flex-col'>
       {sidebarLinks.map((link, i) => (
         <li key={link.href} className={`${pathname.startsWith(link.href) && 'bg-background'} `}>

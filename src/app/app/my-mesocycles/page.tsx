@@ -28,6 +28,7 @@ export default function MyMesocyclesPage() {
   }, [userId]);
 
   function getMesocycles(userId: string) {
+    setIsFetching(true)
     actions.getMesocyclesByUserId(userId).then((data) => {
       setMesocycles(data);
       setIsFetching(false);
@@ -38,7 +39,7 @@ export default function MyMesocyclesPage() {
   if (!userId) return;
 
   if (isFetching) {
-    <Loading/>
+    return <Loading/>
   }
 
   function handleTryActivate(meso: MesocycleType) {
@@ -91,7 +92,7 @@ export default function MyMesocyclesPage() {
 
   return (
     <main className="p-3 w-full mx-auto max-w-[1440px] overflow-auto">
-      {mesocycles.length > 0 ? 
+      {!isFetching && mesocycles.length > 0 ? 
       <>
       <h1>My Mesocycles</h1>
         <MesocycleAccordion
