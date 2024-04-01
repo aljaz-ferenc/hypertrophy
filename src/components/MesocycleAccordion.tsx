@@ -21,7 +21,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Mesocycle as MesocycleType } from "@/types";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { Button } from "./ui/button";
 import Mesocycle from "./Mesocycle";
 import React, { useState } from "react";
@@ -69,23 +68,9 @@ export default function MesocycleAccordion({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => handleTryActivate(meso)}>
-                     {/* <Button
-                        className="w-full"
-                        disabled={isActivating}
-                        onClick={() => handleTryActivate(meso)}
-                      >
-                        Activate
-                      </Button>  */}
                       Activate
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleDeleteMesocycle(meso._id!)}>
-                      {/* <Button
-                        className="w-full"
-                        onClick={() => handleDeleteMesocycle(meso._id!)}
-                        variant={"destructive"}
-                      >
-                        Delete
-                      </Button>  */}
                       <span className='text-destructive'>
                       Delete
                       </span>

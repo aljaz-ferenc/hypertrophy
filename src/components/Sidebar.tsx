@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import React, {useEffect} from "react";
+import React from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Dumbbell, FilePlus, Folder, ClipboardCheck } from "lucide-react";
 import { usePathname } from 'next/navigation'
-import Image from "next/image";
 
 type SidebarLink = {
   title: string;
@@ -31,7 +30,7 @@ export default function Sidebar() {
       </div>
       <ul className='flex flex-col'>
       {sidebarLinks.map((link, i) => (
-        <li key={link.href} className={`${pathname.startsWith(link.href) && 'bg-background'} `}>
+        <li key={link.href} className={`rounded overflow-hidden ${pathname.startsWith(link.href) && 'bg-background'}`}>
         <Link className="px-3 min-w-full hover:bg-slate-500 transition w-max flex gap-3 py-3" href={link.href} key={i}>
           {link.icon}
           {link.title}
