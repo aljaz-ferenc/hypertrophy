@@ -89,6 +89,6 @@
     @apply underline text-blue-500
   }
   .page-container{
-    @apply max-w-[800px] w-full mx-auto p-3 pt-14
+    @apply max-w-[1440px] w-full mx-auto p-3 pt-14
   }
 }
