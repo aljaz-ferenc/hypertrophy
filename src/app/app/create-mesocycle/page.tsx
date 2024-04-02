@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function CreateMesocyclePage() {
 
   return (
-    <div className="p-3 overflow-hidden w-full max-w-[1440px] mx-auto">
+    <div className="page-container mx-auto">
       <div className="flex gap-3 items-start">
         <h1 className="mb-5">Create a Mesocycle</h1>
         <MesocycleTips />

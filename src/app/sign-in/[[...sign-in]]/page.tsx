@@ -2,13 +2,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import  CopyToClipboard  from "@/components/CopyToClipboard";
 import { SignIn } from "@clerk/nextjs";
+import type { Metadata } from "next";
 
-import React from "react";
+export const metadata: Metadata = {
+  title: "Hypertrophy | Sign In"
+};
 
 export default function SignInPage() {
   return (
-    <div className="flex flex-col w-screen h-screen justify-center items-center">
+    <div className="flex flex-col w-screen h-screen justify-center items-center  ">
+      <div className='flex flex-col items-center gap-10'>
+
+      <img  src='/logo-text.svg'/>
       <SignIn />
+      </div>
       <div className='mt-5'>
         <p className='mb-5'>To review the app you can use the demo account:</p>
         <div className='flex flex-col gap-3'>

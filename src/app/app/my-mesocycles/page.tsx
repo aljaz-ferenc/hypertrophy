@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function MyMesocyclesPage() {
 
   return (
-    <main className="p-3 w-full mx-auto max-w-[1440px] overflow-auto">
+    <main className="page-container overflow-auto">
       <h1>My Mesocycles</h1>
       <MyMesocycles/>
     </main>

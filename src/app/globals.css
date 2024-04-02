@@ -88,7 +88,7 @@
   .link{
     @apply underline text-blue-500
   }
-  .center-absolute{
-    /* @apply absolute top-[50%] left-[50%] translate-[-50% -50%] */
+  .page-container{
+    @apply max-w-[800px] w-full mx-auto p-3 pt-14
   }
 }

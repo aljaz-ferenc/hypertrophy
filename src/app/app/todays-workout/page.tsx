@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function TodaysWorkoutPage() {
 
   return (
-    <div className="max-w-[800px] w-full mx-auto p-3 ">
+    <div className="max-w-[800px] page-container">
     <h1>Today's Workout</h1>
       <TodaysWorkout/>
     </div>
