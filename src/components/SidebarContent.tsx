@@ -42,8 +42,6 @@ export default function SidebarContent({onOpenChange}: SidebarContentProps) {
   const pathname = usePathname();
   const { user } = useUser();
 
-
-
   return (
     <nav className="bg-background md:bg-muted flex flex-col min-h-full md:max-w-[18rem] md:p-3">
       <div className="w-full overflow-hidden md:mb-3">
@@ -74,7 +72,7 @@ export default function SidebarContent({onOpenChange}: SidebarContentProps) {
         ))}
       </ul>
       <div className="mt-auto flex gap-3 items-center p-3">
-        <UserButton afterSignOutUrl="/sign-in" />
+        <UserButton appearance={{ elements: { userButtonPopoverCard: { pointerEvents: 'initial',  }, }, }} afterSignOutUrl="/sign-in" />
         <p>{user?.username}</p>
       </div>
     </nav>
