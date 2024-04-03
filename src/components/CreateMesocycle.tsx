@@ -126,19 +126,19 @@ export default function CreateMesocycle() {
         </div>
       </div>
       <Separator className="my-10" />
-      {addWorkout && workouts && <div className="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
-        <Mesocycle editable={true} workouts={workouts!} />
-        {workouts.length < weekdays.length && (
+        {addWorkout && workouts && workouts.length < weekdays.length && (
           <Button
             onClick={() => addWorkout()}
             variant="outline"
             type="button"
-            className="flex w-[10rem] items-center gap-2 py-5 px-14 "
+            className="flex w-[10rem] items-center gap-2 py-5 mb-3 px-14 "
           >
             <AiOutlinePlus />
             <p className="w-max">Add Day</p>
           </Button>
         )}
+      {addWorkout && workouts && <div className="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
+        <Mesocycle editable={true} workouts={workouts!} />
       </div>}
       <Button
         className="mt-10"
