@@ -127,7 +127,7 @@ export default function CreateMesocycle() {
       </div>
       <Separator className="my-10" />
       {addWorkout && workouts && <div className="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
-        <Mesocycle editable={true} workouts={workouts} />
+        <Mesocycle editable={true} workouts={workouts!} />
         {workouts.length < weekdays.length && (
           <Button
             onClick={() => addWorkout()}
