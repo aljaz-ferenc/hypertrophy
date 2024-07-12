@@ -206,10 +206,6 @@ export const exercises = [
     exercise: "Dumbbell Shoulder Press"
   },
   {
-    muscleGroup: "shoulders",
-    exercise: "Upright Row"
-  },
-  {
     muscleGroup: "quads",
     exercise: "Squats"
   },
