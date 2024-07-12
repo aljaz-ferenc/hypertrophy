@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Dumbbell, FilePlus, Folder, ClipboardCheck } from "lucide-react";
+import { Dumbbell, FilePlus, Folder, ClipboardCheck, BarChartBig } from "lucide-react";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -31,6 +31,11 @@ const sidebarLinks: SidebarLink[] = [
     title: "Completed Workouts",
     href: "/app/completed-mesocycles",
     icon: <ClipboardCheck size={20} />,
+  },
+  {
+    title: "Stats",
+    href: "/app/stats",
+    icon: <BarChartBig size={20} />,
   },
 ];
 
