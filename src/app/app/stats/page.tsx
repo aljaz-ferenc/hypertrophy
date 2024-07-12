@@ -88,9 +88,9 @@ export default function StatsPage() {
       <h1>StatsPage</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-
           {inputs.map(input => (
             <FormField
+            key={input.name}
               control={form.control}
               name={input.name as "neck" | "bicepRight" | "bicepLeft" | "forearmRight" | "forearmLeft" | "chest" | "thighRight" | "thighLeft" | "calfRight" | "calfLeft"}
               render={({field}) => (
