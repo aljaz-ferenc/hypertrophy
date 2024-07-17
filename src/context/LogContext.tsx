@@ -10,7 +10,7 @@ type LogContextType = {
   setupExerciseState: (exercises: LogExercise[]) => void
   addSetToExercise: (exerciseId: string) => void
   removeSet: (exerciseId: string, setIndex: number) => void
-  updateSetData: (exerciseId: string, setIndex: number, data: {reps: number, weight: number}) => void
+  updateSetData: (exerciseId: string, setIndex: number, data: {reps: string, weight: string}) => void
   log: Log
 };
 
@@ -150,7 +150,7 @@ export default function LogContextProvider({
     dispatchExercise({type: 'set/remove', payload: {exerciseId, setIndex}})
   }
 
-  function updateSetData(exerciseId: string, setIndex: number, data: {reps: number, weight: number}){
+  function updateSetData(exerciseId: string, setIndex: number, data: {reps: string, weight: string}){
     dispatchExercise({type: 'set/update', payload: {data, exerciseId, setIndex}})
   }
 

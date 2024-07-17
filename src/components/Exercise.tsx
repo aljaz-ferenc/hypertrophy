@@ -17,19 +17,21 @@ import { useLogContext } from "@/context/LogContext";
 
 type ExerciseProps = {
   exercise: LogExercise;
-  workoutId: string
-  exerciseIndex: number
+  workoutId: string;
+  exerciseIndex: number;
 };
 
-export default function Exercise({ exercise, workoutId, exerciseIndex }: ExerciseProps) {
-  const [sets, setSets] = useState<
-    Set[]
-  >([{ weight: 0, reps: 0}]);
+export default function Exercise({
+  exercise,
+  workoutId,
+  exerciseIndex,
+}: ExerciseProps) {
+  const [sets, setSets] = useState<Set[]>([{ weight: 0, reps: 0 }]);
   const { toast } = useToast();
-  const {addSetToExercise} = useLogContext()
+  const { addSetToExercise } = useLogContext();
 
-  function handleAddSet(){
-    addSetToExercise(exercise.id!)
+  function handleAddSet() {
+    addSetToExercise(exercise.id!);
   }
 
   return (
@@ -46,23 +48,19 @@ export default function Exercise({ exercise, workoutId, exerciseIndex }: Exercis
         <TableBody>
           {exercise.data.map((set, index) => (
             <SetComponent
-            exercise={exercise}
-            workoutId={workoutId}
-            exerciseIndex={exerciseIndex}
-            key={index}
+              exercise={exercise}
+              workoutId={workoutId}
+              exerciseIndex={exerciseIndex}
+              key={index}
               index={index}
               set={set}
               setSets={setSets}
               sets={exercise.data}
-              />
-              ))}
+            />
+          ))}
         </TableBody>
       </Table>
-      <Button
-        onClick={handleAddSet}
-      >
-        ADD SET
-      </Button>
+      <Button onClick={handleAddSet}>ADD SET</Button>
     </div>
   );
 }
@@ -70,22 +68,28 @@ export default function Exercise({ exercise, workoutId, exerciseIndex }: Exercis
 type SetComponentProps = {
   index: number;
   set: Set;
-  setSets: React.Dispatch<
-    React.SetStateAction<Set[]>
-  >;
+  setSets: React.Dispatch<React.SetStateAction<Set[]>>;
   sets: Set[];
-  workoutId: string
-  exerciseIndex: number
-  exercise: LogExercise
+  workoutId: string;
+  exerciseIndex: number;
+  exercise: LogExercise;
 };
 
-function SetComponent({ index, set, setSets, exercise, sets, workoutId, exerciseIndex }: SetComponentProps) {
+function SetComponent({
+  index,
+  set,
+  setSets,
+  exercise,
+  sets,
+  workoutId,
+  exerciseIndex,
+}: SetComponentProps) {
   const { toast } = useToast();
   const [logged, setLogged] = useState(false);
-  const {userId} = useAuth()
-  const [reps, setReps] = useState<number>(0)
-  const [weight, setWeight] = useState<number>(0)
-  const {addExerciseLog, removeSet, updateSetData} = useLogContext()
+  const { userId } = useAuth();
+  const [reps, setReps] = useState<number>(0);
+  const [weight, setWeight] = useState<number>(0);
+  const { addExerciseLog, removeSet, updateSetData } = useLogContext();
 
   function updateSet(field: "reps" | "weight", value: number, index: number) {
     setSets((prev) => {
@@ -107,10 +111,10 @@ function SetComponent({ index, set, setSets, exercise, sets, workoutId, exercise
       });
       return;
     }
-    removeSet(exercise.id!, index)
+    removeSet(exercise.id!, index);
   }
 
-  function handleLogSet(){
+  function handleLogSet() {
     // const newExercise = {
     //   exercise: exercise.exercise,
     //   id: exercise.id,
@@ -120,11 +124,12 @@ function SetComponent({ index, set, setSets, exercise, sets, workoutId, exercise
     //   }]
     // }
     // addExerciseLog(newExercise)
-    setLogged(true)
+    setLogged(true);
   }
 
-  function handleInputChange(data: {reps: number, weight: number}){
-    updateSetData(exercise.id!, index, data)
+  function handleInputChange(data: { reps: string; weight: string }) {
+    // const setData = {reps: +data.reps, weight: +data.weight}
+    updateSetData(exercise.id!, index, data);
   }
 
   return (
@@ -133,21 +138,34 @@ function SetComponent({ index, set, setSets, exercise, sets, workoutId, exercise
       <TableCell className="p-1 md:p-2 lg:p-4">
         <Input
           disabled={logged}
-          type="number"
+          type="text"
           value={set.weight}
-          min={1}
-          onChange={(e) => handleInputChange({weight: +e.target.value, reps: set.reps})}
+          onChange={(e) => {
+            const value = e.target.value;
+            const numberRegex = /^$|^\d*\.?\d*$/;
+
+            if (numberRegex.test(value)) {
+              handleInputChange({ weight: value, reps: set.reps.toString() });
+            }
+          }}
         />
       </TableCell>
       <TableCell className="p-1 md:p-2 lg:p-4">
         <Input
           disabled={logged}
-          min={1}
-          type="number"
+          type="text"
           value={set.reps}
-          onChange={(e) => handleInputChange({reps: +e.target.value, weight: set.weight})}
+          onChange={(e) => {
+            const value = e.target.value;
+            const numberRegex = /^$|^\d*\.?\d*$/;
+
+            if (numberRegex.test(value)) {
+              handleInputChange({ weight: set.weight.toString(), reps: value });
+            }
+          }}
         />
       </TableCell>
+
       {/* <TableCell className="p-1 md:p-2 lg:p-4">
         {logged ? (
           <Check />
@@ -161,11 +179,13 @@ function SetComponent({ index, set, setSets, exercise, sets, workoutId, exercise
         )}
       </TableCell> */}
       <TableCell className="p-1 md:p-2 lg:p-4">
-        {!logged && <Trash2
-          className="text-destructive cursor-pointer hover:text-red-600 transition"
-          onClick={() => handleRemoveSet(index)}
-        />}
+        {!logged && (
+          <Trash2
+            className="text-destructive cursor-pointer hover:text-red-600 transition"
+            onClick={() => handleRemoveSet(index)}
+          />
+        )}
       </TableCell>
     </TableRow>
-  )
+  );
 }

@@ -80,8 +80,8 @@ export type Log = {
         day: number
         exercise: string;
         data: {
-          reps: number;
-          weight: number;
+          reps: string;
+          weight: string;
         }[];
       }[];
     }[];

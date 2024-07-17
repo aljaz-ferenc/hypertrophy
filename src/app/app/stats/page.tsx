@@ -69,7 +69,7 @@ const inputs = [
     name: 'calfLeft',
     label: 'Left Calf'
   }
-]
+] as const
 
 
 type StatsForm = z.infer<typeof statsSchema>
