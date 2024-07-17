@@ -31,6 +31,8 @@ import { useRouter } from "next/navigation";
 import CenteredText from "@/components/CenteredText";
 import Loading from "@/components/Loading";
 import RestDay from "@/components/RestDay";
+import { Loader2 } from "lucide-react";
+import {motion} from 'framer-motion'
 
 function getTodaysDay() {
   //get days (monday = 1 ... sunday = 7)
@@ -67,7 +69,7 @@ export default function TodaysWorkout() {
   const { setupLogState, exercises, setupExerciseState, log } = useLogContext();
   const [logDB, setLogDB] = useState<Log | null>(null);
   const [workoutCompleteToday, setWorkoutCompleteToday] = useState(false);
-  const [isCompleting, setIsCompleting] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -217,7 +219,16 @@ export default function TodaysWorkout() {
             disabled={isCompleting}
             onClick={() => handleCompleteWorkout(logDB!._id!)}
           >
-            Complete Workout
+            {isCompleting ? (
+  <motion.span
+    animate={{ rotate: 360 }}
+    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+  >
+    <Loader2 />
+  </motion.span>
+) : (
+  <span>Complete Workout</span>
+)}
           </Button>
         </div>
       ) : (
