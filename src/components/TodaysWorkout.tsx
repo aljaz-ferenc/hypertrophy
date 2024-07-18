@@ -69,7 +69,7 @@ export default function TodaysWorkout() {
   const { setupLogState, exercises, setupExerciseState, log } = useLogContext();
   const [logDB, setLogDB] = useState<Log | null>(null);
   const [workoutCompleteToday, setWorkoutCompleteToday] = useState(false);
-  const [isCompleting, setIsCompleting] = useState(true);
+  const [isCompleting, setIsCompleting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
