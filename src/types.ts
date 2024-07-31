@@ -119,3 +119,13 @@ export type User = {
   image: string,
   lastWorkout?: Date
 }
+
+export type FoodItem = {
+  name: string,
+  protein: number,
+  fat: number,
+  carbs: number
+  calories: number
+}
+
+export type Nutrition = Omit<FoodItem, 'name'>
