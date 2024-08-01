@@ -646,5 +646,19 @@ export const exercises = [
         protein: 27.3,
         fat: 48.2,
         carbs: 11.2
+    },
+    {
+      name: "Cedevita ledena doza, naranca",
+      calories: 94,
+      protein: 0.2,
+      fat: 0,
+      carbs: 23
+    },
+    {
+      name: 'Cokolada Finesse classic white',
+      calories: 548,
+      protein: 7.9,
+      fat: 32,
+      carbs: 57
     }
 ]
