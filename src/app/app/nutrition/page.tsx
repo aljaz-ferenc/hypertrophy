@@ -21,14 +21,17 @@ import {useEffect, useState} from 'react'
 import { Input } from "@/components/ui/input"
 import FoodItemInput from "@/components/FoodItemInput"
 import {useNutritionStore} from '@/store/nutrition.store'
+import { updateUserNutrition } from "@/actions"
+import { useClerk } from "@clerk/nextjs"
 
 export default function NutritionPage() {
   const [isOpen, setIsOpen] = useState(false)
   const [nutritionTotal] = useState<Nutrition>({calories: 0, protein: 0, fat: 0, carbs: 0})
   const {items, addFoodItem, getTotalNutrition} = useNutritionStore(state => state)
+  const {user} = useClerk()
 
   function onSave(){
-    console.log(getTotalNutrition())
+    updateUserNutrition(user!.id, getTotalNutrition())
   }
 
   return (

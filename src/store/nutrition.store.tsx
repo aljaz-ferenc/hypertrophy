@@ -1,10 +1,11 @@
+import { Nutrition } from '@/types';
 import { create } from 'zustand';
 
 type Store = {
     items: any[],
     addFoodItem: (newItem: any) => void
     updateItemAmount: (itemId: string, amount: number) => void
-    getTotalNutrition: () => void
+    getTotalNutrition: () => Nutrition
 }
 
 export const useNutritionStore = create<Store>((set, get) => ({
@@ -20,7 +21,7 @@ export const useNutritionStore = create<Store>((set, get) => ({
     getTotalNutrition: () => {
         const {items} = get()
 
-        const total = items.reduce((acc, item) => {
+        const total: Nutrition = items.reduce((acc, item) => {
             return {
               calories: Math.round(acc.calories += item.calories * (item.amount / 100)),
               protein: Math.round(acc.protein += item.protein* (item.amount / 100)),

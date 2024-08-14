@@ -2,10 +2,11 @@
 
 import { Document, ObjectId } from "mongoose";
 import User from "./database/models/User";
+import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
-import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType } from "./types";
+import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
-import {differenceInWeeks, previousMonday, startOfDay} from 'date-fns'
+import {differenceInWeeks, previousMonday, startOfDay, startOfToday} from 'date-fns'
 import Log from "./database/models/Log";
 import { redirect } from "next/navigation";
 
@@ -162,6 +163,39 @@ export async function addWorkoutToLog(logId: string, workout: WorkoutLog, weekIn
   }catch(err: unknown){
     if(err instanceof Error){
       console.log(err.message)
+    }
+  }
+}
+
+export async function updateUserNutrition(clerkId: string, nutrition: Nutrition) {
+  const date = startOfToday();
+  try {
+    await connectToDatabase();
+
+    const user = await User.findOne({ clerkId });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const userId = user._id.toString();
+
+    const result = await NutritionModel.updateOne(
+      { user: userId, date },
+      {
+        $inc: {
+          'nutrition.protein': nutrition.protein,
+          'nutrition.fat': nutrition.fat,
+          'nutrition.carbs': nutrition.carbs,
+          'nutrition.calories': nutrition.calories,
+        },
+      },
+      { upsert: true } 
+    );
+
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.log('ERROR: ', err.message);
+    } else {
+      console.log(err);
     }
   }
 }

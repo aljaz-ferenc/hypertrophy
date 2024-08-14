@@ -129,3 +129,9 @@ export type FoodItem = {
 }
 
 export type Nutrition = Omit<FoodItem, 'name'>
+
+export type UserNutrition = {
+  userId: string,
+  date: Date,
+  nutrition: Nutrition
+}
