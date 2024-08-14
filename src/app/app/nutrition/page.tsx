@@ -21,7 +21,7 @@ import {useEffect, useState} from 'react'
 import { Input } from "@/components/ui/input"
 import FoodItemInput from "@/components/FoodItemInput"
 import {useNutritionStore} from '@/store/nutrition.store'
-import { updateUserNutrition } from "@/actions"
+import { getThisWeeksNutrition, updateUserNutrition } from "@/actions"
 import { useClerk } from "@clerk/nextjs"
 
 export default function NutritionPage() {
@@ -29,9 +29,11 @@ export default function NutritionPage() {
   const [nutritionTotal] = useState<Nutrition>({calories: 0, protein: 0, fat: 0, carbs: 0})
   const {items, addFoodItem, getTotalNutrition} = useNutritionStore(state => state)
   const {user} = useClerk()
+  const [thisWeeksNutrition, setThisWeeksNutrition] = useState<any>([])
 
-  function onSave(){
-    updateUserNutrition(user!.id, getTotalNutrition())
+  async function onSave(){
+    await updateUserNutrition(user!.id, getTotalNutrition())
+    setThisWeeksNutrition(await getThisWeeksNutrition(user!.id))
   }
 
   return (
@@ -78,6 +80,9 @@ export default function NutritionPage() {
         )}
       </div>
       <Button onClick={onSave} className='mt-10'>Save</Button>
+      {thisWeeksNutrition && <div>
+        {JSON.stringify(thisWeeksNutrition)}
+        </div>}
     </div>
   )
 }

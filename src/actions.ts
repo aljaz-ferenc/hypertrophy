@@ -6,7 +6,7 @@ import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
 import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
-import {differenceInWeeks, previousMonday, startOfDay, startOfToday} from 'date-fns'
+import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfWeek} from 'date-fns'
 import Log from "./database/models/Log";
 import { redirect } from "next/navigation";
 
@@ -172,11 +172,7 @@ export async function updateUserNutrition(clerkId: string, nutrition: Nutrition)
   try {
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      throw new Error('User not found');
-    }
-    const userId = user._id.toString();
+    const userId = await getMongoIdFromClerkId(clerkId)
 
     const result = await NutritionModel.updateOne(
       { user: userId, date },
@@ -198,4 +194,38 @@ export async function updateUserNutrition(clerkId: string, nutrition: Nutrition)
       console.log(err);
     }
   }
+}
+
+export async function getThisWeeksNutrition(clerkId: string){
+  const weekStart = startOfWeek(new Date(), {weekStartsOn: 1})
+  const weekEnd = endOfWeek(new Date(), {weekStartsOn: 1})
+
+  try{
+    const userId = await getMongoIdFromClerkId(clerkId)
+    const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'date nutrition')
+    console.log(thisWeeksNutrition)
+    return thisWeeksNutrition
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }
+    console.log(err)
+  }
+}
+
+async function getMongoIdFromClerkId(clerkId: string): Promise<string>{
+  let userId: string = ''
+  try{
+    const user = await User.findOne({ clerkId });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    userId = user._id.toString();
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }
+    console.log(err)
+  }
+  return userId
 }
