@@ -23,6 +23,7 @@ import FoodItemInput from "@/components/FoodItemInput"
 import {useNutritionStore} from '@/store/nutrition.store'
 import { getThisWeeksNutrition, updateUserNutrition } from "@/actions"
 import { useClerk } from "@clerk/nextjs"
+import BarChart from "@/components/BarChart"
 
 export default function NutritionPage() {
   const [isOpen, setIsOpen] = useState(false)
@@ -31,9 +32,24 @@ export default function NutritionPage() {
   const {user} = useClerk()
   const [thisWeeksNutrition, setThisWeeksNutrition] = useState<any>([])
 
+  const fetchNutritionData = async () => {
+    if (user) {
+      try {
+        const nutritionData = await getThisWeeksNutrition(user.id);
+        setThisWeeksNutrition(nutritionData);
+      } catch (error) {
+        console.error("Failed to fetch nutrition data:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchNutritionData();
+  }, [user]);
+
   async function onSave(){
     await updateUserNutrition(user!.id, getTotalNutrition())
-    setThisWeeksNutrition(await getThisWeeksNutrition(user!.id))
+    fetchNutritionData()
   }
 
   return (
@@ -80,9 +96,7 @@ export default function NutritionPage() {
         )}
       </div>
       <Button onClick={onSave} className='mt-10'>Save</Button>
-      {thisWeeksNutrition && <div>
-        {JSON.stringify(thisWeeksNutrition)}
-        </div>}
+        {!!thisWeeksNutrition.length && <BarChart data={thisWeeksNutrition} className={'mx-auto p-3 mt-[10rem]'}/>}
     </div>
   )
 }

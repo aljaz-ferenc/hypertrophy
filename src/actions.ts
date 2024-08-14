@@ -6,7 +6,7 @@ import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
 import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
-import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfWeek} from 'date-fns'
+import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek} from 'date-fns'
 import Log from "./database/models/Log";
 import { redirect } from "next/navigation";
 
@@ -202,7 +202,7 @@ export async function getThisWeeksNutrition(clerkId: string){
 
   try{
     const userId = await getMongoIdFromClerkId(clerkId)
-    const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'date nutrition')
+    const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'date nutrition').sort({date: 1})
     console.log(thisWeeksNutrition)
     return thisWeeksNutrition
   }catch(err: unknown){
