@@ -4,7 +4,7 @@ import { Document, ObjectId } from "mongoose";
 import User from "./database/models/User";
 import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
-import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition } from "./types";
+import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition, Stats } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
 import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek} from 'date-fns'
 import Log from "./database/models/Log";
@@ -213,7 +213,7 @@ export async function getThisWeeksNutrition(clerkId: string){
   }
 }
 
-async function getMongoIdFromClerkId(clerkId: string): Promise<string>{
+async function getMongoIdFromClerkId(clerkId: string): Promise<string | undefined>{
   let userId: string = ''
   try{
     const user = await User.findOne({ clerkId });
@@ -224,8 +224,24 @@ async function getMongoIdFromClerkId(clerkId: string): Promise<string>{
   }catch(err: unknown){
     if(err instanceof Error){
       console.log(err.message)
+      return undefined
+    }else{
+      console.log(err)
     }
-    console.log(err)
   }
   return userId
+}
+
+export async function getStats(clerkId: string):Promise<Stats | undefined> {
+  try{
+    await connectToDatabase()
+    const stats = await User.findOne({clerkId}, 'stats')
+    return JSON.parse(JSON.stringify(stats));
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }else{
+      console.log(err)
+    }
+  }
 }

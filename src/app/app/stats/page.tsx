@@ -1,101 +1,64 @@
+
 'use client'
 
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { FieldValues, useForm } from 'react-hook-form'
-import {z} from 'zod'
+import { getStats } from "@/actions"
+import Bmr from "@/components/Bmr"
+import MeasurementsForm from "@/components/MeasurementsForm"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Stats } from "@/types"
+import { useAuth } from "@clerk/nextjs"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Input } from "@/components/ui/input"
+import {useState, useEffect} from 'react'
+import { Form, useForm } from "react-hook-form"
+import { z } from "zod"
 
-const statsSchema = z.object({
-  neck: z.number().optional(),
-  bicepRight: z.number().optional(),
-  bicepLeft: z.number().optional(),
-  forearmRight: z.number().optional(),
-  forearmLeft: z.number().optional(),
-  chest: z.number().optional(),
-  thighRight: z.number().optional(),
-  thighLeft: z.number().optional(),
-  calfRight: z.number().optional(),
-  calfLeft: z.number().optional()
+const schema = z.object({
+  height: z.number(),
+  weight: z.number(),
+  age: z.number(),
+  gender: z.enum(['male', 'female'])
 })
 
-const inputs = [
-  {
-    name: 'neck',
-    label: 'Neck'
-  },
-  {
-    name: 'bicepRight',
-    label: 'Right Bicep'
-  },
-  {
-    name: 'bicepLeft',
-    label: 'Left Bicep'
-  },
-  {
-    name: 'forearmRight',
-    label: 'Right Forearm'
-  },
-  {
-    name: 'forearmLeft',
-    label: 'Left Forearm'
-  },
-  {
-    name: 'chest',
-    label: 'Chest'
-  },
-  {
-    name: 'thighRight',
-    label: 'Right Thigh'
-  },
-  {
-    name: 'thighLeft',
-    label: 'Left Thigh'
-  },
-  {
-    name: 'calfRight',
-    label: 'Right Calf'
-  },
-  {
-    name: 'calfLeft',
-    label: 'Left Calf'
-  }
-] as const
-
-
-type StatsForm = z.infer<typeof statsSchema>
+type StatsForm = z.infer<typeof schema>
 
 function onSubmit(values: StatsForm){
   console.log(values)
 }
 
 export default function StatsPage() {
+  const {userId} = useAuth()
+  const [stats, setStats] = useState<Stats>()
   const form = useForm<StatsForm>({
-    resolver: zodResolver(statsSchema)
+    resolver: zodResolver(schema)
   })
+  
+  useEffect(() => {
+    updateStats()
+  }, [])
+  
+  async function updateStats(){
+    const stats = await getStats(userId!)
+    console.log(stats)
+    setStats(stats)
+  }
+
+  
+
+  
 
   return (
     <main className="page-container overflow-auto">
       <h1>StatsPage</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          {inputs.map(input => (
-            <FormField
-            key={input.name}
+        <Form {...form}>
+      <form>
+      <FormField
+            key={'age'}
               control={form.control}
-              name={input.name as "neck" | "bicepRight" | "bicepLeft" | "forearmRight" | "forearmLeft" | "chest" | "thighRight" | "thighLeft" | "calfRight" | "calfLeft"}
+              name={'age'}
               render={({field}) => (
                 <FormItem>
-                <FormLabel>{input.label}</FormLabel>
+                <FormLabel>{'Age'}</FormLabel>
                 <FormControl>
                   <Input {...field}/>
                 </FormControl>
@@ -103,10 +66,11 @@ export default function StatsPage() {
                 </FormItem>
               )}
             />
-          ))}
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+      </form>
+        </Form>
+      {/* <p>{stats.height}</p> */}
+      {/* <Bmr/>
+      <MeasurementsForm/> */}
     </main>
   )
 }

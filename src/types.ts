@@ -21,7 +21,6 @@ export type MuscleGroup =
   | "forearms"
   | "calves";
 
-  export type Units = 'kg' | 'lb'
 
 export type Exercise = {
   muscleGroup: MuscleGroup;
@@ -134,4 +133,24 @@ export type UserNutrition = {
   userId: string,
   date: Date,
   nutrition: Nutrition
+}
+
+export type HeightUnits = 'cm' | 'in'
+export type WeightUnits = 'kg' | 'lb'
+export type Units = HeightUnits | WeightUnits
+
+type Measurement<T> = {
+  value: number,
+  date: Date,
+  units: T
+}
+
+export type BodyPart = 'neck' | 'rightBicep' | 'leftBicep' | 'rightForearm' | 'leftForearm' | 'chest' | 'rightThigh' | 'leftThigh' | 'rightCalf' | 'leftCalf'
+
+export type Stats = {
+  height: Omit<Measurement<HeightUnits>, 'date'>,
+  weight:  Measurement<WeightUnits>[],
+  measurements: {
+    [key in BodyPart]: Measurement<HeightUnits>
+  }
 }
