@@ -145,7 +145,7 @@ export default function NutritionPage() {
         <h2 className="text-2xl font-semibold mb-2">Add Items</h2>
         {items &&
           items.map((item, i) => (
-            <div className="flex items-center border border-gray-200 rounded p-3 max-w-fit">
+            <div key={i} className="flex items-center border border-gray-200 rounded p-3 max-w-fit">
               <FoodItemInput item={item} key={item.id} />
               <PieChartComponent
                 protein={Math.round(item.protein * (item.amount / 100))}
