@@ -204,7 +204,7 @@ export async function getThisWeeksNutrition(clerkId: string){
     const userId = await getMongoIdFromClerkId(clerkId)
     const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'date nutrition').sort({date: 1})
     console.log(thisWeeksNutrition)
-    return thisWeeksNutrition
+    return JSON.parse(JSON.stringify(thisWeeksNutrition));
   }catch(err: unknown){
     if(err instanceof Error){
       console.log(err.message)

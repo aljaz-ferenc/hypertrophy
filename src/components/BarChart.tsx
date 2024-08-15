@@ -1,3 +1,4 @@
+import { useScreenSize } from '@/lib/hooks';
 import { format } from 'date-fns';
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label } from 'recharts';
@@ -14,12 +15,16 @@ type BarChartComponentProps = {
     }
   }[],
   className: string
+  width: number
 }
 
 const BarChartComponent = ({
   data = [] ,
-  className
+  className,
+  width
 }: BarChartComponentProps) => {
+  // const {width, height} = useScreenSize()
+
   const transformedData = data.map(item => {
     const date = typeof item.date === 'string' ? new Date(item.date) : item.date;
     const { calories, carbs, fat, protein } = item.nutrition;
@@ -39,7 +44,7 @@ const BarChartComponent = ({
   });
 
   return (
-    <BarChart width={600} height={300} data={transformedData} className={className}>
+    <BarChart width={width} height={width / 2} data={transformedData} className={className}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date" />
       <YAxis>

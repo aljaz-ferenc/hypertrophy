@@ -6,12 +6,16 @@ type Store = {
     addFoodItem: (newItem: any) => void
     updateItemAmount: (itemId: string, amount: number) => void
     getTotalNutrition: () => Nutrition
+    clearItems: () => void
 }
 
 export const useNutritionStore = create<Store>((set, get) => ({
     items: [],
     addFoodItem: (newItem: any) => set((state) => ({
         items: [...state.items, newItem]
+    })),
+    clearItems: () => set((state) => ({
+        items: []
     })),
     updateItemAmount: (itemId: string, amount: number) => set((state) => ({
         items: state.items.map(i => 
