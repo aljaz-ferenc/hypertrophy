@@ -150,6 +150,7 @@ export type BodyPart = 'neck' | 'rightBicep' | 'leftBicep' | 'rightForearm' | 'l
 export type Stats = {
   height: Omit<Measurement<HeightUnits>, 'date'>,
   weight:  Measurement<WeightUnits>[],
+  age: number,
   measurements: {
     [key in BodyPart]: Measurement<HeightUnits>
   }

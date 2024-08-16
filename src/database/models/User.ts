@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
     },
     lastWorkout: {
         type: Date
+    },
+    stats: {
+        type: Object
     }
 })
 

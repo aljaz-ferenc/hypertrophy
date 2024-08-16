@@ -245,3 +245,19 @@ export async function getStats(clerkId: string):Promise<Stats | undefined> {
     }
   }
 }
+
+export async function updateStats(clerkId: string, stats: Partial<Stats>){
+  console.log(stats)
+  try{
+    await connectToDatabase()
+    const userId = await getMongoIdFromClerkId(clerkId)
+    const result = await User.findByIdAndUpdate(userId, {$set: {stats}}, {new: true, upsert: true})
+    console.log(result)
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }else{
+      console.log(err)
+    }
+  }
+}
