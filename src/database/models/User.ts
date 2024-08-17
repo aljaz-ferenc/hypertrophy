@@ -31,7 +31,30 @@ const userSchema = new mongoose.Schema({
         type: Date
     },
     stats: {
-        type: Object
+        weight: {
+            value: {
+                type: Number,
+                required: true
+            },
+            date: {
+                type: Date,
+                required: true
+            },
+            units: {
+                type: String,
+                required: true
+            }
+        },
+        height: {
+            value: {
+                type: Number,
+                required: true
+            },
+            units: {
+                type: String,
+                required: true
+            }
+        }
     }
 })
 

@@ -4,7 +4,7 @@ import { Document, ObjectId } from "mongoose";
 import User from "./database/models/User";
 import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
-import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition, Stats } from "./types";
+import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition, Stats, Measurement, WeightUnits } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
 import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek} from 'date-fns'
 import Log from "./database/models/Log";
@@ -235,8 +235,9 @@ async function getMongoIdFromClerkId(clerkId: string): Promise<string | undefine
 export async function getStats(clerkId: string):Promise<Stats | undefined> {
   try{
     await connectToDatabase()
-    const stats = await User.findOne({clerkId}, 'stats')
-    return JSON.parse(JSON.stringify(stats));
+    const userId = await getMongoIdFromClerkId(clerkId)
+    const stats = await User.findById(userId).select('stats')
+    return JSON.parse(JSON.stringify(stats.stats));
   }catch(err: unknown){
     if(err instanceof Error){
       console.log(err.message)
@@ -252,6 +253,20 @@ export async function updateStats(clerkId: string, stats: Partial<Stats>){
     await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
     const result = await User.findByIdAndUpdate(userId, {$set: {stats}}, {new: true, upsert: true})
+  }catch(err: unknown){
+    if(err instanceof Error){
+      console.log(err.message)
+    }else{
+      console.log(err)
+    }
+  }
+}
+
+export async function addWeight(clerkId: string, weight: Measurement<WeightUnits>){
+  try{
+    await connectToDatabase()
+    const userId = await getMongoIdFromClerkId(clerkId)
+    const result = await User.findByIdAndUpdate(userId, {$push: {'stats.weight': weight}})
     console.log(result)
   }catch(err: unknown){
     if(err instanceof Error){

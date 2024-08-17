@@ -139,7 +139,7 @@ export type HeightUnits = 'cm' | 'in'
 export type WeightUnits = 'kg' | 'lb'
 export type Units = HeightUnits | WeightUnits
 
-type Measurement<T> = {
+export type Measurement<T> = {
   value: number,
   date: Date,
   units: T
@@ -150,7 +150,7 @@ export type BodyPart = 'neck' | 'rightBicep' | 'leftBicep' | 'rightForearm' | 'l
 export type Stats = {
   height: Omit<Measurement<HeightUnits>, 'date'>,
   weight:  Measurement<WeightUnits>[],
-  age: number,
+  dob: Date,
   measurements: {
     [key in BodyPart]: Measurement<HeightUnits>
   }
