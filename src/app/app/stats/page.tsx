@@ -22,7 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, Loader, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -56,6 +56,7 @@ export default function MeasurementsForm() {
   const { userId } = useAuth();
   const [date, setDate] = useState<Date>();
   const [stats, setStats] = useState<Stats>();
+  const [isAddingWeight, setIsAddingWeight] = useState(false)
 
   useEffect(() => {
     if(!userId) return
@@ -73,7 +74,7 @@ export default function MeasurementsForm() {
 
   function onSubmitWeight(data: FieldValues) {
     if (!userId) return;
-
+    setIsAddingWeight(true)
     const { weight } = data;
     const weightMeasurement: Measurement<WeightUnits> = {
       value: weight,
@@ -87,7 +88,11 @@ export default function MeasurementsForm() {
     .then((stats) => {
       setStats(stats);
       console.log("STATS: ", stats)
-    });
+    })
+    .finally(() => {
+      weightForm.reset({weight: NaN})
+      setIsAddingWeight(false)
+    })
   }
 
   function onSubmit(values: StatsForm) {
@@ -180,7 +185,7 @@ export default function MeasurementsForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">Add weight</Button>
+          <Button type="submit" disabled={isAddingWeight}>Add</Button>
         </form>
       </Form>
       {stats?.weight?.length && <LineChart data={stats?.weight} />}
