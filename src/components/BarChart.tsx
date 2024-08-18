@@ -1,7 +1,7 @@
 import { useScreenSize } from '@/lib/hooks';
 import { format } from 'date-fns';
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label } from 'recharts';
+import React, { useMemo } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, ReferenceLine } from 'recharts';
 
 type BarChartComponentProps = {
   data?: {
@@ -14,6 +14,7 @@ type BarChartComponentProps = {
       protein: number
     }
   }[],
+  bmr: number,
   className: string
   width: number
 }
@@ -21,7 +22,8 @@ type BarChartComponentProps = {
 const BarChartComponent = ({
   data = [] ,
   className,
-  width
+  width,
+  bmr
 }: BarChartComponentProps) => {
   // const {width, height} = useScreenSize()
 
@@ -43,11 +45,15 @@ const BarChartComponent = ({
     };
   });
 
+  const maxDataValue = useMemo(() => {
+    return  Math.max(...data.map(d => d.nutrition.calories)) ;
+  }, [data])
+
   return (
     <BarChart width={width} height={width / 2} data={transformedData} className={className}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date" />
-      <YAxis>
+      <YAxis domain={[0, Math.max(bmr, maxDataValue) + 300]}>
         <Label
           value="Calories"
           angle={-90}
@@ -56,10 +62,11 @@ const BarChartComponent = ({
         />
       </YAxis>
       <Tooltip />
-      <Legend />
+      <Legend/>
       <Bar dataKey="protein" stackId="a" fill="#d84d7f" />
       <Bar dataKey="fat" stackId="a" fill="#ffc658" />
       <Bar dataKey="carbs" stackId="a" fill="#82ca9d" />
+      <ReferenceLine y={bmr} stroke='yellow' strokeDasharray="10 3"/>
     </BarChart>
   );
 }

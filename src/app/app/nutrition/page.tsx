@@ -21,8 +21,8 @@ import { useMemo, useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import FoodItemInput from "@/components/FoodItemInput";
 import { useNutritionStore } from "@/store/nutrition.store";
-import { getThisWeeksNutrition, updateUserNutrition } from "@/actions";
-import { useClerk } from "@clerk/nextjs";
+import { getStats, getThisWeeksNutrition, updateUserNutrition } from "@/actions";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import BarChart from "@/components/BarChart";
 import { Pie, PieChart } from "recharts";
 import PieChartComponent from "@/components/PieChart";
@@ -37,18 +37,21 @@ export default function NutritionPage() {
   });
   const { items, addFoodItem, getTotalNutrition, clearItems } =
     useNutritionStore((state) => state);
-  const { user } = useClerk();
+  const { userId } = useAuth();
   const [thisWeeksNutrition, setThisWeeksNutrition] = useState<any[]>([]);
   const pageRef = useRef<any>();
   const [pageWidth, setPageWidth] = useState(
     pageRef.current?.getBoundingClientRect().width || 0
   );
+  const [bmr, setBmr] = useState<number>()
 
   const fetchNutritionData = async () => {
-    if (user?.id) {
+    if (userId) {
       try {
-        const nutritionData = await getThisWeeksNutrition(user.id);
+        const nutritionData = await getThisWeeksNutrition(userId);
         if (!nutritionData) return;
+        const stats = await getStats(userId)
+        setBmr(stats?.bmr)
         setThisWeeksNutrition(nutritionData);
       } catch (error) {
         console.error("Failed to fetch nutrition data:", error);
@@ -85,7 +88,7 @@ export default function NutritionPage() {
 
   useEffect(() => {
     fetchNutritionData();
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => {
     setPageWidth(pageRef.current.getBoundingClientRect().width);
@@ -102,7 +105,7 @@ export default function NutritionPage() {
   }, []);
 
   async function onSave() {
-    await updateUserNutrition(user!.id, getTotalNutrition());
+    await updateUserNutrition(userId!, getTotalNutrition());
     fetchNutritionData();
     clearItems();
   }
@@ -117,6 +120,7 @@ export default function NutritionPage() {
             data={thisWeeksNutrition}
             width={pageWidth}
             className={"mx-auto p-3"}
+            bmr={bmr!}
           />
           <div className="flex gap-5 mt-5">
             <div className="">
