@@ -153,5 +153,8 @@ export type Stats = {
   dob: Date,
   measurements: {
     [key in BodyPart]: Measurement<HeightUnits>
-  }
+  },
+  bmr: number
 }
+
+export type Gender = 'male' | 'female'

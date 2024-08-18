@@ -9,6 +9,7 @@ import Mesocycle from "./database/models/Mesocycle";
 import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek} from 'date-fns'
 import Log from "./database/models/Log";
 import { redirect } from "next/navigation";
+import { BRMData, calculateBMR } from "./lib/utils";
 
 export async function createUser(user: any) {
   try {
@@ -247,12 +248,41 @@ export async function getStats(clerkId: string):Promise<Stats | undefined> {
   }
 }
 
-export async function updateStats(clerkId: string, stats: Partial<Stats>){
-  console.log(stats)
+export async function updateStats(clerkId: string, stats: Partial<Stats>) {
+  try {
+    await connectToDatabase();
+    const userId = await getMongoIdFromClerkId(clerkId);
+
+    // Create an update object with dot notation for the fields you want to update.
+    const updateObject = Object.entries(stats).reduce((acc, [key, value]) => {
+      acc[`stats.${key}`] = value;
+      return acc;
+    }, {} as Record<string, unknown>);
+
+    // Update only the specified fields.
+    const result = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateObject },
+      { new: true, upsert: true }
+    );
+
+    return JSON.parse(JSON.stringify(result)); // If you want to return the updated document.
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    } else {
+      console.log(err);
+    }
+  }
+}
+
+export async function addWeight(clerkId: string, weight: Measurement<WeightUnits>){
+  console.log("ADD WEIGHT DATA: ", weight)
   try{
     await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
-    const result = await User.findByIdAndUpdate(userId, {$set: {stats}}, {new: true, upsert: true})
+    const result = await User.findByIdAndUpdate(userId, {$push: {'stats.weight': weight}})
+    console.log(result)
   }catch(err: unknown){
     if(err instanceof Error){
       console.log(err.message)
@@ -262,13 +292,14 @@ export async function updateStats(clerkId: string, stats: Partial<Stats>){
   }
 }
 
-export async function addWeight(clerkId: string, weight: Measurement<WeightUnits>){
+export async function updateBMR(clerkId: string, data: BRMData){
+  if(!data.age || !data.gender || !data.weight || !data.height) return
+
   try{
     await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
-    const result = await User.findByIdAndUpdate(userId, {$push: {'stats.weight': weight}})
-    console.log(result)
-  }catch(err: unknown){
+    const result = await User.findByIdAndUpdate(userId, {$set: {'stats.bmr': calculateBMR(data)}})
+  }catch(err){
     if(err instanceof Error){
       console.log(err.message)
     }else{

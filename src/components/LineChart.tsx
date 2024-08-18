@@ -12,8 +12,12 @@ type LineChartProps = {
   data: Measurement<WeightUnits>[];
 };
 
-const LineChart: React.FC<LineChartProps> = ({ data }) => {
-    console.log("DATA: ", data)
+function LineChart({ data }: LineChartProps) {
+   if(!data.length){
+    return (
+      <>no data</>
+    )
+   }
 
   const transformedData = data.map(item => ({
     date: format(new Date(item.date), 'MMM dd'),

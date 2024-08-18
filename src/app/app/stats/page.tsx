@@ -23,81 +23,40 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar as CalendarIcon, Loader, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { calculateBMR, cn, getWeeklyAverageWeight } from "@/lib/utils";
+import { differenceInDays, differenceInYears, format } from "date-fns";
 import { useEffect, useState } from "react";
 import LineChart from "@/components/LineChart";
+import WeightForm from "@/components/WeightForm";
 
-const weightData: any[] = [
-  { date: new Date("2024-08-01"), value: 75 },
-  { date: new Date("2024-08-02"), value: 74.5 },
-  { date: new Date("2024-08-03"), value: 74.8 },
-  { date: new Date("2024-08-04"), value: 75.1 },
-  { date: new Date("2024-08-05"), value: 74.9 },
-  { date: new Date("2024-08-06"), value: 75.2 },
-  { date: new Date("2024-08-07"), value: 75.0 },
-];
-
-const weightSchema = z.object({
-  weight: z.coerce.number().optional(),
-});
-
-type WeightForm = z.infer<typeof weightSchema>;
-
-// Zod schema to validate number-like strings
 const statsSchema = z.object({
   height: z.coerce.number(),
-  weight: z.coerce.number(),
 });
 
 type StatsForm = z.infer<typeof statsSchema>;
 
 export default function MeasurementsForm() {
-  const { userId } = useAuth();
-  const [date, setDate] = useState<Date>();
   const [stats, setStats] = useState<Stats>();
-  const [isAddingWeight, setIsAddingWeight] = useState(false)
+  const [date, setDate] = useState<Date | undefined>(stats?.dob);
+  const {userId} = useAuth()
 
   useEffect(() => {
     if(!userId) return
     getStats(userId)
-      .then(stats => setStats(stats))
-  }, [])
+      .then(stats => {
+        setDate(stats?.dob)
+        setStats(stats)
+      })
+  }, [userId])
 
   const form = useForm<StatsForm>({
     resolver: zodResolver(statsSchema),
   });
-
-  const weightForm = useForm<WeightForm>({
-    resolver: zodResolver(weightSchema),
-  });
-
-  function onSubmitWeight(data: FieldValues) {
-    if (!userId) return;
-    setIsAddingWeight(true)
-    const { weight } = data;
-    const weightMeasurement: Measurement<WeightUnits> = {
-      value: weight,
-      date: new Date(),
-      units: "kg",
-    };
-    addWeight(userId, weightMeasurement)
-    .then(() => {
-      return getStats(userId);
-    })
-    .then((stats) => {
-      setStats(stats);
-      console.log("STATS: ", stats)
-    })
-    .finally(() => {
-      weightForm.reset({weight: NaN})
-      setIsAddingWeight(false)
-    })
-  }
-
+  
+  //submit height, dob and bmr
   function onSubmit(values: StatsForm) {
     if (!userId) return;
-    const { height, weight } = values;
+    const { height } = values;
 
     const newStats: Partial<Stats> = {};
 
@@ -111,25 +70,35 @@ export default function MeasurementsForm() {
     if (date !== undefined) {
       newStats.dob = date;
     }
-    console.log(newStats);
+    
+    if(newStats.dob && newStats.height && stats?.weight.length && stats?.weight.length > 0){
+      const age =  differenceInYears(new Date(), newStats.dob)
+      const weight = getWeeklyAverageWeight(stats.weight) || {weight: stats.weight.at(-1)?.value, units: stats.weight[0].units} 
+      
+      if(weight) {
+        //TODO: get gender from user input
+        //TODO: only calculate bmr once a week with previous weeks weight data
+        const bmr = calculateBMR({gender: 'male', age, height: newStats.height!, weight: weight.weight!, units: stats.weight.at(-1)!.units})
+        newStats.bmr = Math.round(bmr)
+        console.log(bmr)
+      }
+    }
+
     updateStats(userId, newStats)
-      .then(() => {
-        return getStats(userId);
-      })
-      .then((stats) => {
-        setStats(stats);
-        console.log("STATS: ", stats?.weight)
-      });
+    .then(() => {
+     return getStats(userId)
+    })
+    .then(stats => setStats(stats))
   }
 
   return (
     <div className="page-container">
-      {/* <Form {...form}>
+      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Popover>
             <div className="flex flex-col">
-
             <FormLabel className="mb-2">Date of Birth</FormLabel>
+           {stats?.dob && <p>Age: {differenceInYears(new Date(), stats.dob)}</p>}
             <PopoverTrigger asChild>
               <Button
                 variant={"outline"}
@@ -159,36 +128,22 @@ export default function MeasurementsForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{"Height"}</FormLabel>
+                {stats?.height && <p>{stats.height.value}{stats.height.units}</p>}
                 <FormControl>
                   <Input {...field} type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          />
+            />
           <Button type="submit">Submit</Button>
         </form>
-      </Form> */}
-      <Form {...weightForm}>
-        <form onSubmit={weightForm.handleSubmit(onSubmitWeight)}>
-          <FormField
-            key={"weight"}
-            control={weightForm.control}
-            name={"weight"}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{"Weight"}</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={isAddingWeight}>Add</Button>
-        </form>
       </Form>
-      {stats?.weight?.length && <LineChart data={stats?.weight} />}
+      <WeightForm/>
+      <div>
+        <h3>Basal Metabolic Rate (BMR)</h3>
+        {stats?.bmr || 'To calculate your BMR, add your gender, age, height and weight.'}
+      </div>
     </div>
   );
 }
