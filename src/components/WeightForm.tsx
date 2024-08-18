@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import {
@@ -61,26 +61,28 @@ export default function WeightForm() {
   };
 
   return (
-    <FormProvider {...weightForm}>
-      <form onSubmit={weightForm.handleSubmit(onSubmitWeight)}>
-        <FormField
-          name="weight"
-          control={weightForm.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Weight</FormLabel>
-              <FormControl>
-                <Input {...field} type="number" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" disabled={isAddingWeight}>
-          Add
-        </Button>
-      </form>
-      {weight && <LineChart data={weight} />}
-    </FormProvider>
+    <div className="w-screen">
+      <FormProvider {...weightForm}>
+        <form onSubmit={weightForm.handleSubmit(onSubmitWeight)}>
+          <FormField
+            name="weight"
+            control={weightForm.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Weight</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={isAddingWeight}>
+            Add
+          </Button>
+        </form>
+        {weight && <LineChart data={weight} />}
+      </FormProvider>
+    </div>
   );
 }
