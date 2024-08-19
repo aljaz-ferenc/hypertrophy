@@ -1,4 +1,4 @@
-import { Exercise, MuscleGroup, Weekday } from "./types";
+import { Exercise, FoodItem, MuscleGroup, Weekday } from "./types";
 
 export const exercises = [
   {
@@ -520,10 +520,10 @@ export const exercises = [
     {title: 'Listen to Your Body', description: "Pay close attention to your body's signals and adjust your training intensity and volume accordingly. If you're feeling fatigued, sore, or mentally drained, honor your body's need for rest and recovery. Avoid the temptation to push through pain or exhaustion, as this can increase your risk of injury and hinder long-term progress. Instead, use rest days as an opportunity to engage in self-care activities, such as meditation, foam rolling, or massage, to promote relaxation and stress relief."},
   ]
 
-  export const foodItems = [
+  export const foodItems: FoodItem[] = [
     {
         name: "Kinder Maxi King",
-        calories: 2165,
+        calories: 521,
         protein: 6.7,
         fat: 37.5,
         carbs: 38.2
@@ -660,5 +660,40 @@ export const exercises = [
       protein: 7.9,
       fat: 32,
       carbs: 57
+    },
+    {
+      name: 'Spar salsa hot (315g)',
+      calories: 55,
+      protein: 0.9,
+      fat: 0.2,
+      carbs: 12
+    },
+    {
+      name: 'Kisla smetana Spar (180g)',
+      calories: 203,
+      protein: 2.5,
+      fat: 20,
+      carbs: 3.3
+    },
+    {
+      name: 'Sir edamec Zelene doline',
+      calories: 335,
+      protein: 24,
+      fat: 25.3,
+      carbs: 2.7
+    },
+    {
+      name: 'Tortilje pšenične Spar (8 - 320g)',
+      calories: 326,
+      protein: 9.4,
+      fat: 7.3,
+      carbs: 55
+    },
+    {
+      name: 'Sončnično olje Spar (1 žlica - 15g)',
+      calories: 830,
+      protein: 0,
+      fat: 92,
+      carbs: 0
     }
 ]
