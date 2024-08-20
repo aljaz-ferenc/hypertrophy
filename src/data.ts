@@ -695,5 +695,19 @@ export const exercises = [
       protein: 0,
       fat: 92,
       carbs: 0
+    },
+    {
+      name: 'Calippo Strawberry (105g)',
+      calories: 88,
+      protein: 0,
+      fat: 0,
+      carbs: 22
+    },
+    {
+      name: 'Lučka King Secduction (84g)',
+      calories: 308,
+      protein: 4.4,
+      fat: 19,
+      carbs: 30
     }
 ]
