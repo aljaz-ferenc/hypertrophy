@@ -709,5 +709,12 @@ export const exercises = [
       protein: 4.4,
       fat: 19,
       carbs: 30
+    },
+    {
+      name: 'Protein bar Notus Fluffy Nougat (45g)',
+      calories: 340,
+      protein: 29,
+      fat: 15,
+      carbs: 18
     }
 ]
