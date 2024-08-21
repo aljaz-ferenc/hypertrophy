@@ -716,5 +716,26 @@ export const exercises = [
       protein: 29,
       fat: 15,
       carbs: 18
+    },
+    {
+      name: 'Solata s tuno, ocvrto čebulo in jajcem (350g)',
+      calories: 255,
+      protein: 29.3,
+      fat: 9.5,
+      carbs: 13
+    },
+    {
+      name: 'Proteini.si protein bar - raspberry cheescake (55g)',
+      calories: 421,
+      protein: 22.5,
+      fat: 17,
+      carbs: 43
+    },
+    {
+      name: 'Ice Cream Sandwich Gelatelli (120g)',
+      calories: 286,
+      protein: 5.6,
+      fat: 9.8,
+      carbs: 42.9
     }
 ]
