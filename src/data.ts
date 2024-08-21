@@ -737,5 +737,12 @@ export const exercises = [
       protein: 5.6,
       fat: 9.8,
       carbs: 42.9
+    },
+    {
+      name: 'Le Brie, Hood burger',
+      calories: 900,
+      protein: 35,
+      fat: 60,
+      carbs: 55
     }
 ]
