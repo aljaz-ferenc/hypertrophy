@@ -744,5 +744,19 @@ export const exercises = [
       protein: 35,
       fat: 60,
       carbs: 55
+    },
+    {
+      name: 'Ice Coffee, Double espresso (250g)',
+      calories: 49,
+      protein: 2.7,
+      fat: 0.8,
+      carbs: 7.7
+    },
+    {
+      name: 'Pizza burek, Lidl',
+      calories: 600,
+      protein: 10,
+      fat: 30,
+      carbs: 60
     }
 ]
