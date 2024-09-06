@@ -52,7 +52,7 @@ function todaysWorkout(mesocycle: Mesocycle) {
 function isMesocycleCompleted(activeMeso: Mesocycle) {
   // check if today's date is past the duration of mesocycle
   const startDate = new Date(activeMeso.startDate!);
-  const lastDay = activeMeso.workouts.at(-1)!.weekDay - 1;
+  const lastDay = activeMeso.workouts.at(-1)!.weekDay;
   const durationInDays = (activeMeso.duration - 1) * 7 + lastDay;
   const endDate = addDays(startDate, durationInDays);
   const today = new Date();
