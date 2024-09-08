@@ -1,5 +1,6 @@
 import Sidebar from '@/components/Sidebar';
 import React from 'react'
+import Timer from "@/components/Timer";
 
 export default function AppLayout({
     children,
@@ -8,6 +9,7 @@ export default function AppLayout({
   }>) {
     return (
           <>
+              <Timer/>
             <Sidebar/>
             {children}
           </>
