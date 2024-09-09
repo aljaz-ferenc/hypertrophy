@@ -14,10 +14,10 @@ export default function MobileSidebar() {
     }
 
   return (
-    <div className='md:hidden'>
+    <div className=''>
     <Sheet open={open} onOpenChange={(value) => setOpen(value)}>
         <SheetTrigger>
-            <Menu className='absolute top-3 left-3'/>
+            <Menu className='absolute top-3 left-3 z-10'/>
         </SheetTrigger>
         <SheetContent side='left' className='p-2 m-0'>
             <SidebarContent onOpenChange={onOpenChnage}/>

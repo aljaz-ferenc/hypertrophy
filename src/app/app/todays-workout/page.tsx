@@ -1,5 +1,6 @@
 import TodaysWorkout from "@/components/TodaysWorkout";
 import type { Metadata } from "next";
+import Timer from "@/components/Timer";
 
 export const metadata: Metadata = {
   title: "Hypertrophy | Today's Workout",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function TodaysWorkoutPage() {
 
   return (
-    <div className="max-w-[800px] page-container">
+    <div className="max-w-[800px] page-container relative">
     <h1>Today's Workout</h1>
       <TodaysWorkout/>
     </div>
