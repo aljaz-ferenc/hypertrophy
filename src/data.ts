@@ -758,5 +758,19 @@ export const exercises = [
       protein: 10,
       fat: 30,
       carbs: 60
+    },
+    {
+      name: 'Solata pohanček (Minute, 250g)',
+      calories: 193,
+      protein: 10.6,
+      fat: 1,
+      carbs:3.4
+    },
+    {
+      name: 'Rio mare (s fizolom)',
+      calories: 210,
+      protein: 11,
+      fat: 14,
+      carbs: 9
     }
 ]
