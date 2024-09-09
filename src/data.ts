@@ -772,5 +772,12 @@ export const exercises = [
       protein: 11,
       fat: 14,
       carbs: 9
+    },
+    {
+      name: 'Sandwich Toast (Olz, 25g per slice)',
+      calories: 274,
+      protein: 7.8,
+      fat: 3.7,
+      carbs: 51
     }
 ]
