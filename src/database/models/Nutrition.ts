@@ -8,8 +8,14 @@ const nutritionSchema = new mongoose.Schema({
     date: {
         type: Date,
     },
-    nutrition: {
-        type: Object
+    amount: {
+        type: Number
+    },
+    itemId: {
+        type: String
+    },
+    item: {
+        type: String
     }
 })
 

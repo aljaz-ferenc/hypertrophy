@@ -21,7 +21,7 @@ import { useMemo, useEffect, useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import FoodItemInput from "@/components/FoodItemInput";
 import { useNutritionStore } from "@/store/nutrition.store";
-import { getStats, getThisWeeksNutrition, updateUserNutrition } from "@/actions";
+import { addNutrition, getStats, getThisWeeksNutrition } from "@/actions";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import BarChart from "@/components/BarChart";
 import { Pie, PieChart } from "recharts";
@@ -29,12 +29,12 @@ import PieChartComponent from "@/components/PieChart";
 
 export default function NutritionPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [nutritionTotal] = useState<Nutrition>({
-    calories: 0,
-    protein: 0,
-    fat: 0,
-    carbs: 0,
-  });
+  // const [nutritionTotal] = useState<Nutrition>({
+  //   calories: 0,
+  //   protein: 0,
+  //   fat: 0,
+  //   carbs: 0,
+  // });
   const { items, addFoodItem, getTotalNutrition, clearItems } =
     useNutritionStore((state) => state);
   const { userId } = useAuth();
@@ -43,15 +43,13 @@ export default function NutritionPage() {
   const [pageWidth, setPageWidth] = useState(
     pageRef.current?.getBoundingClientRect().width || 0
   );
-  const [bmr, setBmr] = useState<number>()
+  const [bmr, setBmr] = useState<number>(2342)
 
   const fetchNutritionData = async () => {
     if (userId) {
       try {
         const nutritionData = await getThisWeeksNutrition(userId);
-        if (!nutritionData) return;
-        const stats = await getStats(userId)
-        setBmr(stats?.bmr)
+        console.log(nutritionData)
         setThisWeeksNutrition(nutritionData);
       } catch (error) {
         console.error("Failed to fetch nutrition data:", error);
@@ -62,29 +60,36 @@ export default function NutritionPage() {
   const weeklyTotalNutrition = useMemo(() => {
     if (!thisWeeksNutrition) return;
     return thisWeeksNutrition.reduce(
-      (acc: Nutrition, data: any) => {
+      (acc: any, item: any) => {
+        const itemData = foodItems.find(i => i.id === item.itemId)
+        if(!itemData) return acc
+        const calories = (item.amount / 100) * itemData.calories
+        const protein = (item.amount / 100) * itemData.protein
+        const fat = (item.amount / 100) * itemData.fat
+        const carbs = (item.amount / 100) * itemData.carbs
+
         return {
-          calories: acc.calories + data.nutrition.calories,
-          carbs: acc.carbs + data.nutrition.carbs,
-          fat: acc.fat + data.nutrition.fat,
-          protein: acc.protein + data.nutrition.protein,
+          calories: Math.round(acc.calories + calories),
+          carbs: Math.round(acc.carbs + carbs),
+          fat: Math.round(acc.fat + fat),
+          protein: Math.round(acc.protein + protein),
         };
       },
       { calories: 0, carbs: 0, fat: 0, protein: 0 }
     );
   }, [thisWeeksNutrition]);
 
-  const dailyAverageNutrition = useMemo(() => {
-    if (!thisWeeksNutrition) return;
-    const weeklyTotal = weeklyTotalNutrition;
+  // const dailyAverageNutrition = useMemo(() => {
+  //   if (!thisWeeksNutrition) return;
+  //   const weeklyTotal = weeklyTotalNutrition;
 
-    return {
-      calories: Math.round(weeklyTotal.calories / thisWeeksNutrition.length),
-      protein: Math.round(weeklyTotal.protein / thisWeeksNutrition.length),
-      carbs: Math.round(weeklyTotal.carbs / thisWeeksNutrition.length),
-      fat: Math.round(weeklyTotal.fat / thisWeeksNutrition.length),
-    };
-  }, [thisWeeksNutrition]);
+  //   return {
+  //     calories: Math.round(weeklyTotal.calories / thisWeeksNutrition.length),
+  //     protein: Math.round(weeklyTotal.protein / thisWeeksNutrition.length),
+  //     carbs: Math.round(weeklyTotal.carbs / thisWeeksNutrition.length),
+  //     fat: Math.round(weeklyTotal.fat / thisWeeksNutrition.length),
+  //   };
+  // }, [thisWeeksNutrition]);
 
   useEffect(() => {
     fetchNutritionData();
@@ -105,18 +110,49 @@ export default function NutritionPage() {
   }, []);
 
   async function onSave() {
-    await updateUserNutrition(userId!, getTotalNutrition());
-    fetchNutritionData();
-    clearItems();
+    // await updateUserNutrition(userId!, getTotalNutrition());
+    // fetchNutritionData();
+    // clearItems();
+    console.log(items)
+    addNutrition(userId!, items)
   }
 
   return (
     <div className="page-container" ref={pageRef}>
       <h1>Nutrition</h1>
+      <div className="flex flex-col gap-5">
+      {!!thisWeeksNutrition.length &&  thisWeeksNutrition.map(item => {
+        const itemData = foodItems.find(i => i.id === item.itemId)
+        if(!itemData) return null
+        const calories = itemData.calories * (item.amount / 100)
+        
+        return (
+          <div key={item._id} className='border border-slate-50 flex gap-3 p-2'>
+            <p>{itemData.name}</p>
+            <p>Calories: {Math.round(calories)}</p>
+          </div>
+        )
+      })}
+       <div>
+        <p className={'font-semibold text-xl'}>TDEE: {bmr} kcal</p>
+          <p>Total calories: {weeklyTotalNutrition.calories} kcal</p>
+          <p>Total protein: {weeklyTotalNutrition.protein} g</p>
+          <p>Total fat {weeklyTotalNutrition.fat} g</p>
+          <p>Total carbs: {weeklyTotalNutrition.carbs} g</p>
+        </div>
+      </div>
       {!!thisWeeksNutrition.length && (
+         <BarChart
+         data={thisWeeksNutrition}
+         width={pageWidth}
+         className={"mx-auto p-3"}
+         bmr={bmr!}
+       />
+      )}
+      {/* {!!thisWeeksNutrition.length && (
         <div>
           <h2 className="text-2xl font-semibold mb-5">Stats</h2>
-          <BarChart
+         <BarChart
             data={thisWeeksNutrition}
             width={pageWidth}
             className={"mx-auto p-3"}
@@ -144,7 +180,7 @@ export default function NutritionPage() {
           </div>
           <div className="mt-20"></div>
         </div>
-      )}
+      )} */}
       <div className="flex flex-col gap-5 mt-10">
         <h2 className="text-2xl font-semibold mb-2">Add Items</h2>
         {items &&
@@ -179,9 +215,11 @@ export default function NutritionPage() {
                       value={item.name}
                       onSelect={() => {
                         addFoodItem({
-                          ...item,
                           amount: 0,
-                          id: crypto.randomUUID(),
+                          itemId: item.id,
+                          date: new Date(),
+                          user: userId,
+                          item: item.name
                         });
                         setIsOpen(false);
                       }}

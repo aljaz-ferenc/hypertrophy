@@ -168,32 +168,39 @@ export async function addWorkoutToLog(logId: string, workout: WorkoutLog, weekIn
   }
 }
 
-export async function updateUserNutrition(clerkId: string, nutrition: Nutrition) {
-  const date = startOfToday();
-  try {
-    await connectToDatabase();
+// export async function updateUserNutrition(clerkId: string, nutrition: {id: string, amount: number, date: Date}[]) {
+//   const date = startOfToday();
+//   try {
+//     await connectToDatabase();
 
+//     const userId = await getMongoIdFromClerkId(clerkId)
+
+//     const result = await NutritionModel.(
+//       { user: userId },
+//       {nutrition},
+//       { upsert: true } 
+//     );
+
+//   } catch (err: unknown) {
+//     if (err instanceof Error) {
+//       console.log('ERROR: ', err.message);
+//     } else {
+//       console.log(err);
+//     }
+//   }
+// }
+
+export async function addNutrition(clerkId: string, nutrition: Nutrition[]){
+  console.log('NUTRITION: ', nutrition)
+  try{
+    await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
-
-    const result = await NutritionModel.updateOne(
-      { user: userId, date },
-      {
-        $inc: {
-          'nutrition.protein': nutrition.protein,
-          'nutrition.fat': nutrition.fat,
-          'nutrition.carbs': nutrition.carbs,
-          'nutrition.calories': nutrition.calories,
-        },
-      },
-      { upsert: true } 
-    );
-
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.log('ERROR: ', err.message);
-    } else {
-      console.log(err);
-    }
+    const nutritionArr = nutrition.map(n => {
+      return {...n, user: userId}
+    })
+    const result = await NutritionModel.insertMany(nutritionArr)
+  }catch(err: any){
+    console.log(err)
   }
 }
 
@@ -203,7 +210,7 @@ export async function getThisWeeksNutrition(clerkId: string){
 
   try{
     const userId = await getMongoIdFromClerkId(clerkId)
-    const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'date nutrition').sort({date: 1})
+    const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'itemId amount date item _id').sort({date: 1})
     console.log(thisWeeksNutrition)
     return JSON.parse(JSON.stringify(thisWeeksNutrition));
   }catch(err: unknown){

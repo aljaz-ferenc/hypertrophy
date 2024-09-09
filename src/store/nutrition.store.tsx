@@ -11,9 +11,10 @@ type Store = {
 
 export const useNutritionStore = create<Store>((set, get) => ({
     items: [],
-    addFoodItem: (newItem: any) => set((state) => ({
-        items: [...state.items, newItem]
-    })),
+    addFoodItem: (newItem: {itemId: string, amount: number, date: Date, user: string, item: string}) => set((state) => {
+        console.log(newItem)
+        return {items: [...state.items, newItem]}
+    }),
     clearItems: () => set((state) => ({
         items: []
     })),

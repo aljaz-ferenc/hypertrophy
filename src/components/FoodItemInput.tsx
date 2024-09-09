@@ -12,7 +12,6 @@ export default function FoodItemInput({item}: FoodItemInputProps){
     // const [itemWithAmount, setItemWithAmount] = useState({...item, amount: 0})
     const {items, addFoodItem, updateItemAmount} = useNutritionStore(state => state)
 
-console.log('ITEM: ', item)
     return (
         <div key={item.name} className='flex flex-col items-start justify-center gap-2'>
               <p>{item.name}</p>

@@ -124,10 +124,17 @@ export type FoodItem = {
   protein: number,
   fat: number,
   carbs: number
-  calories: number
+  calories: number,
+  id: string
 }
 
-export type Nutrition = Omit<FoodItem, 'name'>
+export type Nutrition = {
+  amount: number,
+  itemId: string, 
+  date: Date,
+  user: string
+  item: string
+}
 
 export type UserNutrition = {
   userId: string,

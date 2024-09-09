@@ -526,258 +526,295 @@ export const exercises = [
         calories: 521,
         protein: 6.7,
         fat: 37.5,
-        carbs: 38.2
+        carbs: 38.2,
+        id: '1'
     },
     {
         name: "Alpsko mleko 3.5",
         calories: 64,
         protein: 3.3,
         fat: 3.5,
-        carbs: 4.7
+        carbs: 4.7,
+        id: '2'
     },
     {
         name: "Alpsko mleko 3.5 s proteini",
         calories: 45,
         protein: 6,
         fat: 0.4,
-        carbs: 4.4
+        carbs: 4.4,
+        id: '3'
     },
     {
         name: "Protein muesli (chocolate)",
         calories: 395,
         protein: 22.5,
         fat: 11.7,
-        carbs: 45.5
+        carbs: 45.5,
+        id: '4'
     },
     {
         name: "Whey protein (Battery, milk chocolate)",
         calories: 387,
         protein: 70,
         fat: 6.4,
-        carbs: 12.3
+        carbs: 12.3,
+        id: '5'
     },
     {
         name: "Piščančja prsa (raw)",
         calories: 108,
         protein: 23.1,
         fat: 1.7,
-        carbs: 0.5
+        carbs: 0.5,
+        id: '6'
     },
     {
         name: "Riž (beli)",
         calories: 354,
         protein: 6.7,
         fat: 0.4,
-        carbs: 80
+        carbs: 80,
+        id: '7'
     },
     {
         name: "Omaka 4 vrste sira (Fant)",
         calories: 420,
         protein: 18,
         fat: 22,
-        carbs: 35
+        carbs: 35,
+        id: '8'
     },
     {
         name: "Maxim lučka (mascarpone z višnjo)",
         calories: 327,
         protein: 4.11,
         fat: 19,
-        carbs: 35
+        carbs: 35,
+        id: '9'
     },
     {
         name: "Sladoled",
         calories: 207,
         protein: 3.5,
         fat: 11,
-        carbs: 24
+        carbs: 24,
+        id: '10'
     },
     {
         name: "Yoghurt drink (proteini.si, canilla ice cream)",
         calories: 60,
         protein: 6.8,
         fat: 0,
-        carbs: 7.5
+        carbs: 7.5,
+        id: '11'
     },
     {
         name: "Egg",
         calories: 155,
         protein: 13,
         fat: 11,
-        carbs: 1.1
+        carbs: 1.1,
+        id: '12'
     },
     {
         name: "Tuna (Spar)",
         calories: 359,
         protein: 17,
         fat: 32,
-        carbs: 1.6
+        carbs: 1.6,
+        id: '13'
     },
     {
         name: "Cezarjev preliv (kuhne)",
         calories: 220,
         protein: 0.7,
         fat: 18,
-        carbs: 13   
+        carbs: 13,
+        id: '14'   
     },
     {
         name: "Štručka s hrenovko (Lidl)",
         calories: 350,
         protein: 10,
         fat: 32,
-        carbs: 30
+        carbs: 30,
+        id: '15'
     },
     {
         name: "Mleto meso (svinjsko in goveje, Spar)",
         calories: 172,
         protein: 18,
         fat: 11,
-        carbs: 0.5  
+        carbs: 0.5,
+        id: '16'  
     },
     {
         name: "Omaka chilli con carne (Fant)",
         calories: 300,
         protein: 14,
         fat: 1.8,
-        carbs: 51
+        carbs: 51,
+        id: '17'
     },
     {
         name: "Arašidovo maslo (Mercator)",
         calories: 605,
         protein: 27.3,
         fat: 48.2,
-        carbs: 11.2
+        carbs: 11.2,
+        id:'18'
     },
     {
       name: "Cedevita ledena doza, naranca",
       calories: 94,
       protein: 0.2,
       fat: 0,
-      carbs: 23
+      carbs: 23,
+      id: '19'
     },
     {
       name: 'Cokolada Finesse classic white',
       calories: 548,
       protein: 7.9,
       fat: 32,
-      carbs: 57
+      carbs: 57,
+      id: '20'
     },
     {
       name: 'Spar salsa hot (315g)',
       calories: 55,
       protein: 0.9,
       fat: 0.2,
-      carbs: 12
+      carbs: 12,
+      id: '21'
     },
     {
       name: 'Kisla smetana Spar (180g)',
       calories: 203,
       protein: 2.5,
       fat: 20,
-      carbs: 3.3
+      carbs: 3.3,
+      id: '22'
     },
     {
       name: 'Sir edamec Zelene doline',
       calories: 335,
       protein: 24,
       fat: 25.3,
-      carbs: 2.7
+      carbs: 2.7,
+      id:' 23'
     },
     {
       name: 'Tortilje pšenične Spar (8 - 320g)',
       calories: 326,
       protein: 9.4,
       fat: 7.3,
-      carbs: 55
+      carbs: 55,
+      id: '24'
     },
     {
       name: 'Sončnično olje Spar (1 žlica - 15g)',
       calories: 830,
       protein: 0,
       fat: 92,
-      carbs: 0
+      carbs: 0,
+      id: '25'
     },
     {
       name: 'Calippo Strawberry (105g)',
       calories: 88,
       protein: 0,
       fat: 0,
-      carbs: 22
+      carbs: 22,
+      id: '26'
     },
     {
       name: 'Lučka King Secduction (84g)',
       calories: 308,
       protein: 4.4,
       fat: 19,
-      carbs: 30
+      carbs: 30,
+      id: '27'
     },
     {
       name: 'Protein bar Notus Fluffy Nougat (45g)',
       calories: 340,
       protein: 29,
       fat: 15,
-      carbs: 18
+      carbs: 18,
+      id: '28'
     },
     {
       name: 'Solata s tuno, ocvrto čebulo in jajcem (350g)',
       calories: 255,
       protein: 29.3,
       fat: 9.5,
-      carbs: 13
+      carbs: 13,
+      id: '29'
     },
     {
       name: 'Proteini.si protein bar - raspberry cheescake (55g)',
       calories: 421,
       protein: 22.5,
       fat: 17,
-      carbs: 43
+      carbs: 43,
+      id: '30'
     },
     {
       name: 'Ice Cream Sandwich Gelatelli (120g)',
       calories: 286,
       protein: 5.6,
       fat: 9.8,
-      carbs: 42.9
+      carbs: 42.9,
+      id: '31'
     },
     {
       name: 'Le Brie, Hood burger',
       calories: 900,
       protein: 35,
       fat: 60,
-      carbs: 55
+      carbs: 55,
+      id: '32'
     },
     {
       name: 'Ice Coffee, Double espresso (250g)',
       calories: 49,
       protein: 2.7,
       fat: 0.8,
-      carbs: 7.7
+      carbs: 7.7,
+      id: '33'
     },
     {
       name: 'Pizza burek, Lidl',
       calories: 600,
       protein: 10,
       fat: 30,
-      carbs: 60
+      carbs: 60,
+      id: '34'
     },
     {
       name: 'Solata pohanček (Minute, 250g)',
       calories: 193,
       protein: 10.6,
       fat: 1,
-      carbs:3.4
+      carbs:3.4,
+      id: '35'
     },
     {
       name: 'Rio mare (s fizolom)',
       calories: 210,
       protein: 11,
       fat: 14,
-      carbs: 9
+      carbs: 9,
+      id: '36'
     },
     {
       name: 'Sandwich Toast (Olz, 25g per slice)',
       calories: 274,
       protein: 7.8,
       fat: 3.7,
-      carbs: 51
-    }
+      carbs: 51,
+      id: '37'
+    },
 ]
