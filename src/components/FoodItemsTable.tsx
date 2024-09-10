@@ -13,7 +13,7 @@ import {
 export default function FoodItemsTable({tableItems, total}: any){
     
     const items = useMemo(() => {
-        const itemsArr = tableItems.map(i => {
+        const itemsArr = tableItems.map((i: any) => {
             const itemData = foodItems.find(j => j.id === i.itemId)
             if(!itemData) return 
 
@@ -28,7 +28,7 @@ export default function FoodItemsTable({tableItems, total}: any){
         return itemsArr
     }, [tableItems])
 
-    if(!items.length) return
+    if(!items?.length) return
 
     return (
 
@@ -41,7 +41,7 @@ export default function FoodItemsTable({tableItems, total}: any){
                 <TableHead>Carbs</TableHead>
             </TableHeader>
             <TableBody>
-                {items.map((i: any, index) => (
+                {items.map((i: any, index: number) => (
                     <TableRow key={index}>
                         <TableCell>{i.name}</TableCell>
                         <TableCell>{i.calories}</TableCell>
