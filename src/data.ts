@@ -817,4 +817,12 @@ export const exercises = [
       carbs: 51,
       id: '37'
     },
+    {
+      name: 'Proteini.si protein bar - pineapple coconut (55g)',
+      calories: 417,
+      protein: 22.6,
+      fat: 16,
+      carbs: 44.7,
+      id: '38'
+    },
 ]

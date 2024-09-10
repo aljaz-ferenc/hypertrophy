@@ -26,6 +26,8 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import BarChart from "@/components/BarChart";
 import { Pie, PieChart } from "recharts";
 import PieChartComponent from "@/components/PieChart";
+import { isToday } from "date-fns";
+import FoodItemsTable from "@/components/FoodItemsTable";
 
 export default function NutritionPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,6 +81,36 @@ export default function NutritionPage() {
     );
   }, [thisWeeksNutrition]);
 
+  const dailyTotalNutrition = useMemo(() => {
+    if (!thisWeeksNutrition) return;
+    return thisWeeksNutrition.filter(n => isToday(n.date)).reduce(
+      (acc: any, item: any) => {
+        const itemData = foodItems.find(i => i.id === item.itemId)
+        if(!itemData) return acc
+        const calories = (item.amount / 100) * itemData.calories
+        const protein = (item.amount / 100) * itemData.protein
+        const fat = (item.amount / 100) * itemData.fat
+        const carbs = (item.amount / 100) * itemData.carbs
+
+        return {
+          calories: Math.round(acc.calories + calories),
+          carbs: Math.round(acc.carbs + carbs),
+          fat: Math.round(acc.fat + fat),
+          protein: Math.round(acc.protein + protein),
+        };
+      },
+      { calories: 0, carbs: 0, fat: 0, protein: 0 }
+    );
+  }, [thisWeeksNutrition]);
+
+const todaysNutrition = useMemo(() => {
+  const todaysNutrition = thisWeeksNutrition.filter(n => {
+    return isToday(n.date)
+  })
+  console.log(todaysNutrition)
+  return todaysNutrition
+}, [thisWeeksNutrition, thisWeeksNutrition])
+
   // const dailyAverageNutrition = useMemo(() => {
   //   if (!thisWeeksNutrition) return;
   //   const weeklyTotal = weeklyTotalNutrition;
@@ -117,28 +149,21 @@ export default function NutritionPage() {
     addNutrition(userId!, items)
   }
 
+  const diff = dailyTotalNutrition.calories - bmr
+
   return (
     <div className="page-container" ref={pageRef}>
       <h1>Nutrition</h1>
       <div className="flex flex-col gap-5">
-      {!!thisWeeksNutrition.length &&  thisWeeksNutrition.map(item => {
-        const itemData = foodItems.find(i => i.id === item.itemId)
-        if(!itemData) return null
-        const calories = itemData.calories * (item.amount / 100)
-        
-        return (
-          <div key={item._id} className='border border-slate-50 flex gap-3 p-2'>
-            <p>{itemData.name}</p>
-            <p>Calories: {Math.round(calories)}</p>
-          </div>
-        )
-      })}
+      {!!todaysNutrition.length &&
+      <FoodItemsTable tableItems={todaysNutrition} total={dailyTotalNutrition}/>
+      }
        <div>
         <p className={'font-semibold text-xl'}>TDEE: {bmr} kcal</p>
-          <p>Total calories: {weeklyTotalNutrition.calories} kcal</p>
-          <p>Total protein: {weeklyTotalNutrition.protein} g</p>
-          <p>Total fat {weeklyTotalNutrition.fat} g</p>
-          <p>Total carbs: {weeklyTotalNutrition.carbs} g</p>
+          <p>Total calories: {dailyTotalNutrition.calories} kcal / <span  className={`italic ${diff > 0 ? 'text-red-500' : 'text-green-500'}`}>{diff > 0 ? '+' : '-'} {Math.abs(diff)} kcal</span></p>
+          <p>Total protein: {dailyTotalNutrition.protein} g</p>
+          <p>Total fat {dailyTotalNutrition.fat} g</p>
+          <p>Total carbs: {dailyTotalNutrition.carbs} g</p>
         </div>
       </div>
       {!!thisWeeksNutrition.length && (
