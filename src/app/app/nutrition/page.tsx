@@ -156,7 +156,7 @@ const todaysNutrition = useMemo(() => {
     <div className="page-container" ref={pageRef}>
       <h1>Nutrition</h1>
       <div className="flex flex-col gap-5">
-      {todaysNutrition?.length > 0 &&
+      {todaysNutrition && (todaysNutrition?.length > 0) &&
       <FoodItemsTable tableItems={todaysNutrition} total={dailyTotalNutrition}/>
       }
        <div>
