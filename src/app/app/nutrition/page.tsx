@@ -160,10 +160,10 @@ const todaysNutrition = useMemo(() => {
       }
        <div>
         <p className={'font-semibold text-xl'}>TDEE: {bmr} kcal</p>
-          <p>Total calories: {dailyTotalNutrition.calories} kcal / <span  className={`italic ${diff > 0 ? 'text-red-500' : 'text-green-500'}`}>{diff > 0 ? '+' : '-'} {Math.abs(diff)} kcal</span></p>
-          <p>Total protein: {dailyTotalNutrition.protein} g</p>
-          <p>Total fat {dailyTotalNutrition.fat} g</p>
-          <p>Total carbs: {dailyTotalNutrition.carbs} g</p>
+          <p>Total calories: {dailyTotalNutrition?.calories} kcal / <span  className={`italic ${diff > 0 ? 'text-red-500' : 'text-green-500'}`}>{diff > 0 ? '+' : '-'} {Math.abs(diff)} kcal</span></p>
+          <p>Total protein: {dailyTotalNutrition?.protein} g</p>
+          <p>Total fat {dailyTotalNutrition?.fat} g</p>
+          <p>Total carbs: {dailyTotalNutrition?.carbs} g</p>
         </div>
       </div>
       {!!thisWeeksNutrition.length && (
