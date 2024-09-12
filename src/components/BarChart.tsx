@@ -16,13 +16,12 @@ type BarChartComponentProps = {
 };
 
 const BarChartComponent = ({ data = [], className, width, bmr }: BarChartComponentProps) => {
-  
   const transformedData = useMemo(() => {
     const dailyNutrition = data.reduce((acc: any, curr) => {
       const itemData = foodItems.find(i => i.id === curr.itemId);
       if (!itemData) return acc;
 
-      const date = format(new Date(curr.date), 'EEE');
+      const date = format(new Date(curr.date), 'EEE'); // Format date to day of the week (e.g., 'Mon')
       const calories = (curr.amount / 100) * itemData.calories;
       const protein = (curr.amount / 100) * itemData.protein;
       const fat = (curr.amount / 100) * itemData.fat;
@@ -41,7 +40,7 @@ const BarChartComponent = ({ data = [], className, width, bmr }: BarChartCompone
     }, {});
 
     // Transform object to array
-    return Object.values(dailyNutrition).map((day: any) => {
+    const transformed = Object.values(dailyNutrition).map((day: any) => {
       const totalNutrients = day.protein + day.fat + day.carbs;
 
       return {
@@ -52,6 +51,14 @@ const BarChartComponent = ({ data = [], className, width, bmr }: BarChartCompone
         carbs: totalNutrients ? (day.carbs / totalNutrients) * day.calories : 0,
       };
     });
+
+    // Add empty days if there are fewer than 7
+    const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const filledData = daysOfWeek.map(day => 
+      transformed.find(d => d.date === day) || { date: day, calories: 0, protein: 0, fat: 0, carbs: 0 }
+    );
+
+    return filledData;
   }, [data]);
 
   const maxDataValue = useMemo(() => {
@@ -63,12 +70,11 @@ const BarChartComponent = ({ data = [], className, width, bmr }: BarChartCompone
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date" />
       <YAxis
-  domain={[0, bmr + 300]} // Always extend the Y-axis to at least 300 calories above the BMR
-  tickFormatter={(value) => value.toLocaleString()} // Formats the Y-axis labels for readability
->
-  <Label value="Calories" angle={-90} position="left" style={{ textAnchor: 'middle' }} />
-</YAxis>
-
+        domain={[0, Math.max(bmr + 300, ...transformedData.map(d => d.calories + 300))]}
+        tickFormatter={(value) => value.toLocaleString()}
+      >
+        <Label value="Calories" angle={-90} position="left" style={{ textAnchor: 'middle' }} />
+      </YAxis>
 
       <Tooltip />
       <Legend />

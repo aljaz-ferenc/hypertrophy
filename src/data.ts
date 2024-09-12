@@ -825,4 +825,28 @@ export const exercises = [
       carbs: 44.7,
       id: '38'
     },
+    {
+      name: 'McChicken (140 g)',
+      calories: 272,
+      protein: 10, 
+      fat: 13,
+      carbs: 28,
+      id: '39'
+    },
+    {
+      name: 'KitKat donut (83g)',
+      calories: 445,
+      protein: 4.9,
+      fat: 24,
+      carbs: 52,
+      id: '40'
+    },
+    {
+      name: 'Ice coffee Cappucino (250g)',
+      calories: 56,
+      protein: 2.6,
+      fat: 0.8,
+      carbs: 9.4,
+      id: '41'
+    }
 ]
