@@ -14,19 +14,20 @@ export default function FoodItemsTable({tableItems, total}: any){
     
     const items = useMemo(() => {
         const itemsArr = tableItems.map((i: any) => {
-            const itemData = foodItems.find(j => j.id === i.itemId)
-            if(!itemData) return 
-
+            const itemData = foodItems.find(j => j.id === i.itemId);
+            if (!itemData) return null;  // Return null if not found
+    
             return {
                 name: i.item,
                 calories: Math.round((i.amount / 100) * itemData.calories),
                 protein: Math.round((i.amount / 100) * itemData.protein),
                 fat: Math.round((i.amount / 100) * itemData.fat),
                 carbs: Math.round((i.amount / 100) * itemData.carbs),
-            }
-        })
-        return itemsArr
-    }, [tableItems])
+            };
+        }).filter(Boolean);  // Filter out null values
+        return itemsArr;
+    }, [tableItems]);
+    
 
     if(!items?.length) return
 
