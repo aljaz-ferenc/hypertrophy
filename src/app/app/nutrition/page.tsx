@@ -51,7 +51,7 @@ export default function NutritionPage() {
     if (userId) {
       try {
         const nutritionData = await getThisWeeksNutrition(userId);
-        console.log(nutritionData)
+        console.log('NUTRITION DATA: ', nutritionData)
         setThisWeeksNutrition(nutritionData);
       } catch (error) {
         console.error("Failed to fetch nutrition data:", error);
@@ -111,7 +111,7 @@ const todaysNutrition = useMemo(() => {
   const todaysNutrition = thisWeeksNutrition.filter(n => {
     return isToday(n.date)
   })
-  console.log(todaysNutrition)
+  console.log('TODAYS NUTRITION: ', todaysNutrition)
   return todaysNutrition
 }, [thisWeeksNutrition, thisWeeksNutrition])
 
@@ -149,7 +149,7 @@ const todaysNutrition = useMemo(() => {
     // await updateUserNutrition(userId!, getTotalNutrition());
     // fetchNutritionData();
     // clearItems();
-    console.log(items)
+    console.log('ITEMS: ', items)
     addNutrition(userId!, items)
   }
 
