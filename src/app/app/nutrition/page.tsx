@@ -155,7 +155,7 @@ const todaysNutrition = useMemo(() => {
     <div className="page-container" ref={pageRef}>
       <h1>Nutrition</h1>
       <div className="flex flex-col gap-5">
-      {!!todaysNutrition.length &&
+      {!!todaysNutrition?.length &&
       <FoodItemsTable tableItems={todaysNutrition} total={dailyTotalNutrition}/>
       }
        <div>
@@ -166,7 +166,7 @@ const todaysNutrition = useMemo(() => {
           <p>Total carbs: {dailyTotalNutrition?.carbs} g</p>
         </div>
       </div>
-      {!!thisWeeksNutrition.length && (
+      {!!thisWeeksNutrition?.length && (
          <BarChart
          data={thisWeeksNutrition}
          width={pageWidth}
@@ -263,13 +263,13 @@ const todaysNutrition = useMemo(() => {
           </PopoverContent>
         </Popover>
         <Button
-          disabled={items.length === 0}
+          disabled={items?.length === 0}
           onClick={onSave}
           className="mt-10"
         >
           Save
         </Button>
-        {items.length > 0 && (
+        {items?.length > 0 && (
           <Button variant="destructive" onClick={clearItems}>
             Clear
           </Button>
