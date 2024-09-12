@@ -52,7 +52,7 @@ export default function NutritionPage() {
       try {
         const nutritionData = await getThisWeeksNutrition(userId);
         console.log('NUTRITION DATA: ', nutritionData)
-        setThisWeeksNutrition(nutritionData);
+        setThisWeeksNutrition(nutritionData || []);
       } catch (error) {
         console.error("Failed to fetch nutrition data:", error);
       }
