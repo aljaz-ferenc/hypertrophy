@@ -104,6 +104,7 @@ export default function NutritionPage() {
   }, [thisWeeksNutrition]);
 
 const todaysNutrition = useMemo(() => {
+  if (!thisWeeksNutrition) return;
   const todaysNutrition = thisWeeksNutrition.filter(n => {
     return isToday(n.date)
   })
