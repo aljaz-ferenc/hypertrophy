@@ -64,7 +64,10 @@ export default function NutritionPage() {
     return thisWeeksNutrition.reduce(
       (acc: any, item: any) => {
         const itemData = foodItems.find(i => i.id === item.itemId)
-        if(!itemData) return acc
+        if(!itemData) {
+          console.log('ITEM DATA: ', itemData)
+          return acc
+        }
         const calories = (item.amount / 100) * itemData.calories
         const protein = (item.amount / 100) * itemData.protein
         const fat = (item.amount / 100) * itemData.fat
@@ -167,7 +170,7 @@ const todaysNutrition = useMemo(() => {
           <p>Total carbs: {dailyTotalNutrition?.carbs} g</p>
         </div>
       </div>
-      {thisWeeksNutrition?.length > 0 && (
+      {thisWeeksNutrition && (thisWeeksNutrition?.length > 0) && (
          <BarChart
          data={thisWeeksNutrition}
          width={pageWidth}
