@@ -19,7 +19,8 @@ export type MuscleGroup =
   | "abs"
   | "traps"
   | "forearms"
-  | "calves";
+  | "calves"
+  | "neck"
 
 
 export type Exercise = {

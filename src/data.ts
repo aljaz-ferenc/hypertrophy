@@ -484,6 +484,14 @@ export const exercises = [
   {
     muscleGroup: "calves",
     exercise: "Tibialis Raises"
+  },
+  {
+    muscleGroup: "neck",
+    exercise: "Neck Extensions"
+  },
+  {
+    muscleGroup: "neck",
+    exercise: "Neck Curls"
   }
   ];
 
@@ -510,6 +518,7 @@ export const exercises = [
     "traps",
     "forearms",
     "calves",
+    "neck"
   ];
 
   export const restTips = [
