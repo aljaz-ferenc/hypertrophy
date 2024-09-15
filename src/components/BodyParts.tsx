@@ -9,7 +9,7 @@ import { useAuth } from "@clerk/nextjs"
 
 const bodyParts: BodyPart[] = [ 'neck', 'rightBicep', 'leftBicep', 'rightForearm', 'leftForearm', 'chest', 'rightThigh', 'leftThigh', 'rightCalf', 'leftCalf']
 
-export default function(){
+export default function BodyParts(){
     const [parts, setParts] = useState()
     const {userId} = useAuth()
 
