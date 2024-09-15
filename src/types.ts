@@ -155,6 +155,8 @@ export type Measurement<T> = {
 
 export type BodyPart = 'neck' | 'rightBicep' | 'leftBicep' | 'rightForearm' | 'leftForearm' | 'chest' | 'rightThigh' | 'leftThigh' | 'rightCalf' | 'leftCalf'
 
+export type BodyPartData = {name: BodyPart, data: {value: number, date: Date}}
+
 export type Stats = {
   height: Omit<Measurement<HeightUnits>, 'date'>,
   weight:  Measurement<WeightUnits>[],
