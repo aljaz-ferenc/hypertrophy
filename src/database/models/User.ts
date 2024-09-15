@@ -60,6 +60,10 @@ const userSchema = new mongoose.Schema({
         },
         dob: {
             type: Date
+        },
+        bodyParts: {
+            type: Map, 
+            of: [{ date: Date, value: Number }] 
         }
     }
 })
