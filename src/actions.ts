@@ -4,7 +4,7 @@ import { Document, ObjectId } from "mongoose";
 import User from "./database/models/User";
 import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
-import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition, Stats, Measurement, WeightUnits } from "./types";
+import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition, Stats, Measurement, WeightUnits, BodyPart } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
 import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek} from 'date-fns'
 import Log from "./database/models/Log";
@@ -307,10 +307,46 @@ export async function updateBMR(clerkId: string, data: BRMData){
     await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
     const result = await User.findByIdAndUpdate(userId, {$set: {'stats.bmr': calculateBMR(data)}})
-  }catch(err){
+  }catch(err: unknown){
     if(err instanceof Error){
       console.log(err.message)
     }else{
+      console.log(err)
+    }
+  }
+}
+
+export async function updateBodyPart(clerkId: string, bodyPart: BodyPart, value: number) {
+  if (!clerkId || !bodyPart || !value) return
+
+  try {
+    await connectToDatabase()
+    const userId = await getMongoIdFromClerkId(clerkId)
+
+    const update = { [`stats.bodyParts.${bodyPart}`]: { date: new Date(), value } }
+
+    const result = await User.findByIdAndUpdate(userId, { $push: update }, { new: true, upsert: true })
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.log(err.message)
+    } else {
+      console.log(err)
+    }
+  }
+}
+
+
+export async function getBodyParts(clerkId: string){
+  try{
+    await connectToDatabase()
+    const userId = await getMongoIdFromClerkId(clerkId)
+    const bodyParts = await User.findById(userId, 'stats.bodyParts')
+    console.log(JSON.parse(JSON.stringify(bodyParts)))
+    return JSON.parse(JSON.stringify(bodyParts))
+  }catch(err: unknown){
+    if (err instanceof Error) {
+      console.log(err.message)
+    } else {
       console.log(err)
     }
   }

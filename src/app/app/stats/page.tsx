@@ -28,6 +28,7 @@ import { differenceInDays, differenceInYears, format } from "date-fns";
 import { useEffect, useState } from "react";
 import LineChart from "@/components/LineChart";
 import WeightForm from "@/components/WeightForm";
+import BodyParts from "@/components/BodyParts";
 
 const statsSchema = z.object({
   height: z.coerce.number(),
@@ -144,6 +145,7 @@ export default function MeasurementsForm() {
         <h3>Basal Metabolic Rate (BMR)</h3>
         {stats?.bmr || 'To calculate your BMR, add your gender, age, height and weight.'}
       </div>
+      <BodyParts/>
     </div>
   );
 }
