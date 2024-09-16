@@ -207,6 +207,7 @@ export async function addNutrition(clerkId: string, nutrition: Nutrition[]){
 export async function getThisWeeksNutrition(clerkId: string){
   const weekStart = startOfWeek(new Date(), {weekStartsOn: 1})
   const weekEnd = endOfWeek(new Date(), {weekStartsOn: 1})
+  console.log('haha')
 
   try{
     const userId = await getMongoIdFromClerkId(clerkId)

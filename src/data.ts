@@ -848,5 +848,21 @@ export const exercises = [
       fat: 0.8,
       carbs: 9.4,
       id: '41'
+    },
+    {
+      name: 'Rumenko jagoda(110g)',
+      calories: 63,
+      protein: 0,
+      fat: 0,
+      carbs: 17,
+      id: '42'
+    },
+    {
+      name: 'Kinder chocolate (12.5g per bar)',
+      calories: 566,
+      protein: 8.7,
+      fat: 35,
+      carbs: 53.3,
+      id: '43'
     }
 ]
