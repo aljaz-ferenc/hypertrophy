@@ -889,5 +889,13 @@ export const exercises = [
       fat: 14,
       carbs: 33,
       id: '45'
+    },
+    {
+      name: 'Peanut butter Mercator',
+      calories: 605,
+      protein: 27.3,
+      fat: 48.2,
+      carbs: 11.2,
+      id: '46'
     }
 ]
