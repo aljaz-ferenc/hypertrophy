@@ -881,5 +881,13 @@ export const exercises = [
       fat: 42,
       carbs: 17,
       id: '44'
+    },
+    {
+      name: 'Sendvic klasik (210g)',
+      calories: 296,
+      protein: 9.5,
+      fat: 14,
+      carbs: 33,
+      id: '45'
     }
 ]
