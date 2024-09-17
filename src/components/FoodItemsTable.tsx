@@ -9,8 +9,13 @@ import {
   } from "@/components/ui/table"
   import {useMemo} from 'react'
   import { foodItems } from "@/data";
+  import { Button } from "./ui/button"
+import { AiFillCloseSquare } from "react-icons/ai";
+import { deleteNutrition } from "@/actions";
+import { useAuth } from "@clerk/nextjs";
 
 export default function FoodItemsTable({tableItems, total}: any){
+    const {userId} = useAuth()
     
     const items = useMemo(() => {
         const itemsArr = tableItems.map((i: any) => {
@@ -19,6 +24,7 @@ export default function FoodItemsTable({tableItems, total}: any){
     
             return {
                 name: i.item,
+                id: i._id,
                 calories: Math.round((i.amount / 100) * itemData.calories),
                 protein: Math.round((i.amount / 100) * itemData.protein),
                 fat: Math.round((i.amount / 100) * itemData.fat),
@@ -27,6 +33,10 @@ export default function FoodItemsTable({tableItems, total}: any){
         }).filter(Boolean);  // Filter out null values
         return itemsArr;
     }, [tableItems]);
+
+    async function onClick(item: any){
+       await deleteNutrition(userId!, item.id)
+    }
     
 
     if(!items?.length) return
@@ -44,7 +54,10 @@ export default function FoodItemsTable({tableItems, total}: any){
             <TableBody>
                 {items.map((i: any, index: number) => (
                     <TableRow key={index}>
-                        <TableCell>{i.name}</TableCell>
+                        <TableCell className="flex gap-3 items-center">
+                           <AiFillCloseSquare color='darkred' className='cursor-pointer' onClick={() => onClick(i)}/>
+                            {i.name}
+                            </TableCell>
                         <TableCell>{i.calories}</TableCell>
                         <TableCell>{i.protein}</TableCell>
                         <TableCell>{i.fat}</TableCell>

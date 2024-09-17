@@ -191,7 +191,6 @@ export async function addWorkoutToLog(logId: string, workout: WorkoutLog, weekIn
 // }
 
 export async function addNutrition(clerkId: string, nutrition: Nutrition[]){
-  console.log('NUTRITION: ', nutrition)
   try{
     await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
@@ -199,6 +198,16 @@ export async function addNutrition(clerkId: string, nutrition: Nutrition[]){
       return {...n, user: userId}
     })
     const result = await NutritionModel.insertMany(nutritionArr)
+  }catch(err: any){
+    console.log(err)
+  }
+}
+
+export async function deleteNutrition(clerkId: string, itemId: string){
+  try{
+    await connectToDatabase()
+    const userId = await getMongoIdFromClerkId(clerkId)
+    await NutritionModel.findByIdAndDelete(itemId)
   }catch(err: any){
     console.log(err)
   }
