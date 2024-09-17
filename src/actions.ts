@@ -210,6 +210,7 @@ export async function getThisWeeksNutrition(clerkId: string){
   console.log('haha')
 
   try{
+    await connectToDatabase()
     const userId = await getMongoIdFromClerkId(clerkId)
     const thisWeeksNutrition = await NutritionModel.find({user: userId, date: {$gte: weekStart, $lte: weekEnd}}, 'itemId amount date item _id').sort({date: 1})
     console.log(thisWeeksNutrition)
