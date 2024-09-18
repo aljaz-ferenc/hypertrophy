@@ -905,5 +905,13 @@ export const exercises = [
       fat: 9.7,
       carbs: 12,
       id: '47'
+    },
+    {
+      name: 'Francoska solata',
+      calories: 215,
+      protein: 2.4,
+      fat: 18,
+      carbs: 11,
+      id: '48'
     }
 ]
