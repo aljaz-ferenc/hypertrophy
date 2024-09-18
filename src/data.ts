@@ -897,5 +897,13 @@ export const exercises = [
       fat: 48.2,
       carbs: 11.2,
       id: '46'
+    },
+    {
+      name: 'Piscancji condon bleu (Ptuj)',
+      calories: 195,
+      protein: 14,
+      fat: 9.7,
+      carbs: 12,
+      id: '47'
     }
 ]
