@@ -913,5 +913,30 @@ export const exercises = [
       fat: 18,
       carbs: 11,
       id: '48'
-    }
+    },
+    {
+      name: 'Chicken nuggets (15g per nugget)',
+      calories: 243,
+      protein: 15,
+      fat: 12,
+      carbs: 19,
+      id: '49'
+    },
+    {
+      name: 'McSundae chocolate (180g)',
+      calories: 178,
+      protein: 5.4,
+      fat: 8.2,
+      carbs: 45.3,
+      id: '50'
+    },
+    {
+      name: 'Pommes (mali - 70g, srednji - 120g, veliki - 155g)',
+      calories: 231,
+      protein: 2.7,
+      fat: 11.2,
+      carbs: 28.8,
+      id: '51'
+    },
+
 ]
