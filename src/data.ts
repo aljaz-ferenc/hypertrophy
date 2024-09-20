@@ -945,6 +945,14 @@ export const exercises = [
       fat: 22,
       carbs: 65,
       id: '52'
+    },
+    {
+      name: 'Piscancji bagel',
+      calories: 602 ,
+      protein: 44.7,
+      fat: 19,
+      carbs: 66.4,
+      id: '53'
     }
 
 ]
