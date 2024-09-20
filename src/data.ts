@@ -938,5 +938,13 @@ export const exercises = [
       carbs: 28.8,
       id: '51'
     },
+    {
+      name: 'Manner napolitanke (75g block)',
+      calories: 485,
+      protein: 5.6,
+      fat: 22,
+      carbs: 65,
+      id: '52'
+    }
 
 ]
