@@ -128,6 +128,7 @@ const todaysNutrition = useMemo(() => {
   }, [thisWeeksNutrition]);
 
   useEffect(() => {
+    if(!userId) return
     fetchNutritionData();
   }, [userId]);
 
@@ -150,7 +151,15 @@ const todaysNutrition = useMemo(() => {
     // fetchNutritionData();
     // clearItems();
     // console.log('ITEMS: ', items)
-    addNutrition(userId!, items)
+    try{ 
+      await addNutrition(userId!, items) 
+      await fetchNutritionData()
+    }catch(err: unknown){
+      if(err instanceof Error){
+        console.log(err.message)
+      }
+      console.log(err)
+    }
   }
 
   const diff = dailyTotalNutrition.calories - bmr
