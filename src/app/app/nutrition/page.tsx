@@ -26,7 +26,7 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import BarChart from "@/components/BarChart";
 import { Pie, PieChart } from "recharts";
 import PieChartComponent from "@/components/PieChart";
-import { getDay, isThisWeek, isToday, isThisISOWeek } from "date-fns";
+import { isToday } from "date-fns";
 import FoodItemsTable from "@/components/FoodItemsTable";
 
 export default function NutritionPage() {
@@ -111,24 +111,23 @@ const todaysNutrition = useMemo(() => {
   const todaysNutrition = thisWeeksNutrition.filter(n => {
     return isToday(n.date)
   })
-  // console.log('TODAYS NUTRITION: ', todaysNutrition)
+  console.log('TODAYS NUTRITION: ', todaysNutrition)
   return todaysNutrition
 }, [thisWeeksNutrition, thisWeeksNutrition])
 
-  const dailyAverageNutrition = useMemo(() => {
-    if (!thisWeeksNutrition) return;
-    const weeklyTotal = weeklyTotalNutrition
-    const today = getDay(new Date())
-    return {
-      calories: Math.round(weeklyTotal.calories / today),
-      protein: Math.round(weeklyTotal.protein / today),
-      carbs: Math.round(weeklyTotal.carbs / today),
-      fat: Math.round(weeklyTotal.fat / today),
-    };
-  }, [thisWeeksNutrition]);
+  // const dailyAverageNutrition = useMemo(() => {
+  //   if (!thisWeeksNutrition) return;
+  //   const weeklyTotal = weeklyTotalNutrition;
+
+  //   return {
+  //     calories: Math.round(weeklyTotal.calories / thisWeeksNutrition.length),
+  //     protein: Math.round(weeklyTotal.protein / thisWeeksNutrition.length),
+  //     carbs: Math.round(weeklyTotal.carbs / thisWeeksNutrition.length),
+  //     fat: Math.round(weeklyTotal.fat / thisWeeksNutrition.length),
+  //   };
+  // }, [thisWeeksNutrition]);
 
   useEffect(() => {
-    if(!userId) return
     fetchNutritionData();
   }, [userId]);
 
@@ -150,16 +149,8 @@ const todaysNutrition = useMemo(() => {
     // await updateUserNutrition(userId!, getTotalNutrition());
     // fetchNutritionData();
     // clearItems();
-    // console.log('ITEMS: ', items)
-    try{ 
-      await addNutrition(userId!, items) 
-      await fetchNutritionData()
-    }catch(err: unknown){
-      if(err instanceof Error){
-        console.log(err.message)
-      }
-      console.log(err)
-    }
+    console.log('ITEMS: ', items)
+    addNutrition(userId!, items)
   }
 
   const diff = dailyTotalNutrition.calories - bmr
@@ -187,15 +178,15 @@ const todaysNutrition = useMemo(() => {
          bmr={bmr!}
        />
       )}
-      {!!thisWeeksNutrition.length && (
+      {/* {!!thisWeeksNutrition.length && (
         <div>
           <h2 className="text-2xl font-semibold mb-5">Stats</h2>
-         {/* <BarChart
+         <BarChart
             data={thisWeeksNutrition}
             width={pageWidth}
             className={"mx-auto p-3"}
             bmr={bmr!}
-          /> */}
+          />
           <div className="flex gap-5 mt-5">
             <div className="">
               <h3 className="text-xl font-semibold">Week Total</h3>
@@ -218,7 +209,7 @@ const todaysNutrition = useMemo(() => {
           </div>
           <div className="mt-20"></div>
         </div>
-      )}
+      )} */}
       <div className="flex flex-col gap-5 mt-10">
         <h2 className="text-2xl font-semibold mb-2">Add Items</h2>
         {items &&
