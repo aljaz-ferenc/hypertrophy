@@ -26,7 +26,7 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import BarChart from "@/components/BarChart";
 import { Pie, PieChart } from "recharts";
 import PieChartComponent from "@/components/PieChart";
-import { isToday } from "date-fns";
+import { format, isToday } from "date-fns";
 import FoodItemsTable from "@/components/FoodItemsTable";
 
 export default function NutritionPage() {
@@ -115,17 +115,17 @@ const todaysNutrition = useMemo(() => {
   return todaysNutrition
 }, [thisWeeksNutrition, thisWeeksNutrition])
 
-  // const dailyAverageNutrition = useMemo(() => {
-  //   if (!thisWeeksNutrition) return;
-  //   const weeklyTotal = weeklyTotalNutrition;
+  const dailyAverageNutrition = useMemo(() => {
+    if (!thisWeeksNutrition) return;
+    const weeklyTotal = weeklyTotalNutrition;
 
-  //   return {
-  //     calories: Math.round(weeklyTotal.calories / thisWeeksNutrition.length),
-  //     protein: Math.round(weeklyTotal.protein / thisWeeksNutrition.length),
-  //     carbs: Math.round(weeklyTotal.carbs / thisWeeksNutrition.length),
-  //     fat: Math.round(weeklyTotal.fat / thisWeeksNutrition.length),
-  //   };
-  // }, [thisWeeksNutrition]);
+    return {
+      calories: Math.round(weeklyTotal.calories / format(new Date(),'i')),
+      protein: Math.round(weeklyTotal.protein /format(new Date(),'i')),
+      carbs: Math.round(weeklyTotal.carbs /format(new Date(),'i')),
+      fat: Math.round(weeklyTotal.fat /format(new Date(),'i')),
+    };
+  }, [thisWeeksNutrition]);
 
   useEffect(() => {
     fetchNutritionData();
@@ -178,15 +178,9 @@ const todaysNutrition = useMemo(() => {
          bmr={bmr!}
        />
       )}
-      {/* {!!thisWeeksNutrition.length && (
+       {!!thisWeeksNutrition.length && (
         <div>
           <h2 className="text-2xl font-semibold mb-5">Stats</h2>
-         <BarChart
-            data={thisWeeksNutrition}
-            width={pageWidth}
-            className={"mx-auto p-3"}
-            bmr={bmr!}
-          />
           <div className="flex gap-5 mt-5">
             <div className="">
               <h3 className="text-xl font-semibold">Week Total</h3>
@@ -209,7 +203,7 @@ const todaysNutrition = useMemo(() => {
           </div>
           <div className="mt-20"></div>
         </div>
-      )} */}
+      )} 
       <div className="flex flex-col gap-5 mt-10">
         <h2 className="text-2xl font-semibold mb-2">Add Items</h2>
         {items &&
