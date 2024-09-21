@@ -953,6 +953,21 @@ export const exercises = [
       fat: 19,
       carbs: 66.4,
       id: '53'
+    },
+    {
+      name: 'Peanut caramel protein bar (Barbells - 55g)'.
+      calories: 394,
+      protein: 29,
+      fat: 20,
+      carbs: 29,
+      id: '54'
+    },
+    {
+      name: 'Dorina strawberry and vanilla (95g)',
+      calories: 546, 
+      protein:9.1,
+      fat: 34,
+      carbs: 51,
+      id: '55'
     }
-
 ]
