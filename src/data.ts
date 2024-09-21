@@ -955,7 +955,7 @@ export const exercises = [
       id: '53'
     },
     {
-      name: 'Peanut caramel protein bar (Barbells - 55g)'.
+      name: 'Peanut caramel protein bar (Barbells - 55g)',
       calories: 394,
       protein: 29,
       fat: 20,
