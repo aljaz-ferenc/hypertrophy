@@ -969,5 +969,13 @@ export const exercises = [
       fat: 34,
       carbs: 51,
       id: '55'
+    },
+    {
+      name: 'Cup Noodles, Chicken (63g)',
+      calories: 77, 
+      protein:2.3,
+      fat: 3.1,
+      carbs: 9.6,
+      id: '56'
     }
 ]
