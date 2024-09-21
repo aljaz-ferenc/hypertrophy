@@ -29,6 +29,8 @@ import PieChartComponent from "@/components/PieChart";
 import { format, isToday } from "date-fns";
 import FoodItemsTable from "@/components/FoodItemsTable";
 
+const todaysDay = parseInt(format(new Date(),'i'))
+
 export default function NutritionPage() {
   const [isOpen, setIsOpen] = useState(false);
   // const [nutritionTotal] = useState<Nutrition>({
@@ -106,6 +108,8 @@ export default function NutritionPage() {
     );
   }, [thisWeeksNutrition]);
 
+console.log(format(new Date(),'i'))
+
 const todaysNutrition = useMemo(() => {
   if (!thisWeeksNutrition) return;
   const todaysNutrition = thisWeeksNutrition.filter(n => {
@@ -120,10 +124,10 @@ const todaysNutrition = useMemo(() => {
     const weeklyTotal = weeklyTotalNutrition;
 
     return {
-      calories: Math.round(weeklyTotal.calories / format(new Date(),'i')),
-      protein: Math.round(weeklyTotal.protein /format(new Date(),'i')),
-      carbs: Math.round(weeklyTotal.carbs /format(new Date(),'i')),
-      fat: Math.round(weeklyTotal.fat /format(new Date(),'i')),
+      calories: Math.round(weeklyTotal.calories / todaysDay),
+      protein: Math.round(weeklyTotal.protein /todaysDay),
+      carbs: Math.round(weeklyTotal.carbs /todaysDay),
+      fat: Math.round(weeklyTotal.fat /todaysDay),
     };
   }, [thisWeeksNutrition]);
 
