@@ -1030,4 +1030,12 @@ export const foodItems: FoodItem[] = [
     carbs: 25,
     id: "60",
   },
+  {
+    name: "Whey protein (Battery, wheytella)",
+    calories: 387,
+    protein: 70,
+    fat: 6.3,
+    carbs: 12.3,
+    id: "61",
+  },
 ];
