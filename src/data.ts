@@ -978,4 +978,13 @@ export const exercises = [
       carbs: 9.6,
       id: '56'
     }
+    ,
+    {
+      name: 'Demae Ramer - chicken (100g)',
+      calories: 91, 
+      protein:2,
+      fat: 4,
+      carbs: 11.1,
+      id: '57'
+    }
 ]
