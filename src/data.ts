@@ -1038,4 +1038,12 @@ export const foodItems: FoodItem[] = [
     carbs: 12.3,
     id: "61",
   },
+  {
+    name: "Coko panakota",
+    calories: 364,
+    protein: 4.5,
+    fat: 30,
+    carbs: 19,
+    id: "62",
+  },
 ];
