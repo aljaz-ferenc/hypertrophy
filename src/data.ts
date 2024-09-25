@@ -1046,4 +1046,12 @@ export const foodItems: FoodItem[] = [
     carbs: 19,
     id: "62",
   },
+  {
+    name: "Stay Strong pudding hazelnut (200g)",
+    calories: 73,
+    protein: 10,
+    fat: 0.9,
+    carbs: 6.1,
+    id: "63",
+  },
 ];
