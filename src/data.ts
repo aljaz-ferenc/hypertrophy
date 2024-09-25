@@ -1054,4 +1054,12 @@ export const foodItems: FoodItem[] = [
     carbs: 6.1,
     id: "63",
   },
+  {
+    name: "Manner Snack minis (25g)",
+    calories: 521,
+    protein: 7.5,
+    fat: 29,
+    carbs: 56,
+    id: "64",
+  },
 ];
