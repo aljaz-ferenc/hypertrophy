@@ -1062,4 +1062,12 @@ export const foodItems: FoodItem[] = [
     carbs: 56,
     id: "64",
   },
+  {
+    name: "Isotonic (proteini.si, cherry)",
+    calories: 521,
+    protein: 7.5,
+    fat: 29,
+    carbs: 56,
+    id: "65",
+  },
 ];
