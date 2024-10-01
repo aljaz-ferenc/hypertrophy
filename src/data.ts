@@ -1070,4 +1070,12 @@ export const foodItems: FoodItem[] = [
     carbs: 56,
     id: "65",
   },
+  {
+    name: "Cafe mio - cappuccino (250g)",
+    calories: 74,
+    protein: 2.8,
+    fat: 2,
+    carbs: 11,
+    id: "66",
+  },
 ];
