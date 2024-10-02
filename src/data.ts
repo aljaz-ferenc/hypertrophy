@@ -1078,4 +1078,12 @@ export const foodItems: FoodItem[] = [
     carbs: 11,
     id: "66",
   },
+  {
+    name: "Waffelroellchen spar (25g per pack of 2)",
+    calories: 523,
+    protein: 6.5,
+    fat: 28,
+    carbs: 61,
+    id: "67",
+  },
 ];
