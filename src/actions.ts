@@ -15,7 +15,6 @@ export async function createUser(user: any) {
   try {
     await connectToDatabase();
     const newUser: Document = await User.create(user);
-    console.log("newUser: ", newUser);
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log(err.message);
@@ -154,7 +153,7 @@ export async function getLogs(clerkId: string){
 }
 
 export async function addWorkoutToLog(logId: string, workout: WorkoutLog, weekIndex: number, workoutIndex: number, userId: string){
-  
+
   try{
     await connectToDatabase();
     const updateQuery: any = {};
