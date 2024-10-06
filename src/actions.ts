@@ -6,7 +6,7 @@ import NutritionModel from './database/models/Nutrition'
 import { connectToDatabase } from "./database/mongoose";
 import { Days, Log as LogType, Mesocycle as MesocycleType, Set, Workout, WorkoutLog, User as UserType, Nutrition, Stats, Measurement, WeightUnits, BodyPart } from "./types";
 import Mesocycle from "./database/models/Mesocycle";
-import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek} from 'date-fns'
+import {differenceInWeeks, endOfWeek, previousMonday, startOfDay, startOfToday, startOfTomorrow, startOfYesterday, startOfWeek, nextMonday} from 'date-fns'
 import Log from "./database/models/Log";
 import { redirect } from "next/navigation";
 import { BRMData, calculateBMR } from "./lib/utils";
@@ -83,7 +83,7 @@ export async function activateMesocycle(meso: MesocycleType, clerkId: string) {
     await connectToDatabase();
     const user = await User.findOneAndUpdate({clerkId}, {$unset: {lastWorkout: 1}})
     await Mesocycle.updateMany({ isActive: true, user:user._id}, { isActive: false, $unset: { startDate: 1 } });
-    await Mesocycle.findByIdAndUpdate(meso._id, { isActive: true, startDate: startOfDay(previousMonday(new Date()))});
+    await Mesocycle.findByIdAndUpdate(meso._id, { isActive: true, startDate: startOfDay(nextMonday(new Date()))});
     const newLog = {
       mesoTitle: meso.title,
       duration: meso.duration,
