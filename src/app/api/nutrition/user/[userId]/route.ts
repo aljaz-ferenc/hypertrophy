@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from "@/database/mongoose";
 import Nutrition from "@/database/models/Nutrition";
-import { endOfWeek, startOfWeek, startOfToday, endOfToday } from "date-fns";
+import { endOfWeek, startOfWeek, startOfToday, endOfToday, subDays } from "date-fns";
 import nutrition from "@/database/models/Nutrition";
 
 export async function GET(request: Request, { params }: { params: { userId: string } }) {
@@ -27,16 +27,18 @@ export async function GET(request: Request, { params }: { params: { userId: stri
         });
 
         // Query for today
-        // const today = await Nutrition.find({
-        //     user: userId,
-        //     date: {
-        //         $gte: startOfTodayDate,
-        //         $lte: endOfTodayDate
-        //     }
-        // });
+        const today = await Nutrition.find({
+            user: userId,
+            date: {
+                $gte: startOfTodayDate,
+                $lte: endOfTodayDate
+            }
+        });
+
+        console.log(today)
 
         // Return both results
-        return NextResponse.json({nutrition: thisWeek});
+        return NextResponse.json({nutrition: today});
     } catch (err: unknown) {
         if (err instanceof Error) {
             console.log(err.message);
