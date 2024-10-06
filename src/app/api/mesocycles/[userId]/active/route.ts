@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/database/mongoose";
 import Mesocycle from "@/database/models/Mesocycle";
-import { addWeeks, endOfDay, isAfter, isBefore, subDays } from "date-fns";
+import { addWeeks, endOfDay, isAfter, isBefore, isToday, subDays } from "date-fns";
 import { getTodaysDay } from "@/lib/utils";
 import { Mesocycle as MesoType } from "@/types";
+import User from "@/database/models/User";
 
 export async function GET(
   request: Request,
@@ -37,7 +38,7 @@ export async function GET(
     }
 
     if (isAfter(now, endDate)) {
-      message = "completed";
+      message = "mesoCompleted";
       meso = null;
     }
 
@@ -56,6 +57,14 @@ export async function GET(
       } else {
         meso = mesocycle;
       }
+
+       //check if workout completed today
+       const user = await User.findById(userId)
+       if(user?.lastWorkout){
+         if(isToday(user.lastWorkout)){
+           message = 'workoutCompleted'
+         }
+       }
     }
 
     return NextResponse.json({ mesocycle, message });
