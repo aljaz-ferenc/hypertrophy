@@ -1086,4 +1086,12 @@ export const foodItems: FoodItem[] = [
     carbs: 61,
     id: "67",
   },
+  {
+    name: "Reese's peanut butter cup (21g per cup)",
+    calories: 533,
+    protein: 10.7,
+    fat: 10.5,
+    carbs: 57.6,
+    id: '68'
+  }
 ];
