@@ -1093,5 +1093,13 @@ export const foodItems: FoodItem[] = [
     fat: 10.5,
     carbs: 57.6,
     id: '68'
+  },
+  {
+    name: "Mikla strawberry (100g)",
+    calories: 560,
+    protein: 4,
+    fat: 35,
+    carbs: 57,
+    id: '69'
   }
 ];
