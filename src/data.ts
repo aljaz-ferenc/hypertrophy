@@ -1112,7 +1112,7 @@ export const foodItems: FoodItem[] = [
   },
   {
     name: "Kinder bueno white (2x 39g)",
-    calories: 35.9,
+    calories: 571,
     protein: 8.5,
     fat: 35.9,
     carbs: 53,
