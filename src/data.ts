@@ -1117,5 +1117,13 @@ export const foodItems: FoodItem[] = [
     fat: 35.9,
     carbs: 53,
     id: '71'
+  },
+  {
+    name: "King double (100g)",
+    calories: 427,
+    protein: 4.3,
+    fat: 31,
+    carbs: 33,
+    id: '72'
   }
 ];
