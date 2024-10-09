@@ -1101,5 +1101,21 @@ export const foodItems: FoodItem[] = [
     fat: 35,
     carbs: 57,
     id: '69'
+  },
+  {
+    name: "High protein chocolate mousse (Ehrmann)",
+    calories: 74,
+    protein: 10,
+    fat: 1.5,
+    carbs: 4.5,
+    id: '70'
+  },
+  {
+    name: "Kinder bueno white (2x 39g)",
+    calories: 35.9,
+    protein: 8.5,
+    fat: 35.9,
+    carbs: 53,
+    id: '71'
   }
 ];
