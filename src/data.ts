@@ -1141,5 +1141,13 @@ export const foodItems: FoodItem[] = [
     fat: 15,
     carbs: 25,
     id: '74'
+  },
+  {
+    name: "Kinder country (23.5g per bar)",
+    calories: 561,
+    protein: 8.6,
+    fat: 33.8,
+    carbs: 54.9,
+    id: '75'
   }
 ];
