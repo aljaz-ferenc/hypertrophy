@@ -1125,5 +1125,21 @@ export const foodItems: FoodItem[] = [
     fat: 31,
     carbs: 33,
     id: '72'
+  },
+  {
+    name: "Palačinke s čokolado (Lidl ' 180g)",
+    calories: 297,
+    protein: 6,8,
+    fat: 13,
+    carbs: 21,
+    id: '73'
+  },
+  {
+    name: "Trikotnik sendvič s tuno (Lidl - 140g)",
+    calories: 292,
+    protein: 13,
+    fat: 15,
+    carbs: 25,
+    id: '74'
   }
 ];
