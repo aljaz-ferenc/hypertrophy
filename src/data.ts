@@ -1129,7 +1129,7 @@ export const foodItems: FoodItem[] = [
   {
     name: "Palačinke s čokolado (Lidl ' 180g)",
     calories: 297,
-    protein: 6,8,
+    protein: 6.8,
     fat: 13,
     carbs: 21,
     id: '73'
