@@ -14,6 +14,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { nutritionId: string } }
 ) {
+  console.log('DDDDDDDDDDDDDDDDDDDDD: ', params.nutritionId)
   try {
     const result = await Nutrition.findByIdAndDelete(params.nutritionId);
     return NextResponse.json({nutritionId: result._id});
@@ -21,6 +22,8 @@ export async function DELETE(
     if (err instanceof Error) {
       console.log(err.message);
     }
+    return NextResponse.json({error:err});
+
   }
 }
 

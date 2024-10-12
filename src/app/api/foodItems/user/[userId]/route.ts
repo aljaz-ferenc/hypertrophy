@@ -7,7 +7,7 @@ export async function GET(request: Request, {params}: { params: { userId: string
         const userId = params.userId
         await connectToDatabase()
         const items = await FoodItem.find({user: userId})
-
+        console.log(items)
        return NextResponse.json(items)
     }catch(err: unknown){
         if(err instanceof Error){

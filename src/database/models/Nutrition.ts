@@ -11,12 +11,10 @@ const nutritionSchema = new mongoose.Schema({
     amount: {
         type: Number
     },
-    itemId: {
-        type: String
-    },
     item: {
-        type: String
-    }
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'FoodItem'
+    },
 })
 
 export default mongoose.models.Nutrition || mongoose.model('Nutrition', nutritionSchema)

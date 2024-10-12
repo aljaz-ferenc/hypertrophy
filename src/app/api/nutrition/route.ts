@@ -3,7 +3,14 @@ import { connectToDatabase } from "@/database/mongoose";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const nutrition = await request.json();
+  const {user, date, amount, itemId} = await request.json();
+
+  const nutrition = {
+    user, 
+    date,
+    amount, 
+    item: itemId
+  }
 
   try {
     await connectToDatabase();
