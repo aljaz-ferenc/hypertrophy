@@ -1,22 +1,14 @@
-import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/database/mongoose";
 import Nutrition from "@/database/models/Nutrition";
-import {
-  endOfWeek,
-  startOfWeek,
-  startOfToday,
-  endOfToday,
-  subDays,
-} from "date-fns";
-import nutrition from "@/database/models/Nutrition";
+import { connectToDatabase } from "@/database/mongoose";
+import { NextResponse } from "next/server";
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { nutritionId: string } }
-) {
+export async function POST(request: Request) {
+  const nutrition = await request.json();
+
   try {
-    const result = await Nutrition.findByIdAndDelete(params.nutritionId);
-    return NextResponse.json({nutritionId: result._id});
+    await connectToDatabase();
+    const newNutrition = await Nutrition.create(nutrition);
+    return NextResponse.json(newNutrition);
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log(err.message);
