@@ -168,3 +168,19 @@ export type Stats = {
 }
 
 export type Gender = 'male' | 'female'
+
+export type Portion = {
+  title: string,
+  amount: string,
+  id: string
+}
+
+export type FoodItem1 = {
+  name: string,
+  calories: number,
+  protein: number,
+  fat: number,
+  carbs: number,
+  user: string,
+  portions: Portion[]
+}

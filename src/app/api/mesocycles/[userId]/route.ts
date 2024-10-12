@@ -1,6 +1,5 @@
 import { NextResponse} from 'next/server';
 import {connectToDatabase} from "@/database/mongoose";
-import User from "@/database/models/User";
 import Mesocycle from "@/database/models/Mesocycle";
 
 export async function GET(request: Request, {params}: { params: { userId: string } }) {

@@ -1,21 +1,34 @@
 import mongoose from "mongoose";
 
-const foodItemSchema = new mongoose.Schema({
+const FoodItemSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    nutrition: {
-        calories: Number,
-        protein: Number,
-        fat: Number,
-        carbs: Number
-    },
-    type: {
-        enum: ['item', 'meal'],
+    calories: {
+        type: Number,
         required: true
+    },
+    protein: {
+        type: Number,
+        required: true
+    },
+    fat: {
+        type: Number,
+        required: true
+    },
+    carbs: {
+        type: Number,
+        required: true
+    },
+    user: {
+        type: String,
+        required: true
+    },
+    portions: {
+        type: Array
     }
 })
 
-const FoodItem = mongoose.models.FoodItem || mongoose.model('FoodItem', foodItemSchema)
+const FoodItem = mongoose.models.FoodItem || mongoose.model('FoodItem', FoodItemSchema)
 export default FoodItem
