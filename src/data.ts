@@ -1086,4 +1086,68 @@ export const foodItems: FoodItem[] = [
     carbs: 61,
     id: "67",
   },
+  {
+    name: "Reese's peanut butter cup (21g per cup)",
+    calories: 533,
+    protein: 10.7,
+    fat: 10.5,
+    carbs: 57.6,
+    id: '68'
+  },
+  {
+    name: "Mikla strawberry (100g)",
+    calories: 560,
+    protein: 4,
+    fat: 35,
+    carbs: 57,
+    id: '69'
+  },
+  {
+    name: "High protein chocolate mousse (Ehrmann)",
+    calories: 74,
+    protein: 10,
+    fat: 1.5,
+    carbs: 4.5,
+    id: '70'
+  },
+  {
+    name: "Kinder bueno white (2x 39g)",
+    calories: 571,
+    protein: 8.5,
+    fat: 35.9,
+    carbs: 53,
+    id: '71'
+  },
+  {
+    name: "King double (100g)",
+    calories: 427,
+    protein: 4.3,
+    fat: 31,
+    carbs: 33,
+    id: '72'
+  },
+  {
+    name: "Palačinke s čokolado (Lidl ' 180g)",
+    calories: 297,
+    protein: 6.8,
+    fat: 13,
+    carbs: 21,
+    id: '73'
+  },
+  {
+    name: "Trikotnik sendvič s tuno (Lidl - 140g)",
+    calories: 292,
+    protein: 13,
+    fat: 15,
+    carbs: 25,
+    id: '74'
+  },
+  {
+    name: "Kinder country (23.5g per bar)",
+    calories: 561,
+    protein: 8.6,
+    fat: 33.8,
+    carbs: 54.9,
+    id: '75'
+  }
 ];
