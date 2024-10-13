@@ -8,6 +8,7 @@ import {
   startOfToday,
   endOfToday,
   subDays,
+  startOfDay,
 } from "date-fns";
 import nutrition from "@/database/models/Nutrition";
 
@@ -17,7 +18,6 @@ export async function GET(
 ) {
   try {
     const userId = params.userId;
-    console.log("USER_ID: ", userId);
     await connectToDatabase();
 
     // Get start and end of the current week
@@ -35,7 +35,7 @@ export async function GET(
         $gte: startOfThisWeek,
         $lte: endOfThisWeek,
       },
-    });
+    }).populate('item');
 
     // Query for today
     FoodItem;
@@ -47,25 +47,64 @@ export async function GET(
       },
     }).populate("item");
 
-    // console.log('BBBBBBBBBBBBBBBBBBB: ',today);
-
     const totalToday = today.reduce(
       (acc, n) => {
 
         return {
-          calories: acc.calories + n.item.calories,
-          protein: acc.protein + n.item.protein,
-          fat: acc.fat + n.item.fat,
-          carbs: acc.carbs + n.item.carbs,
+          calories: Math.round(acc.calories + n.item.calories),
+          protein: Math.round(acc.protein + n.item.protein),
+          fat: Math.round(acc.fat + n.item.fat),
+          carbs: Math.round(acc.carbs + n.item.carbs),
         };
       },
       { calories: 0, protein: 0, fat: 0, carbs: 0 }
     );
 
-    console.log("TOTAL_TODAY: ", totalToday);
+    const totalWeek = thisWeek.reduce(
+      (acc, n) => {
+
+        return {
+          calories: Math.round(acc.calories + n.item.calories),
+          protein: Math.round(acc.protein + n.item.protein),
+          fat: Math.round(acc.fat + n.item.fat),
+          carbs: Math.round(acc.carbs + n.item.carbs),
+        };
+      },
+      { calories: 0, protein: 0, fat: 0, carbs: 0 }
+    );
+    
+    const data: {date: Date, calories: number}[] = []
+
+    thisWeek.forEach(n => data.push({calories: n.item.calories, date: startOfDay(n.date)}))
+
+    const grouped = data.reduce((acc, n) => {
+      const dateKey = n.date.toDateString()
+
+      if(!acc[dateKey]){
+        acc[dateKey] = {date: n.date, caloriesTotal: n.calories}
+      }else{
+        acc[dateKey].caloriesTotal += n.calories
+      }
+      return acc
+    }, {} as {[key: string]: {date: Date, caloriesTotal: number}})
+
+    const weightData = Object.values(grouped)
+
+    // thisWeek.forEach(n => {
+    //   const date = startOfDay(n.date)
+
+    //   if(weightData.some((d, i) => d.date === date)){
+    //     weightData = weightData.map(da => {
+    //       if(da.date === date){
+    //         return {...da, calories: da.calories + n.calories}
+    //       }
+    //       return da
+    //     })
+    //   }
+    // })
 
     // Return both results
-    return NextResponse.json({ nutrition: today, totalToday });
+    return NextResponse.json({ nutrition: today, totalToday, totalWeek, weightData });
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log(err.message);

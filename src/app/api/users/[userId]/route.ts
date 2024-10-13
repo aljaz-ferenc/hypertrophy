@@ -71,7 +71,7 @@ export async function GET(
       }
   
       // If no specific field is requested, return the entire user
-      const user = await User.findById(userId, '-stats');
+      const user = await User.findById(userId);
       console.log(user)
       if (!user) {
         return NextResponse.json(
