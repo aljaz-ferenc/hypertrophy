@@ -51,10 +51,10 @@ export async function GET(
       (acc, n) => {
 
         return {
-          calories: Math.round(acc.calories + n.item.calories),
-          protein: Math.round(acc.protein + n.item.protein),
-          fat: Math.round(acc.fat + n.item.fat),
-          carbs: Math.round(acc.carbs + n.item.carbs),
+          calories: Math.round(acc.calories + n.item.calories * n.amount / 100),
+          protein: Math.round(acc.protein + n.item.protein * n.amount / 100),
+          fat: Math.round(acc.fat + n.item.fat * n.amount / 100),
+          carbs: Math.round(acc.carbs + n.item.carbs * n.amount / 100),
         };
       },
       { calories: 0, protein: 0, fat: 0, carbs: 0 }
@@ -64,10 +64,10 @@ export async function GET(
       (acc, n) => {
 
         return {
-          calories: Math.round(acc.calories + n.item.calories),
-          protein: Math.round(acc.protein + n.item.protein),
-          fat: Math.round(acc.fat + n.item.fat),
-          carbs: Math.round(acc.carbs + n.item.carbs),
+          calories: Math.round(acc.calories + n.item.calories* n.amount / 100),
+          protein: Math.round(acc.protein + n.item.protein* n.amount / 100),
+          fat: Math.round(acc.fat + n.item.fat* n.amount / 100),
+          carbs: Math.round(acc.carbs + n.item.carbs* n.amount / 100),
         };
       },
       { calories: 0, protein: 0, fat: 0, carbs: 0 }
