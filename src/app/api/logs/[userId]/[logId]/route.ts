@@ -17,7 +17,8 @@ export async function POST(
       $each: [workout],
       $position: workoutIndex,
     };
-    await Log.findByIdAndUpdate(logId, { $push: updateQuery });
+    const result = await Log.findOneAndUpdate({mesoId: logId}, { $push: updateQuery }, {new: true});
+    console.log('RESULT: ', result)
     await User.findByIdAndUpdate(userId, { lastWorkout: new Date() });
     return NextResponse.json({ workout, weekIndex, workoutIndex });
   } catch (err: unknown) {
