@@ -493,6 +493,26 @@ export const exercises = [
     muscleGroup: "neck",
     exercise: "Neck Curls",
   },
+  {
+    muscleGroup: 'back',
+    exercise: 'Lat Prayers'
+  },
+  {
+    muscleGroup: 'back',
+    exercise: 'Seated Machine Rows'
+  },
+  {
+    muscleGroup: 'back',
+    exercise: "Ring Rows"
+  },
+  {
+    muslceGroup: 'biceps',
+    exercise: 'Ring Curls'
+  },
+  {
+    muscleGroup: 'chest',
+    exercise: "Ring Flyes"
+  }
 ];
 
 export const weekdays: Weekday[] = [
