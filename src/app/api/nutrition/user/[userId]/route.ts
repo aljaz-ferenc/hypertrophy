@@ -11,6 +11,7 @@ import {
   startOfDay,
 } from "date-fns";
 import nutrition from "@/database/models/Nutrition";
+import { getTodaysDay } from "@/lib/utils";
 
 export async function GET(
   request: Request,
@@ -47,6 +48,8 @@ export async function GET(
       },
     }).populate("item");
 
+    const thisDay = getTodaysDay()
+
     const totalToday = today.reduce(
       (acc, n) => {
 
@@ -72,6 +75,13 @@ export async function GET(
       },
       { calories: 0, protein: 0, fat: 0, carbs: 0 }
     );
+
+    const totalWeekAverage = {
+      calories: Math.round(totalWeek.calories / thisDay),
+      protein: Math.round(totalWeek.protein / thisDay),
+      fat: Math.round(totalWeek.fat / thisDay),
+      carbs: Math.round(totalWeek.carbs / thisDay)
+    }
     
     const data: {date: Date, calories: number}[] = []
 
@@ -104,7 +114,7 @@ export async function GET(
     // })
 
     // Return both results
-    return NextResponse.json({ nutrition: today, totalToday, totalWeek, weightData });
+    return NextResponse.json({ nutrition: today, totalToday, totalWeek: totalWeekAverage, weightData });
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.log(err.message);
