@@ -34,25 +34,25 @@ const userSchema = new mongoose.Schema({
         weight: {
             value: {
                 type: Number,
-                required: true
+
             },
             date: {
                 type: Date,
-                required: true
+
             },
             units: {
                 type: String,
-                required: true
+
             }
         },
         height: {
             value: {
                 type: Number,
-                required: true
+
             },
             units: {
                 type: String,
-                required: true
+
             }
         },
         bmr: {

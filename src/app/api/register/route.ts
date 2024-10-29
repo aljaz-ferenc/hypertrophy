@@ -1,4 +1,7 @@
 import {NextResponse} from "next/server";
+import {hashPassword} from "@/lib/utils";
+import {connectToDatabase} from "@/database/mongoose";
+import User from "@/database/models/User";
 
 type RequestBody = {
     username: string,
@@ -20,10 +23,16 @@ export async function POST(request: Request) {
             return NextResponse.json({message: 'Passwords must be at least 6 characters long', status: 400},)
         }
 
-        return NextResponse.json('');
+        const hashedPass = await hashPassword(password)
+
+        await connectToDatabase()
+        const newUser = await User.create({username, password: hashedPass})
+
+        return NextResponse.json(newUser);
     } catch (err: unknown) {
         if (err instanceof Error) {
             console.log(err.message)
+            return NextResponse.json('error');
         }
     }
 }
