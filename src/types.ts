@@ -23,11 +23,12 @@ export type MuscleGroup =
   | "neck"
 
 
-export type Exercise = {
-  muscleGroup: MuscleGroup;
-  name: string;
-  id: string
-};
+// export type Exercise = {
+//   muscleGroup: MuscleGroup;
+//   name: string;
+//   id: string
+// };
+export type Exercise = any
 
 export type Workout = {
   weekDay: number
