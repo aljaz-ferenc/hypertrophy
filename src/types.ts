@@ -25,7 +25,7 @@ export type MuscleGroup =
 
 export type Exercise = {
   muscleGroup: MuscleGroup;
-  exercise: string;
+  name: string;
   id: string
 };
 

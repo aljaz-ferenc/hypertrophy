@@ -1,6 +1,5 @@
 import {connectToDatabase} from "@/database/mongoose";
 import {NextResponse} from "next/server";
-import MuscleGroup from "@/database/models/MuscleGroup";
 import ExerciseModel from "@/database/models/Exercise";
 
 export async function GET() {
