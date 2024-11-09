@@ -7,11 +7,12 @@ type RequestBody = {
     username: string,
     password: string,
     passwordConfirm: string
+    email: string
 }
 
 export async function POST(request: Request) {
     try {
-        const {username, password, passwordConfirm}: RequestBody = await request.json()
+        const {username, password, passwordConfirm, email}: RequestBody = await request.json()
 
         const passwordsMatch = password === passwordConfirm
         if (!passwordsMatch) {
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
         const hashedPass = await hashPassword(password)
 
         await connectToDatabase()
-        const newUser = await User.create({username, password: hashedPass})
+        const newUser = await User.create({username, password: hashedPass, email})
 
         return NextResponse.json(newUser);
     } catch (err: unknown) {

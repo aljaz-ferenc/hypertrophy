@@ -1,10 +1,26 @@
+import User from "@/database/models/User";
+import { connectToDatabase } from "@/database/mongoose";
 import {NextResponse} from "next/server";
-
+import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json()
-        return NextResponse.json(body);
+        const {username, password} = await request.json()
+
+        await connectToDatabase()
+        const user = await User.findOne({username})
+
+        if(!user){
+            return NextResponse.json({error: "User with this username doesn't exist"})
+        }
+
+        const passwordCorrect = await bcrypt.compare(password, user.password)
+
+        if(!passwordCorrect){
+            return NextResponse.json({error: "Password incorrect"})
+        }
+
+        return NextResponse.json({user});
     } catch (err: unknown) {
         if (err instanceof Error) {
             console.log(err.message)
