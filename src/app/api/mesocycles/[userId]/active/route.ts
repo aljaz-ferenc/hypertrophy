@@ -30,7 +30,6 @@ export async function GET(
     const startDate = mesocycle.startDate;
     const duration = mesocycle.duration;
     const endDate = endOfDay(subDays(addWeeks(startDate!, duration), 1));
-    console.log(startDate, endDate);
 
     if (isBefore(now, startDate!)) {
       message = "startsMonday";

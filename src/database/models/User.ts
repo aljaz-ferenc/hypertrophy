@@ -4,7 +4,6 @@ const userSchema = new mongoose.Schema({
     clerkId: {
         type: String,
         unique: true,
-        required: [true, 'clerkId required']
     },
     email:{
         type: String,
@@ -14,6 +13,9 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, 'username required']
+    },
+    password: {
+        type: String,
     },
     firstName: {
         type: String
@@ -34,25 +36,25 @@ const userSchema = new mongoose.Schema({
         weight: {
             value: {
                 type: Number,
-                required: true
+
             },
             date: {
                 type: Date,
-                required: true
+
             },
             units: {
                 type: String,
-                required: true
+
             }
         },
         height: {
             value: {
                 type: Number,
-                required: true
+
             },
             units: {
                 type: String,
-                required: true
+
             }
         },
         bmr: {

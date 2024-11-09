@@ -2,6 +2,7 @@ import { Gender, HeightUnits, Measurement, WeightUnits } from "@/types"
 import { type ClassValue, clsx } from "clsx"
 import { isThisWeek } from "date-fns"
 import { twMerge } from "tailwind-merge"
+import bcrypt from 'bcrypt';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -49,4 +50,9 @@ export function getWeeklyAverageWeight(weightData: Measurement<WeightUnits>[]) {
 export function getTodaysDay() {
   //get days (monday = 1 ... sunday = 7)
   return [7, 1, 2, 3, 4, 5, 6][new Date().getDay()];
+}
+
+export async function hashPassword(password: string){
+  const saltRounds = 10
+  return await bcrypt.hash(password, saltRounds)
 }
