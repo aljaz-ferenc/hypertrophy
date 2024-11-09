@@ -2,7 +2,7 @@ import { Gender, HeightUnits, Measurement, WeightUnits } from "@/types"
 import { type ClassValue, clsx } from "clsx"
 import { isThisWeek } from "date-fns"
 import { twMerge } from "tailwind-merge"
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
