@@ -17,11 +17,17 @@ const nextConfig = {
 
     webpack(config, { isServer }) {
         // Handle HTML files using html-loader
+        config.module.rules.push({
+            test: /\.html$/,
+            use: ['html-loader'],
+        });
+
+        // Optional: Add a fallback for node built-in modules
         if (!isServer) {
-            config.module.rules.push({
-                test: /\.html$/,
-                use: ['html-loader'],
-            });
+            config.resolve.fallback = {
+                fs: false,
+                path: false,
+            };
         }
 
         return config;
