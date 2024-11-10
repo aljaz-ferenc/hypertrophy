@@ -26,8 +26,8 @@ export async function GET(
     const endOfThisWeek = endOfWeek(new Date(), { weekStartsOn: 1 }); // Sunday as the end of the week
 
     // Get start and end of today
-    const startOfTodayDate = startOfToday(); // Start of today
-    const endOfTodayDate = endOfToday(); // End of today
+    const startOfTodayDate = startOfToday(); 
+    const endOfTodayDate = endOfToday(); 
 
     // Query for the current week
     const thisWeek = await Nutrition.find({
@@ -83,15 +83,15 @@ export async function GET(
       carbs: Math.round(totalWeek.carbs / thisDay)
     }
     
-    const data: {date: Date, calories: number}[] = []
+    const data: {date: Date, calories: number, amount: number}[] = []
 
-    thisWeek.forEach(n => data.push({calories: n.item.calories, date: startOfDay(n.date)}))
+    thisWeek.forEach(n => data.push({calories: n.item.calories, date: startOfDay(n.date), amount: n.amount}))
 
     const grouped = data.reduce((acc, n) => {
       const dateKey = n.date.toDateString()
 
       if(!acc[dateKey]){
-        acc[dateKey] = {date: n.date, caloriesTotal: n.calories}
+        acc[dateKey] = {date: n.date, caloriesTotal: (n.calories * n.amount) / 100}
       }else{
         acc[dateKey].caloriesTotal += n.calories
       }
