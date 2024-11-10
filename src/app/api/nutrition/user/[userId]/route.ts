@@ -93,7 +93,7 @@ export async function GET(
       if(!acc[dateKey]){
         acc[dateKey] = {date: n.date, caloriesTotal: (n.calories * n.amount) / 100}
       }else{
-        acc[dateKey].caloriesTotal += n.calories
+        acc[dateKey].caloriesTotal += (n.calories * n.amount) / 100
       }
       return acc
     }, {} as {[key: string]: {date: Date, caloriesTotal: number}})
