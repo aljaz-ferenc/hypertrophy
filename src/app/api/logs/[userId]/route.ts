@@ -15,3 +15,16 @@ export async function GET(request: Request, {params}: { params: { userId: string
         }
     }
 }
+
+export async function OPTIONS() {
+    return NextResponse.json(
+        { message: "CORS preflight response" },
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "*", // or specify your domain
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type",
+            },
+        }
+    );
+}
