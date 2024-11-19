@@ -11,7 +11,7 @@ import {
   startOfDay,
 } from "date-fns";
 import nutrition from "@/database/models/Nutrition";
-import { getTodaysDay } from "@/lib/utils";
+import {getAverageNutrition, getTodaysDay} from "@/lib/utils";
 
 export async function GET(
   request: Request,
@@ -50,31 +50,34 @@ export async function GET(
 
     const thisDay = getTodaysDay()
 
-    const totalToday = today.reduce(
-      (acc, n) => {
+    // const totalToday = today.reduce(
+    //   (acc, n) => {
+    //
+    //     return {
+    //       calories: Math.round(acc.calories + n.item.calories * n.amount / 100),
+    //       protein: Math.round(acc.protein + n.item.protein * n.amount / 100),
+    //       fat: Math.round(acc.fat + n.item.fat * n.amount / 100),
+    //       carbs: Math.round(acc.carbs + n.item.carbs * n.amount / 100),
+    //     };
+    //   },
+    //   { calories: 0, protein: 0, fat: 0, carbs: 0 }
+    // );
 
-        return {
-          calories: Math.round(acc.calories + n.item.calories * n.amount / 100),
-          protein: Math.round(acc.protein + n.item.protein * n.amount / 100),
-          fat: Math.round(acc.fat + n.item.fat * n.amount / 100),
-          carbs: Math.round(acc.carbs + n.item.carbs * n.amount / 100),
-        };
-      },
-      { calories: 0, protein: 0, fat: 0, carbs: 0 }
-    );
+    // const totalWeek = thisWeek.reduce(
+    //   (acc, n) => {
+    //
+    //     return {
+    //       calories: Math.round(acc.calories + n.item.calories* n.amount / 100),
+    //       protein: Math.round(acc.protein + n.item.protein* n.amount / 100),
+    //       fat: Math.round(acc.fat + n.item.fat* n.amount / 100),
+    //       carbs: Math.round(acc.carbs + n.item.carbs* n.amount / 100),
+    //     };
+    //   },
+    //   { calories: 0, protein: 0, fat: 0, carbs: 0 }
+    // );
 
-    const totalWeek = thisWeek.reduce(
-      (acc, n) => {
-
-        return {
-          calories: Math.round(acc.calories + n.item.calories* n.amount / 100),
-          protein: Math.round(acc.protein + n.item.protein* n.amount / 100),
-          fat: Math.round(acc.fat + n.item.fat* n.amount / 100),
-          carbs: Math.round(acc.carbs + n.item.carbs* n.amount / 100),
-        };
-      },
-      { calories: 0, protein: 0, fat: 0, carbs: 0 }
-    );
+    const totalWeek = getAverageNutrition(thisWeek)
+    const totalToday = getAverageNutrition(today)
 
     const totalWeekAverage = {
       calories: Math.round(totalWeek.calories / thisDay),
