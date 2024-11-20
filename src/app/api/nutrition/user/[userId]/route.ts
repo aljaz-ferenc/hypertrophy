@@ -50,32 +50,6 @@ export async function GET(
 
     const thisDay = getTodaysDay()
 
-    // const totalToday = today.reduce(
-    //   (acc, n) => {
-    //
-    //     return {
-    //       calories: Math.round(acc.calories + n.item.calories * n.amount / 100),
-    //       protein: Math.round(acc.protein + n.item.protein * n.amount / 100),
-    //       fat: Math.round(acc.fat + n.item.fat * n.amount / 100),
-    //       carbs: Math.round(acc.carbs + n.item.carbs * n.amount / 100),
-    //     };
-    //   },
-    //   { calories: 0, protein: 0, fat: 0, carbs: 0 }
-    // );
-
-    // const totalWeek = thisWeek.reduce(
-    //   (acc, n) => {
-    //
-    //     return {
-    //       calories: Math.round(acc.calories + n.item.calories* n.amount / 100),
-    //       protein: Math.round(acc.protein + n.item.protein* n.amount / 100),
-    //       fat: Math.round(acc.fat + n.item.fat* n.amount / 100),
-    //       carbs: Math.round(acc.carbs + n.item.carbs* n.amount / 100),
-    //     };
-    //   },
-    //   { calories: 0, protein: 0, fat: 0, carbs: 0 }
-    // );
-
     const totalWeek = getAverageNutrition(thisWeek)
     const totalToday = getAverageNutrition(today)
 

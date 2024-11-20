@@ -22,7 +22,8 @@ export default authMiddleware({
         "/api/foodItems/user/:userId",
         "/api/login",
         "/api/register",
-        "/api/mesocycles/:userId/:mesoId/activate"
+        "/api/mesocycles/:userId/:mesoId/activate",
+        "/api/mesocycles/:userId/:mesoId/overview"
     ],
 });
 
