@@ -20,12 +20,19 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
     const endDate = startOfDay(addDays(startDate, mesoLengthInDays))
     const yesterday = startOfDay(subDays(new Date(), 1));
     const user = await User.findById(params.userId).select('stats.weight').where('stats.weight.date').lean()
-    const weight = user.stats.weight.filter(w => w.date > startOfDay(startDate) && w.date < endOfDay(endDate))
 
+    if(!user){
+        return NextResponse.json({error: 'user does not exist'});
+    }
+
+    const weight = (user as any).stats.weight.filter((w: any) => w.date > startOfDay(startDate) && w.date < endOfDay(endDate))
+
+    // @ts-ignore
     const weightByWeeks = Object.groupBy(weight, (w) => getWeek(w.date))
     const averageWeightByWeeks = Object.keys(weightByWeeks).map((weekNumber) => {
-        const weightsForWeek = weightByWeeks[weekNumber];
+        const weightsForWeek = weightByWeeks[+weekNumber];
 
+        // @ts-ignore
         const averageWeight = weightsForWeek.reduce((sum, weightObj) => sum + weightObj.value, 0) / weightsForWeek.length;
 
         return {
@@ -33,8 +40,6 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
             averageWeight: +averageWeight.toFixed(1),
         };
     });
-
-    console.log(averageWeightByWeeks)
 
     const getWeeksWithDays = async (params: { userId: string; startDate: Date; endDate: Date }) => {
         // Fetch nutrition data
@@ -57,19 +62,23 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
 
         return Object.entries(weeks).map(([week, weekEntries]) => {
             // Group by day within each week
-            const days = Object.groupBy(weekEntries, (entry) => entry.date.toISOString().split('T')[0]);
+            // @ts-ignore
+            const days = Object.groupBy((weekEntries as any), (entry) => entry.date.toISOString().split('T')[0]);
 
             // Filter out empty days
-            const filteredDays = Object.values(days).filter((dayEntries) => dayEntries.length > 0);
+            const filteredDays = Object.values(days).filter((dayEntries: any) => dayEntries.length > 0);
 
             // Calculate total calories for each day
             const dailyCalories = filteredDays.map((dayEntries) => {
+                // @ts-ignore
                 return dayEntries.reduce((sum, entry) => {
+                    // @ts-ignore
                     return sum + getSingleNutritionCalories(entry);
                 }, 0);
             });
 
             // Calculate weekly total and average
+            // @ts-ignore
             const totalCalories = Math.round(dailyCalories.reduce((sum, cals) => sum + cals, 0));
             const averageCalories = filteredDays.length > 0 ? totalCalories / filteredDays.length : 0;
 
@@ -102,15 +111,15 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
 
     const averageDailyCalories = Math.round(totalDays > 0 ? totalCalories / totalDays : 0);
     const mesoDates = [];
-    const workouts = log.weeks.flatMap(w => w.workouts).flat();
-    const nonRestDays = meso.workouts.flatMap(w => w.weekDay)
+    const workouts = log.weeks.flatMap((w: any) => w.workouts).flat();
+    const nonRestDays = meso.workouts.flatMap((w: any) => w.weekDay)
     const allDays = [1, 2, 3, 4, 5, 6, 7]
     const restDays = allDays.filter(day => !nonRestDays.includes(day));
 
     for (let i = 1; i <= mesoLengthInDays; i++) {
         const date = addDays(startDate, i);
 
-        const workout = workouts.find((w) => {
+        const workout = workouts.find((w: any) => {
             return isSameDay(
                 startOfDay(addDays(new Date(w.completedAt), 1)),
                 startOfDay(date)
