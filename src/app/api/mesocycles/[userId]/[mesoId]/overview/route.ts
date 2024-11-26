@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
     const weight = (user as any).stats.weight.filter((w: any) => w.date > startOfDay(startDate) && w.date < endOfDay(endDate))
 
     // @ts-ignore
-    const weightByWeeks = groupBy(weight, (w) => getWeek(w.date))
+    const weightByWeeks = groupBy(weight, (w: any) => getWeek(w.date))
     const averageWeightByWeeks = Object.keys(weightByWeeks).map((weekNumber) => {
         const weightsForWeek = weightByWeeks[+weekNumber];
 
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
         });
 
         // Group by weeks, then by days
-        const weeks = groupBy(filteredNutrition, (n) => getWeek(new Date(n.date)));
+        const weeks = groupBy(filteredNutrition, (n: any) => getWeek(new Date(n.date)));
 
         return Object.entries(weeks).map(([week, weekEntries]) => {
             // Group by day within each week
