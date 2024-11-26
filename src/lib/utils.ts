@@ -69,7 +69,7 @@ export const getAverageNutrition = (nutrition: Array<any>) => {
     }, {calories: 0, protein: 0, fat: 0, carbs: 0})
 }
 
-export function groupBy(array, keyGetter) {
+export function groupBy(array: any[], keyGetter: any) {
     return array.reduce((result, currentItem) => {
         const key = keyGetter(currentItem);
         if (!result[key]) {
