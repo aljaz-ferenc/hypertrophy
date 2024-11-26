@@ -6,12 +6,14 @@ import {addDays, endOfDay, getDay, getWeek, isAfter, isSameDay, startOfDay, subD
 import Log from "@/database/models/Log";
 import Nutrition from "@/database/models/Nutrition";
 import FoodItem from "@/database/models/FoodItem";
+import {groupBy} from '@/lib/utils'
 FoodItem;
 const getSingleNutritionCalories = (nutrition: any) => {
     return nutrition.amount * nutrition.item.calories / 100
 }
 
 export async function GET(req: NextRequest, {params}: { params: { userId: string, mesoId: string } }) {
+    console.log(params)
     await connectToDatabase();
     const meso = await Mesocycle.findById(params.mesoId);
     const log = await Log.findOne({mesoId: meso._id});
@@ -22,13 +24,13 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
     const user = await User.findById(params.userId).select('stats.weight').where('stats.weight.date').lean()
 
     if(!user){
-        return NextResponse.json({error: 'user does not exist'});
+        return await NextResponse.json({error: 'user does not exist'});
     }
 
     const weight = (user as any).stats.weight.filter((w: any) => w.date > startOfDay(startDate) && w.date < endOfDay(endDate))
 
     // @ts-ignore
-    const weightByWeeks = Object.groupBy(weight, (w) => getWeek(w.date))
+    const weightByWeeks = groupBy(weight, (w) => getWeek(w.date))
     const averageWeightByWeeks = Object.keys(weightByWeeks).map((weekNumber) => {
         const weightsForWeek = weightByWeeks[+weekNumber];
 
@@ -58,12 +60,12 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
         });
 
         // Group by weeks, then by days
-        const weeks = Object.groupBy(filteredNutrition, (n) => getWeek(new Date(n.date)));
+        const weeks = groupBy(filteredNutrition, (n) => getWeek(new Date(n.date)));
 
         return Object.entries(weeks).map(([week, weekEntries]) => {
             // Group by day within each week
             // @ts-ignore
-            const days = Object.groupBy((weekEntries as any), (entry) => entry.date.toISOString().split('T')[0]);
+            const days = groupBy((weekEntries as any), (entry) => entry.date.toISOString().split('T')[0]);
 
             // Filter out empty days
             const filteredDays = Object.values(days).filter((dayEntries: any) => dayEntries.length > 0);
