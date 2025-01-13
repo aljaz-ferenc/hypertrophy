@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/database/mongoose";
 import User from "@/database/models/User";
-import { endOfToday, startOfMonth, startOfWeek, startOfYear, subDays } from "date-fns";
+import {endOfToday, startOfMonth, startOfWeek, startOfYear, subDays, subYears} from "date-fns";
 
 type Range = "all" | "week" | "month" | "year";
 
@@ -26,15 +26,17 @@ export async function GET(
         let startOfRange: Date;
   
         // Set the start of range based on the query parameter
+        const today = new Date()
+
         switch (range) {
           case "week":
-            startOfRange = startOfWeek(new Date());
+            startOfRange = subDays(today, 7);
             break;
           case "month":
-            startOfRange = subDays(new Date(), 30);
+            startOfRange = subDays(today, 30);
             break;
           case "year":
-            startOfRange = startOfYear(new Date());
+            startOfRange = subYears(today, 1);
             break;
           case "all":
             startOfRange = new Date(0);
