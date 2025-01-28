@@ -116,27 +116,28 @@ export async function GET(req: NextRequest, {params}: { params: { userId: string
     const workouts = log.weeks.flatMap((w: any) => w.workouts).flat();
     const nonRestDays = meso.workouts.flatMap((w: any) => w.weekDay)
     const allDays = [1, 2, 3, 4, 5, 6, 7]
-    const restDays = allDays.filter(day => !nonRestDays.includes(day));
+    const restDays = allDays.filter(day => !nonRestDays.includes(day - 1));
 
     for (let i = 1; i <= mesoLengthInDays; i++) {
         const date = addDays(startDate, i);
 
         const workout = workouts.find((w: any) => {
             return isSameDay(
-                startOfDay(addDays(new Date(w.completedAt), 1)),
+                startOfDay(addDays(new Date(w.completedAt), 0)),
                 startOfDay(date)
             );
         });
 
         const workoutStatus = (workout: any, date: Date) => {
-            const dayOfWeek = (getDay(date) + 5) % 7 + 1;
+            const dayOfWeek = (getDay(date) + 5) % 7;
+            console.log(restDays)
             if (isAfter(date, addDays(yesterday, 1))) {
                 return 'upcoming';
             }
             if (workout) {
                 return 'completed';
             }
-            return restDays.includes(dayOfWeek) ? 'rest' : 'missed';
+            return restDays.includes(dayOfWeek) ? 'missed' : 'rest';
         };
         mesoDates.push({date, workoutCompleted: workoutStatus(workout, date)});
     }
